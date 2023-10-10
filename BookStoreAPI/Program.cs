@@ -16,6 +16,15 @@ namespace BookStoreAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin", builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000") // Zmieñ to na adres swojej aplikacji frontendowej
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
 
             var app = builder.Build();
 
@@ -23,6 +32,7 @@ namespace BookStoreAPI
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
+                app.UseCors("AllowSpecificOrigin");
                 app.UseSwaggerUI();
             }
 

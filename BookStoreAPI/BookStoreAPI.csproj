@@ -17,6 +17,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="$(AssemblyName).Test"/>
+	</ItemGroup>
+
   <ItemGroup>
     <Folder Include="Models\BusinessLogic\" />
     <Folder Include="ViewModels\" />

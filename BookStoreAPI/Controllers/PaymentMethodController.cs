@@ -13,7 +13,7 @@ namespace BookStoreAPI.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentMethodController : BaseController
+    public class PaymentMethodController : BaseController<PaymentMethod>
     {
         /// <summary>
         /// Initializes a new instance of the PaymentMethodController.
@@ -31,12 +31,7 @@ namespace BookStoreAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PaymentMethod>>> GetPaymentMethods()
         {
-            if (_context.PaymentMethod == null)
-            {
-                return NotFound();
-            }
-            var result = await _context.PaymentMethod.Where(x => x.IsActive == true).ToListAsync();
-            return result;
+            return await GetAllEntitiesAsync();
         }
 
         // GET: api/PaymentMethods/{id}
@@ -48,18 +43,7 @@ namespace BookStoreAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PaymentMethod>> GetPaymentMethod(int id)
         {
-            if (_context.PaymentMethod == null)
-            {
-                return NotFound();
-            }
-            var paymentMethod = await EntityExistsAsync<PaymentMethod>(id);
-
-            if (paymentMethod == null)
-            {
-                return NotFound();
-            }
-            
-            return paymentMethod;
+            return await GetEntityByIdAsync(id);
         }
 
         // POST: api/PaymentMethods
@@ -71,14 +55,7 @@ namespace BookStoreAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<PaymentMethod>> PostPaymentMethod(PaymentMethod paymentMethod)
         {
-            if (_context.PaymentMethod == null)
-            {
-                return NotFound();
-            }
-            _context.PaymentMethod.Add(paymentMethod);
-            await _context.SaveChangesAsync();
-
-            return Ok(paymentMethod);
+            return await CreateEntityAsync(paymentMethod);
         }
 
         // PUT: api/PaymentMethod/{id}
@@ -91,37 +68,7 @@ namespace BookStoreAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPaymentMethod(int id, [FromBody] PaymentMethod updatedPaymentMethod)
         {
-            if (updatedPaymentMethod == null)
-            {
-                return BadRequest("Nieprawidłowe dane.");
-            }
-
-            var paymentMethod = await EntityExistsAsync<PaymentMethod>(id);
-
-            if (paymentMethod == null)
-            {
-                return NotFound("Metoda płatności o podanym ID nie istnieje.");
-            }
-
-            paymentMethod.CopyProperties(updatedPaymentMethod);
-            _context.Entry(paymentMethod).State = EntityState.Modified;
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (EntityExistsAsync<PaymentMethod>(id) == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok(paymentMethod);
+            return await UpdateEntityAsync(id, updatedPaymentMethod);
         }
 
         // DELETE: api/PaymentMethod/{id}
@@ -133,21 +80,7 @@ namespace BookStoreAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePaymentMethod(int id)
         {
-            if (_context.PaymentMethod == null)
-            {
-                return NotFound();
-            }
-            var paymentMethod = await EntityExistsAsync<PaymentMethod>(id);
-
-            if (paymentMethod == null)
-            {
-                return NotFound();
-            }
-
-            paymentMethod.IsActive = false;
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return await DeleteEntityAsync(id);
         }
     }
 }
