@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="Models\BusinessLogic\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
