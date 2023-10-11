@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Core.Types;
 
-namespace BookStoreAPI.Controllers
+namespace BookStoreAPI.Controllers.Transactions.Dictionaries
 {
     /// <summary>
     /// Controller for managing payment methods.

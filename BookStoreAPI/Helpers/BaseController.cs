@@ -1,4 +1,5 @@
 ﻿using BookStoreAPI.Data;
+using BookStoreAPI.Models.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,10 +30,14 @@ namespace BookStoreAPI.Helpers
 
         protected async Task<IActionResult> UpdateEntityAsync(int id, TEntity updatedEntity)
         {
-            //if (id != GetEntityId)
-            //{
-            //    return BadRequest("Invalid data.");
-            //}
+
+            if (updatedEntity is BaseEntity tempEntity)
+            {
+                if (id != tempEntity.Id)
+                {
+                    return BadRequest("Invalid data.");
+                }
+            }
 
             var entity = await GetEntityByIdAsync(id);
 
@@ -72,10 +77,19 @@ namespace BookStoreAPI.Helpers
                 return NotFound();
             }
 
-            _context.Set<TEntity>().Remove(entity);
+            // Oznacz encję jako nieaktywną ustawiając IsActive na false
+            if (entity is BaseEntity deactivatableEntity)
+            {
+                deactivatableEntity.IsActive = false;
+            }
+            else
+            {
+                return BadRequest("Nie można zdezaktywować tej encji.");
+            }
+
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(id);
         }
 
         private bool EntityExists(int id)
@@ -88,6 +102,11 @@ namespace BookStoreAPI.Helpers
             return await _context.Set<TEntity>().FindAsync(id);
         }
 
+    }
+
+    public interface IDeactivatable
+    {
+        bool IsActive { get; set; }
     }
 }
 

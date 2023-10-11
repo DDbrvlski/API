@@ -18,10 +18,15 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="$(AssemblyName).Test"/>
+		<InternalsVisibleTo Include="$(AssemblyName).Test" />
 	</ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\Basket\" />
+    <Folder Include="Controllers\Media\" />
+    <Folder Include="Controllers\WIshlist\" />
+    <Folder Include="Controllers\PageContent\" />
+    <Folder Include="Controllers\Notifications\" />
     <Folder Include="Models\BusinessLogic\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
