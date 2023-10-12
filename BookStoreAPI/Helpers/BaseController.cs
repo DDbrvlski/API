@@ -17,14 +17,12 @@ namespace BookStoreAPI.Helpers
 
         protected async Task<ActionResult<IEnumerable<TEntity>>> GetAllEntitiesAsync()
         {
-            var entities = await _context.Set<TEntity>().ToListAsync();
-            return entities;
+            return await GetAllEntitiesCustomAsync();
         }
 
         protected async Task<ActionResult<TEntity>> CreateEntityAsync(TEntity entity)
         {
-            _context.Set<TEntity>().Add(entity);
-            await _context.SaveChangesAsync();
+            await CreateEntityCustomAsync(entity);
             return entity;
         }
 
@@ -46,8 +44,7 @@ namespace BookStoreAPI.Helpers
                 return NotFound();
             }
 
-            // Update entity properties here
-            entity.CopyProperties(updatedEntity);
+            await UpdateEntityCustomAsync(entity, updatedEntity);
 
             try
             {
@@ -77,19 +74,7 @@ namespace BookStoreAPI.Helpers
                 return NotFound();
             }
 
-            // Oznacz encję jako nieaktywną ustawiając IsActive na false
-            if (entity is BaseEntity deactivatableEntity)
-            {
-                deactivatableEntity.IsActive = false;
-            }
-            else
-            {
-                return BadRequest("Nie można zdezaktywować tej encji.");
-            }
-
-            await _context.SaveChangesAsync();
-
-            return Ok(id);
+            return await DeleteEntityCustomAsync(entity);
         }
 
         private bool EntityExists(int id)
@@ -97,16 +82,40 @@ namespace BookStoreAPI.Helpers
             return (_context.Set<TEntity>().Find(id)) != null;
         }
 
-        protected async Task<TEntity?> GetEntityByIdAsync(int id)
+        protected virtual async Task<TEntity?> GetEntityByIdAsync(int id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
 
-    }
+        protected virtual async Task<ActionResult<IEnumerable<TEntity>>> GetAllEntitiesCustomAsync()
+        {
+            return await _context.Set<TEntity>().ToListAsync();
+        }
 
-    public interface IDeactivatable
-    {
-        bool IsActive { get; set; }
+        protected virtual async Task CreateEntityCustomAsync(TEntity entity)
+        {
+            _context.Set<TEntity>().Add(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        protected virtual async Task UpdateEntityCustomAsync(TEntity oldEntity, TEntity updatedEntity)
+        {
+            oldEntity.CopyProperties(updatedEntity);
+        }
+
+        protected virtual async Task<IActionResult> DeleteEntityCustomAsync(TEntity entity)
+        {
+            if (entity is BaseEntity deactivatableEntity)
+            {
+                deactivatableEntity.IsActive = false;
+                _context.SaveChanges();
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Nie można zdezaktywować tej encji.");
+            }
+        }
     }
 }
 

@@ -1,3 +1,4 @@
+using BookStoreAPI.Data;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
 
@@ -94,16 +95,12 @@ namespace BookStoreAPI.Test
         }
 
         [TestMethod]
-        [TestPriority(5)]
         public async Task eDeletePaymentMethod_ReturnsSuccessStatusCode()
         {
-            // Przygotuj ID PaymentMethod do usuniêcia
-            var paymentMethodIdToDelete = _id; // Tutaj podaj ID do usuniêcia
+            var paymentMethodIdToDelete = _id;
 
-            // Act: Wyœlij ¿¹danie DELETE z odpowiednim ID
             var response = await _httpClient.DeleteAsync($"/api/PaymentMethod/{paymentMethodIdToDelete}");
 
-            // Assert: SprawdŸ, czy odpowiedŸ jest sukcesem
             response.EnsureSuccessStatusCode();
         }
     }
