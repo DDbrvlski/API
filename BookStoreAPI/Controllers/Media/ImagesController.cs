@@ -1,25 +1,24 @@
 ﻿using BookStoreAPI.Data;
 using BookStoreAPI.Helpers;
-using BookStoreAPI.Models.Products.Books.BookDictionaries;
+using BookStoreAPI.Models.Media;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookStoreAPI.Controllers.Products.Books.Dictionaries
+namespace BookStoreAPI.Controllers.Media
 {
     /// <summary>
-    /// Controller for managing scores.
+    /// Controller for managing images.
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class ScoreController : CRUDController<Score>
+    public class ImagesController : CRUDController<Images>
     {
         /// <summary>
-        /// Initializes a new instance of the ScoreController.
+        /// Initializes a new instance of the ImagesController.
         /// </summary>
         /// <param name="context">The database context.</param>
-        public ScoreController(BookStoreContext context) : base(context)
+        public ImagesController(BookStoreContext context) : base(context)
         {
         }
-
     }
 }

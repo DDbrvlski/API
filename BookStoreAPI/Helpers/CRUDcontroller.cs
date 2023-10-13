@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreAPI.Helpers
 {
-    public class CRUDcontroller<T> : BaseController<T>, IDataStore<T> where T : class
+    public class CRUDController<T> : BaseController<T>, IDataStore<T> where T : class
     {
-        public CRUDcontroller(BookStoreContext context) : base(context)
+        public CRUDController(BookStoreContext context) : base(context)
         {
         }
 

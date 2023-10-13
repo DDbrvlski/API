@@ -14,7 +14,7 @@ namespace BookStoreAPI.Controllers.Accounts.Dictionaries
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountStatusController : CRUDcontroller<AccountStatus>
+    public class AccountStatusController : CRUDController<AccountStatus>
     {
         /// <summary>
         /// Initializes a new instance of the AccountStatusController.
