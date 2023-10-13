@@ -4,13 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using BookStoreAPI.Models.Media;
+using BookStoreAPI.Models.Products.Books.BookDictionaries;
 
 namespace BookStoreAPI.Models.PageContent
 {
-    public class FooterLinks : BaseEntity
+    public class FooterLinks : DictionaryTable
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int Position { get; set; }
+        public string? Path { get; set; }
+        public string? URL { get; set; }
+        public int? Position { get; set; }
+
+        //FooterColumn
+        [Required(ErrorMessage = "Kolumna jest wymagana.")]
+        [Display(Name = "Kolumna")]
+        public int? FooterColumnID { get; set; }
+
+        [ForeignKey("FooterColumnID")]
+        public virtual FooterColumns FooterColumn { get; set; }
     }
 }

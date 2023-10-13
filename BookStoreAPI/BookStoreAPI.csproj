@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Basket\" />
-    <Folder Include="Controllers\Media\" />
     <Folder Include="Controllers\WIshlist\" />
     <Folder Include="Controllers\PageContent\" />
     <Folder Include="Controllers\Notifications\" />
