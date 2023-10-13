@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreAPI.Helpers
 {
-    public class BaseController<TEntity> : ControllerBase where TEntity : class
+    public class BaseController<TEntity> : ControllerBase where TEntity : BaseEntity
     {
         protected readonly BookStoreContext _context;
 
@@ -90,7 +90,7 @@ namespace BookStoreAPI.Helpers
 
         protected virtual async Task<ActionResult<IEnumerable<TEntity>>> GetAllEntitiesCustomAsync()
         {
-            return await _context.Set<TEntity>().ToListAsync();
+            return await _context.Set<TEntity>().Where(x => x.IsActive == true).ToListAsync();
         }
 
         protected virtual async Task CreateEntityCustomAsync(TEntity entity)
