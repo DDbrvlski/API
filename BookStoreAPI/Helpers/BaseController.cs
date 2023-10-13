@@ -85,7 +85,7 @@ namespace BookStoreAPI.Helpers
 
         protected virtual async Task<TEntity?> GetEntityByIdAsync(int id)
         {
-            return await _context.Set<TEntity>().FindAsync(id);
+            return await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id && x.IsActive);
         }
 
         protected virtual async Task<ActionResult<IEnumerable<TEntity>>> GetAllEntitiesCustomAsync()

@@ -1,12 +1,13 @@
 ﻿using BookStoreAPI.Data;
 using BookStoreAPI.Interfaces;
 using BookStoreAPI.Models.Accounts.Dictionaries;
+using BookStoreAPI.Models.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreAPI.Helpers
 {
-    public class CRUDController<T> : BaseController<T>, IDataStore<T> where T : class
+    public class CRUDController<T> : BaseController<T>, IDataStore<T> where T : BaseEntity
     {
         public CRUDController(BookStoreContext context) : base(context)
         {
