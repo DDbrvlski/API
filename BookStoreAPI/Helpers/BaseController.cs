@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreAPI.Helpers
 {
-    public class BaseController<TEntity> : ControllerBase where TEntity : BaseEntity
+    public class BaseController<TEntity> : ABaseController<TEntity> where TEntity : BaseEntity
     {
         protected readonly BookStoreContext _context;
 
@@ -16,18 +16,18 @@ namespace BookStoreAPI.Helpers
             _context = context;
         }
 
-        protected async Task<ActionResult<IEnumerable<TEntity>>> GetAllEntitiesAsync()
+        protected override async Task<ActionResult<IEnumerable<TEntity>>> GetAllEntitiesAsync()
         {
             return await GetAllEntitiesCustomAsync();
         }
 
-        protected async Task<ActionResult<TEntity>> CreateEntityAsync(TEntity entity)
+        protected override async Task<ActionResult<TEntity>> CreateEntityAsync(TEntity entity)
         {
             await CreateEntityCustomAsync(entity);
             return entity;
         }
 
-        protected async Task<IActionResult> UpdateEntityAsync(int id, TEntity updatedEntity)
+        protected override async Task<IActionResult> UpdateEntityAsync(int id, TEntity updatedEntity)
         {
 
             if (updatedEntity is BaseEntity tempEntity)
@@ -66,7 +66,7 @@ namespace BookStoreAPI.Helpers
             return Ok(updatedEntity);
         }
 
-        protected async Task<IActionResult> DeleteEntityAsync(int id)
+        protected override async Task<IActionResult> DeleteEntityAsync(int id)
         {
             var entity = await GetEntityByIdAsync(id);
 
@@ -78,33 +78,33 @@ namespace BookStoreAPI.Helpers
             return await DeleteEntityCustomAsync(entity);
         }
 
-        private bool EntityExists(int id)
+        protected override bool EntityExists(int id)
         {
             return (_context.Set<TEntity>().Find(id)) != null;
         }
 
-        protected virtual async Task<TEntity?> GetEntityByIdAsync(int id)
+        protected override async Task<TEntity?> GetEntityByIdAsync(int id)
         {
             return await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id && x.IsActive);
         }
 
-        protected virtual async Task<ActionResult<IEnumerable<TEntity>>> GetAllEntitiesCustomAsync()
+        protected override async Task<ActionResult<IEnumerable<TEntity>>> GetAllEntitiesCustomAsync()
         {
             return await _context.Set<TEntity>().Where(x => x.IsActive == true).ToListAsync();
         }
 
-        protected virtual async Task CreateEntityCustomAsync(TEntity entity)
+        protected override async Task CreateEntityCustomAsync(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
             await _context.SaveChangesAsync();
         }
 
-        protected virtual async Task UpdateEntityCustomAsync(TEntity oldEntity, TEntity updatedEntity)
+        protected override async Task UpdateEntityCustomAsync(TEntity oldEntity, TEntity updatedEntity)
         {
             oldEntity.CopyProperties(updatedEntity);
         }
 
-        protected virtual async Task<IActionResult> DeleteEntityCustomAsync(TEntity entity)
+        protected override async Task<IActionResult> DeleteEntityCustomAsync(TEntity entity)
         {
             if (entity is BaseEntity deactivatableEntity)
             {
@@ -117,6 +117,7 @@ namespace BookStoreAPI.Helpers
                 return BadRequest("Nie można zdezaktywować tej encji.");
             }
         }
+
     }
 }
 

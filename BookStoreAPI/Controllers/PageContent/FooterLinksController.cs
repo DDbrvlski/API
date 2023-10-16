@@ -32,7 +32,10 @@ namespace BookStoreAPI.Controllers.PageContent
 
         protected async Task<FooterLinksForView> GetAllPropertiesFromEntityByIdAsync(int id)
         {
-            var element = await _context.FooterLinks.Include(x => x.FooterColumn).FirstOrDefaultAsync(x => x.Id == id && x.IsActive);
+            var element = await _context.FooterLinks
+                .Include(x => x.FooterColumn)
+                .FirstOrDefaultAsync(x => x.Id == id && x.IsActive);
+
             return new FooterLinksForView 
             {   
                 Id = id,
@@ -45,7 +48,11 @@ namespace BookStoreAPI.Controllers.PageContent
 
         protected async Task<ActionResult<IEnumerable<FooterLinksForView>>> GetAllPropertiesFromEntitiesAsync()
         {
-            var elements = await _context.FooterLinks.Include(x => x.FooterColumn).ToListAsync();
+            var elements = await _context.FooterLinks
+                .Include(x => x.FooterColumn)
+                .Where(x => x.IsActive == true)
+                .ToListAsync();
+
             return elements.Select(x => new FooterLinksForView 
             { 
                 Id = x.Id,

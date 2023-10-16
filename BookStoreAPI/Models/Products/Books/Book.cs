@@ -3,6 +3,7 @@ using BookStoreAPI.Models.Products.BookItems;
 using BookStoreAPI.Models.Products.Books.BookDictionaries;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Products.Books
 {
@@ -34,6 +35,7 @@ namespace BookStoreAPI.Models.Products.Books
         public int? LanguageID { get; set; }
 
         [ForeignKey("LanguageID")]
+        [JsonIgnore]
         public virtual Language Language { get; set; }
 
         //OriginalLanguage
@@ -42,6 +44,7 @@ namespace BookStoreAPI.Models.Products.Books
         public int? OriginalLanguageID { get; set; }
 
         [ForeignKey("OriginalLanguageID")]
+        [JsonIgnore]
         public virtual Language OriginalLanguage { get; set; }
 
         //Translator
@@ -50,6 +53,7 @@ namespace BookStoreAPI.Models.Products.Books
         public int? TranslatorID { get; set; }
 
         [ForeignKey("TranslatorID")]
+        [JsonIgnore]
         public virtual Translator Translator { get; set; }
 
         //Publisher
@@ -58,14 +62,21 @@ namespace BookStoreAPI.Models.Products.Books
         public int? PublisherID { get; set; }
 
         [ForeignKey("PublisherID")]
+        [JsonIgnore]
         public virtual Publisher Publisher { get; set; }
         #endregion
         #region Navigation properties
+        [JsonIgnore]
         public List<BookItem> BookItems { get; set; }
+        [JsonIgnore]
         public List<BookAuthor> BookAuthors { get; set; }
+        [JsonIgnore]
         public List<BookCategory> BookCategories { get; set; }
+        [JsonIgnore]
         public List<BookDiscount> BookDiscounts { get; set; }
+        [JsonIgnore]
         public List<BookImages> BookImages { get; set; }
+        [JsonIgnore]
         public List<BookReview> BookReviews { get; set; }
         #endregion
     }
