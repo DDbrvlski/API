@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using BookStoreAPI.Models.Media;
 using BookStoreAPI.Models.Products.Books.BookDictionaries;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.PageContent
 {
@@ -20,6 +21,7 @@ namespace BookStoreAPI.Models.PageContent
         public int? FooterColumnID { get; set; }
 
         [ForeignKey("FooterColumnID")]
-        public virtual FooterColumns FooterColumn { get; set; }
+        [JsonIgnore]
+        public virtual FooterColumns? FooterColumn { get; set; }
     }
 }

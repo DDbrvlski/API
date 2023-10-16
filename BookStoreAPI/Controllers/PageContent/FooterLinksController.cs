@@ -12,17 +12,30 @@ namespace BookStoreAPI.Controllers.PageContent
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FooterLinksController : CRUDController<FooterLinksForView>
+    public class FooterLinksController : CRUDController<FooterLinks>
     {
         public FooterLinksController(BookStoreContext context) : base(context)
         {
         }
 
-        protected override async Task<FooterLinksForView?> GetEntityByIdAsync(int id)
+        [HttpGet("full-columns")]
+        public async Task<ActionResult<IEnumerable<FooterLinksForView>>> GetAllPropertiesFromEntities()
+        {
+            return await GetAllPropertiesFromEntitiesAsync();
+        }
+
+        [HttpGet("full-columns/{id}")]
+        public async Task<ActionResult<FooterLinksForView>> GetAllPropertiesFromEntity(int id)
+        {
+            return await GetAllPropertiesFromEntityByIdAsync(id);
+        }
+
+        protected async Task<FooterLinksForView> GetAllPropertiesFromEntityByIdAsync(int id)
         {
             var element = await _context.FooterLinks.Include(x => x.FooterColumn).FirstOrDefaultAsync(x => x.Id == id && x.IsActive);
             return new FooterLinksForView 
             {   
+                Id = id,
                 ColumnId = element.FooterColumn.Id,
                 ColumnName = element.FooterColumn.Name,
                 ColumnPosition = element.FooterColumn.Position,
@@ -30,21 +43,18 @@ namespace BookStoreAPI.Controllers.PageContent
             }.CopyProperties(element);
         }
 
-        protected override async Task<ActionResult<IEnumerable<FooterLinksForView>>> GetAllEntitiesCustomAsync()
+        protected async Task<ActionResult<IEnumerable<FooterLinksForView>>> GetAllPropertiesFromEntitiesAsync()
         {
             var elements = await _context.FooterLinks.Include(x => x.FooterColumn).ToListAsync();
             return elements.Select(x => new FooterLinksForView 
             { 
+                Id = x.Id,
                 ColumnId = x.FooterColumn.Id, 
                 ColumnName = x.FooterColumn.Name, 
                 ColumnPosition = x.FooterColumn.Position, 
                 HTMLObject = x.FooterColumn.HTMLObject 
-            }.CopyProperties(elements)).ToList();
+            }.CopyProperties(x)).ToList();
         }
 
-        protected override async Task CreateEntityCustomAsync(FooterLinksForView entity)
-        {
-            await FooterLinksB.ConvertFooterLinksForViewToFooterLinksAndSave(entity, _context);
-        }
     }
 }
