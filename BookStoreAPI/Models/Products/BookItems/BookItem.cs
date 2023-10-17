@@ -5,6 +5,8 @@ using System.Xml.Linq;
 using BookStoreAPI.Models.Products.Books;
 using BookStoreAPI.Models.Products.BookItems.BookItemDictionaries;
 using Microsoft.Data.SqlClient.Server;
+using BookStoreAPI.Models.Products.Books.BookDictionaries;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Products.BookItems
 {
@@ -13,8 +15,36 @@ namespace BookStoreAPI.Models.Products.BookItems
         #region Properties
         public float VAT { get; set; }
         public decimal NettoPrice { get; set; }
+
+        [MaxLength(13)]
+        public string ISBN { get; set; }
+
+        [Required(ErrorMessage = "Liczba stron jest wymagana.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Liczba stron musi wynosić więcej niż zero.")]
+        public int Pages { get; set; }
+
+        [Required(ErrorMessage = "Data publikacji jest wymagana.")]
+        public DateTime PublishingDate { get; set; }
         #endregion
         #region Foreign Keys
+        //Translator
+        [Required(ErrorMessage = "Tłumacz jest wymagany.")]
+        [Display(Name = "Tłumacz")]
+        public int? TranslatorID { get; set; }
+
+        [ForeignKey("TranslatorID")]
+        [JsonIgnore]
+        public virtual Translator Translator { get; set; }
+
+        //Language
+        [Required(ErrorMessage = "Język jest wymagany.")]
+        [Display(Name = "Język")]
+        public int? LanguageID { get; set; }
+
+        [ForeignKey("LanguageID")]
+        [JsonIgnore]
+        public virtual Language Language { get; set; }
+
         //Book
         [Required(ErrorMessage = "Książka jest wymagana.")]
         [Display(Name = "Książka")]

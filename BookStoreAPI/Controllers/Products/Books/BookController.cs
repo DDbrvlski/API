@@ -34,8 +34,7 @@ namespace BookStoreAPI.Controllers.Products.Books
         protected async Task<BookDetailsForView> GetAllPropertiesFromEntityByIdAsync(int id)
         {
             var element = await _context.Book
-                .Include(x => x.Translator)
-                .Include(x => x.Language)
+                .Include(x => x.OriginalLanguage)
                 .Include(x => x.Publisher)
                 .Include(x => x.BookAuthors)
                     .ThenInclude(x => x.Author)
@@ -45,8 +44,7 @@ namespace BookStoreAPI.Controllers.Products.Books
 
             return new BookDetailsForView
             {
-                LanguageName = element.Language.Name,
-                TranslatorName = element.Translator.Name + " " + element.Translator.Surname,
+                OriginalLanguageName = element.OriginalLanguage.Name,
                 PublisherName = element.Publisher.Name,
                 Categories = element.BookCategories
                             .Where(z => z.IsActive == true)
@@ -69,8 +67,7 @@ namespace BookStoreAPI.Controllers.Products.Books
         protected async Task<ActionResult<IEnumerable<BookDetailsForView>>> GetAllPropertiesFromEntitiesAsync()
         {
             return await _context.Book
-                .Include(x => x.Translator)
-                .Include(x => x.Language)
+                .Include(x => x.OriginalLanguage)
                 .Include(x => x.Publisher)
                 .Include(x => x.BookAuthors)
                     .ThenInclude(x => x.Author)
@@ -80,8 +77,7 @@ namespace BookStoreAPI.Controllers.Products.Books
                 .Select(x => new BookDetailsForView
                     {
                         Id = x.Id,
-                        LanguageName = x.Language.Name,
-                        TranslatorName = x.Translator.Name + " " + x.Translator.Surname,
+                        OriginalLanguageName = x.OriginalLanguage.Name,
                         PublisherName = x.Publisher.Name,
                         Categories = x.BookCategories
                             .Where(y => y.IsActive == true)
