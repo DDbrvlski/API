@@ -51,6 +51,7 @@ namespace BookStoreAPI.Models.Products.BookItems
         public int? BookID { get; set; }
 
         [ForeignKey("BookID")]
+        [JsonIgnore]
         public virtual Book Book { get; set; }
 
         //Edition
@@ -59,6 +60,7 @@ namespace BookStoreAPI.Models.Products.BookItems
         public int? EditionID { get; set; }
 
         [ForeignKey("EditionID")]
+        [JsonIgnore]
         public virtual Edition Edition { get; set; }
 
         //FileFormat
@@ -67,6 +69,7 @@ namespace BookStoreAPI.Models.Products.BookItems
         public int? FileFormatID { get; set; }
 
         [ForeignKey("FileFormatID")]
+        [JsonIgnore]
         public virtual FileFormat FileFormat { get; set; }
 
         //Form
@@ -75,6 +78,7 @@ namespace BookStoreAPI.Models.Products.BookItems
         public int? FormID { get; set; }
 
         [ForeignKey("FormID")]
+        [JsonIgnore]
         public virtual Form Form { get; set; }
 
         //Availability
@@ -83,6 +87,7 @@ namespace BookStoreAPI.Models.Products.BookItems
         public int? AvailabilityID { get; set; }
 
         [ForeignKey("AvailabilityID")]
+        [JsonIgnore]
         public virtual Availability Availability { get; set; }
         #endregion
     }

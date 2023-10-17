@@ -2,6 +2,7 @@
 using BookStoreAPI.Models.Products.Books.BookDictionaries;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Products.Books
 {
@@ -13,6 +14,7 @@ namespace BookStoreAPI.Models.Products.Books
         public int? AuthorID { get; set; }
 
         [ForeignKey("AuthorID")]
+        [JsonIgnore]
         public virtual Author Author { get; set; }
 
         //Book
@@ -21,6 +23,7 @@ namespace BookStoreAPI.Models.Products.Books
         public int? BookID { get; set; }
 
         [ForeignKey("BookID")]
+        [JsonIgnore]
         public virtual Book Book { get; set; }
     }
 }

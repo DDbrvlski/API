@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using BookStoreAPI.Models.Accounts;
 using BookStoreAPI.Models.Products.Books.BookDictionaries;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Products.Books
 {
@@ -19,6 +20,7 @@ namespace BookStoreAPI.Models.Products.Books
         public int? UserID { get; set; }
 
         [ForeignKey("UserID")]
+        [JsonIgnore]
         public virtual User User { get; set; }
 
         //Book
@@ -27,6 +29,7 @@ namespace BookStoreAPI.Models.Products.Books
         public int? BookID { get; set; }
 
         [ForeignKey("BookID")]
+        [JsonIgnore]
         public virtual Book Book { get; set; }
 
         //Score
@@ -35,6 +38,7 @@ namespace BookStoreAPI.Models.Products.Books
         public int? ScoreID { get; set; }
 
         [ForeignKey("ScoreID")]
+        [JsonIgnore]
         public virtual Score Score { get; set; }
     }
 }

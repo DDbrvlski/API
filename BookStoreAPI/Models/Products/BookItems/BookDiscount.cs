@@ -3,6 +3,7 @@ using BookStoreAPI.Models.Helpers;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Products.BookItems
 {
@@ -14,6 +15,7 @@ namespace BookStoreAPI.Models.Products.BookItems
         public int? BookItemID { get; set; }
 
         [ForeignKey("BookItemID")]
+        [JsonIgnore]
         public virtual BookItem BookItem { get; set; }
 
         //Discount
@@ -22,6 +24,7 @@ namespace BookStoreAPI.Models.Products.BookItems
         public int? DiscountID { get; set; }
 
         [ForeignKey("DiscountID")]
+        [JsonIgnore]
         public virtual Discount Discount { get; set; }
     }
 }

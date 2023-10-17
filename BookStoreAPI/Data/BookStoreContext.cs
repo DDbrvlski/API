@@ -113,21 +113,5 @@ namespace BookStoreAPI.Data
         //Wishlist
         public DbSet<WishlistItem> WishlistItem { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Book>()
-                .HasOne(b => b.Language)
-                .WithMany()
-                .HasForeignKey(b => b.LanguageID)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Book>()
-                .HasOne(b => b.OriginalLanguage)
-                .WithMany()
-                .HasForeignKey(b => b.OriginalLanguageID)
-                .OnDelete(DeleteBehavior.Restrict);
-        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BookStoreAPI.Models.Helpers;
 using BookStoreAPI.Models.Products.BookItems;
 using BookStoreAPI.Models.Products.Books.BookDictionaries;
+using BookStoreAPI.ViewModels.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -50,5 +51,7 @@ namespace BookStoreAPI.Models.Products.Books
         [JsonIgnore]
         public List<BookReview> BookReviews { get; set; }
         #endregion
+        public List<ListOfIds> ListOfBookAuthors { get; set; }
+        public List<ListOfIds> ListOfBookCategories { get; set; }
     }
 }
