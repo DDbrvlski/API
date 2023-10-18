@@ -1,7 +1,9 @@
 ﻿using BookStoreAPI.Data;
 using BookStoreAPI.Helpers;
+using BookStoreAPI.Models.Media;
 using BookStoreAPI.Models.Products.Books;
 using BookStoreAPI.ViewModels.Products.Books;
+using BookStoreAPI.ViewModels.Products.Books.Dictionaries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -25,9 +27,9 @@ namespace BookStoreAPI.Models.BusinessLogic
 
                     List<int?> listOfBookAuthors = book.ListOfBookAuthors.Select(x => x.Id).ToList();
                     List<int?> listOfBookCategories = book.ListOfBookCategories.Select(x => x.Id).ToList();
-                    List<int?> listOfBookImages = book.ListOfBookImages.Select(x => x.Id).ToList();
+                    List<ImagesForView?> listOfBookImages = book.ListOfBookImages.ToList();
 
-                    await UpdateAuthorAndCategoryLists(newBook, listOfBookAuthors, listOfBookCategories, listOfBookImages, _context);
+                    await UpdateAuthorCategoryImageLists(newBook, listOfBookAuthors, listOfBookCategories, listOfBookImages, _context);
 
                     transaction.Commit();
                     return new OkResult();
@@ -50,9 +52,9 @@ namespace BookStoreAPI.Models.BusinessLogic
 
                     List<int?> authorIds = updatedEntity.ListOfBookAuthors.Select(x => x.Id).ToList();
                     List<int?> categoryIds = updatedEntity.ListOfBookCategories.Select(x => x.Id).ToList();
-                    List<int?> imageIds = updatedEntity.ListOfBookImages.Select(x => x.Id).ToList();
+                    List<ImagesForView> images = updatedEntity.ListOfBookImages.ToList();
 
-                    await UpdateAuthorAndCategoryLists(oldEntity, authorIds, categoryIds, imageIds, _context);
+                    await UpdateAuthorCategoryImageLists(oldEntity, authorIds, categoryIds, images, _context);
 
                     transaction.Commit();
                     return new OkResult();
@@ -85,7 +87,7 @@ namespace BookStoreAPI.Models.BusinessLogic
             }
         }
 
-        private static async Task UpdateAuthorAndCategoryLists(Book book, List<int?> authorIds, List<int?> categoryIds, List<int?> imageIds, BookStoreContext _context)
+        private static async Task UpdateAuthorCategoryImageLists(Book book, List<int?> authorIds, List<int?> categoryIds, List<ImagesForView?> images, BookStoreContext _context)
         {
             var existingAuthorIds = await _context.BookAuthor
                 .Where(x => x.BookID == book.Id)
@@ -102,6 +104,8 @@ namespace BookStoreAPI.Models.BusinessLogic
                 .Select(x => x.CategoryID)
                 .ToListAsync();
 
+            var imageIds = images.Select(x => (int?)x.Id).ToList();
+
             var authorsToDeactivate = existingAuthorIds.Except(authorIds).ToList();
             var authorsToAdd = authorIds.Except(existingAuthorIds).ToList();
 
@@ -109,10 +113,10 @@ namespace BookStoreAPI.Models.BusinessLogic
             var categoriesToAdd = categoryIds.Except(existingCategoryIds).ToList();
 
             var imagesToDeactivate = existingImageIds.Except(imageIds).ToList();
-            var imagesToAdd = imageIds.Except(existingImageIds).ToList();
+            var imagesToAdd = images.Where(x => !existingImageIds.Contains((int?)x.Id)).ToList();
 
             await DeactivateAuthorsCategoriesImages(book, authorsToDeactivate, categoriesToDeactivate, imageIds, _context);
-            await AddNewAuthorsCategoriesImages(book, authorsToAdd, categoriesToAdd, imageIds, _context);
+            await AddNewAuthorsCategoriesImages(book, authorsToAdd, categoriesToAdd, imagesToAdd, _context);
         }
 
         private static async Task DeactivateAuthorsCategoriesImages(Book book, List<int?> authors, List<int?> categories, List<int?> images, BookStoreContext _context)
@@ -151,7 +155,7 @@ namespace BookStoreAPI.Models.BusinessLogic
             }
         }
 
-        private static async Task AddNewAuthorsCategoriesImages(Book book, List<int?> authors, List<int?> categories, List<int?> images, BookStoreContext _context)
+        private static async Task AddNewAuthorsCategoriesImages(Book book, List<int?> authors, List<int?> categories, List<ImagesForView> images, BookStoreContext _context)
         {
             foreach (var authorId in authors)
             {
@@ -173,6 +177,27 @@ namespace BookStoreAPI.Models.BusinessLogic
                 };
 
                 _context.BookCategory.Add(bookCategory);
+            }
+
+            if (images?.Count > 0)
+            {
+                foreach (var image in images)
+                {
+                    Images newImage = new Images
+                    {
+                        Title = image.Title,
+                        ImageURL = image.ImageURL,
+                    };
+
+                    _context.Images.Add(newImage);
+                    _context.SaveChanges();
+
+                    BookImages bookImage = new BookImages
+                    {
+                        ImageID = newImage.Id,
+                        BookID = book.Id
+                    };
+                }
             }
         }
 

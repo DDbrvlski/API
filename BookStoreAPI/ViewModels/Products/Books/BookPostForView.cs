@@ -2,6 +2,7 @@
 using BookStoreAPI.ViewModels.Helpers;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using BookStoreAPI.ViewModels.Products.Books.Dictionaries;
 
 namespace BookStoreAPI.ViewModels.Products.Books
 {
@@ -23,6 +24,6 @@ namespace BookStoreAPI.ViewModels.Products.Books
 
         public List<ListOfIds>? ListOfBookAuthors { get; set; }
         public List<ListOfIds>? ListOfBookCategories { get; set; }
-        public List<ListOfIds>? ListOfBookImages { get; set; }
+        public List<ImagesForView>? ListOfBookImages { get; set; }
     }
 }
