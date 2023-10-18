@@ -115,7 +115,7 @@ namespace BookStoreAPI.Helpers.BaseBookController
                                 Name = y.Author.Name,
                                 Surname = y.Author.Surname,
                             }).ToList(),
-                Images = x.BookImages
+                Images = element.BookImages
                             .Where(y => y.IsActive == true)
                             .Select(y => new ImagesForView
                             {

@@ -181,6 +181,7 @@ namespace BookStoreAPI.Models.BusinessLogic
 
             if (images?.Count > 0)
             {
+                List<Images> imagesList = new List<Images>();
                 foreach (var image in images)
                 {
                     Images newImage = new Images
@@ -190,14 +191,19 @@ namespace BookStoreAPI.Models.BusinessLogic
                     };
 
                     _context.Images.Add(newImage);
-                    _context.SaveChanges();
-
+                    imagesList.Add(newImage);
+                }
+                _context.SaveChanges();
+                foreach (var image in imagesList)
+                {
                     BookImages bookImage = new BookImages
                     {
-                        ImageID = newImage.Id,
+                        ImageID = image.Id,
                         BookID = book.Id
                     };
+                    _context.BookImages.Add(bookImage);
                 }
+                _context.SaveChanges();
             }
         }
 
