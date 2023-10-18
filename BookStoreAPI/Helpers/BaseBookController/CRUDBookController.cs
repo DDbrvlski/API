@@ -11,7 +11,7 @@ namespace BookStoreAPI.Helpers.BaseBookController
         {
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEntity(int id)
         {
             return await DeleteEntityAsync(id);
@@ -23,7 +23,7 @@ namespace BookStoreAPI.Helpers.BaseBookController
             return await GetAllEntitiesAsync();
         }
 
-        [HttpGet("Id")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<BookDetailsForView>> GetEntity(int id)
         {
             return await GetCustomEntityByIdAsync(id);
@@ -35,7 +35,7 @@ namespace BookStoreAPI.Helpers.BaseBookController
             return await CreateEntityAsync(entity);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutEntity(int id, [FromBody] BookPostForView entity)
         {
             return await UpdateEntityAsync(id, entity);
