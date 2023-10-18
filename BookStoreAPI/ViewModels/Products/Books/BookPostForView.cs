@@ -23,5 +23,6 @@ namespace BookStoreAPI.ViewModels.Products.Books
 
         public List<ListOfIds>? ListOfBookAuthors { get; set; }
         public List<ListOfIds>? ListOfBookCategories { get; set; }
+        public List<ListOfIds>? ListOfBookImages { get; set; }
     }
 }

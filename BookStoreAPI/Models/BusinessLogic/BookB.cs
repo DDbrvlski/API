@@ -25,8 +25,9 @@ namespace BookStoreAPI.Models.BusinessLogic
 
                     List<int?> listOfBookAuthors = book.ListOfBookAuthors.Select(x => x.Id).ToList();
                     List<int?> listOfBookCategories = book.ListOfBookCategories.Select(x => x.Id).ToList();
+                    List<int?> listOfBookImages = book.ListOfBookImages.Select(x => x.Id).ToList();
 
-                    await UpdateAuthorAndCategoryLists(newBook, listOfBookAuthors, listOfBookCategories, _context);
+                    await UpdateAuthorAndCategoryLists(newBook, listOfBookAuthors, listOfBookCategories, listOfBookImages, _context);
 
                     transaction.Commit();
                     return new OkResult();
@@ -49,8 +50,9 @@ namespace BookStoreAPI.Models.BusinessLogic
 
                     List<int?> authorIds = updatedEntity.ListOfBookAuthors.Select(x => x.Id).ToList();
                     List<int?> categoryIds = updatedEntity.ListOfBookCategories.Select(x => x.Id).ToList();
+                    List<int?> imageIds = updatedEntity.ListOfBookImages.Select(x => x.Id).ToList();
 
-                    await UpdateAuthorAndCategoryLists(oldEntity, authorIds, categoryIds, _context);
+                    await UpdateAuthorAndCategoryLists(oldEntity, authorIds, categoryIds, imageIds, _context);
 
                     transaction.Commit();
                     return new OkResult();
@@ -70,7 +72,7 @@ namespace BookStoreAPI.Models.BusinessLogic
                 {
                     book.IsActive = false;
 
-                    await DeactivateBookAuthorsAndCategories(book, _context);
+                    await DeactivateBookAuthorsCategoriesImages(book, _context);
 
                     transaction.Commit();
                     return new OkResult();
@@ -83,7 +85,7 @@ namespace BookStoreAPI.Models.BusinessLogic
             }
         }
 
-        private static async Task UpdateAuthorAndCategoryLists(Book book, List<int?> authorIds, List<int?> categoryIds, BookStoreContext _context)
+        private static async Task UpdateAuthorAndCategoryLists(Book book, List<int?> authorIds, List<int?> categoryIds, List<int?> imageIds, BookStoreContext _context)
         {
             var existingAuthorIds = await _context.BookAuthor
                 .Where(x => x.BookID == book.Id)
@@ -95,17 +97,25 @@ namespace BookStoreAPI.Models.BusinessLogic
                 .Select(x => x.CategoryID)
                 .ToListAsync();
 
+            var existingImageIds = await _context.BookCategory
+                .Where(x => x.BookID == book.Id)
+                .Select(x => x.CategoryID)
+                .ToListAsync();
+
             var authorsToDeactivate = existingAuthorIds.Except(authorIds).ToList();
             var authorsToAdd = authorIds.Except(existingAuthorIds).ToList();
 
             var categoriesToDeactivate = existingCategoryIds.Except(categoryIds).ToList();
             var categoriesToAdd = categoryIds.Except(existingCategoryIds).ToList();
 
-            await DeactivateAuthorsAndCategories(book, authorsToDeactivate, categoriesToDeactivate, _context);
-            await AddNewAuthorsAndCategories(book, authorsToAdd, categoriesToAdd, _context);
+            var imagesToDeactivate = existingImageIds.Except(imageIds).ToList();
+            var imagesToAdd = imageIds.Except(existingImageIds).ToList();
+
+            await DeactivateAuthorsCategoriesImages(book, authorsToDeactivate, categoriesToDeactivate, imageIds, _context);
+            await AddNewAuthorsCategoriesImages(book, authorsToAdd, categoriesToAdd, imageIds, _context);
         }
 
-        private static async Task DeactivateAuthorsAndCategories(Book book, List<int?> authors, List<int?> categories, BookStoreContext _context)
+        private static async Task DeactivateAuthorsCategoriesImages(Book book, List<int?> authors, List<int?> categories, List<int?> images, BookStoreContext _context)
         {
             foreach (var authorId in authors)
             {
@@ -128,9 +138,20 @@ namespace BookStoreAPI.Models.BusinessLogic
                     category.IsActive = false;
                 }
             }
+
+            foreach (var imageId in images)
+            {
+                var image = await _context.BookImages
+                    .FirstOrDefaultAsync(x => x.BookID == book.Id && x.ImageID == imageId);
+
+                if (image != null)
+                {
+                    image.IsActive = false;
+                }
+            }
         }
 
-        private static async Task AddNewAuthorsAndCategories(Book book, List<int?> authors, List<int?> categories, BookStoreContext _context)
+        private static async Task AddNewAuthorsCategoriesImages(Book book, List<int?> authors, List<int?> categories, List<int?> images, BookStoreContext _context)
         {
             foreach (var authorId in authors)
             {
@@ -155,13 +176,17 @@ namespace BookStoreAPI.Models.BusinessLogic
             }
         }
 
-        private static async Task DeactivateBookAuthorsAndCategories(Book book, BookStoreContext _context)
+        private static async Task DeactivateBookAuthorsCategoriesImages(Book book, BookStoreContext _context)
         {
             var authors = await _context.BookAuthor
                 .Where(x => x.BookID == book.Id)
                 .ToListAsync();
 
             var categories = await _context.BookCategory
+                .Where(x => x.BookID == book.Id)
+                .ToListAsync();
+
+            var images = await _context.BookImages
                 .Where(x => x.BookID == book.Id)
                 .ToListAsync();
 
@@ -173,6 +198,11 @@ namespace BookStoreAPI.Models.BusinessLogic
             foreach (var category in categories)
             {
                 category.IsActive = false;
+            }
+
+            foreach (var image in images)
+            {
+                image.IsActive = false;
             }
         }
     }

@@ -4,6 +4,7 @@ namespace BookStoreAPI.Models.Media
 {
     public class Images : BaseEntity
     {
-        public string ImageURL { get; set; }
+        public string? Title { get; set; }
+        public string? ImageURL { get; set; }
     }
 }

@@ -18,5 +18,6 @@ namespace BookStoreAPI.ViewModels.Products.Books
         public string PublisherName { get; set; }
         public List<CategoryForView> Categories { get; set; } = new List<CategoryForView>();
         public List<AuthorsForView> Authors { get; set; } = new List<AuthorsForView>();
+        public List<ImagesForView> Images { get; set; } = new List<ImagesForView>();
     }
 }
