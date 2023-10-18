@@ -26,7 +26,7 @@ namespace BookStoreAPI.Models.Products.Books
 
         [ForeignKey("OriginalLanguageID")]
         [JsonIgnore]
-        public virtual Language OriginalLanguage { get; set; }
+        public virtual Language? OriginalLanguage { get; set; }
 
         //Publisher
         [Required(ErrorMessage = "Wydawca jest wymagany.")]
@@ -35,23 +35,21 @@ namespace BookStoreAPI.Models.Products.Books
 
         [ForeignKey("PublisherID")]
         [JsonIgnore]
-        public virtual Publisher Publisher { get; set; }
+        public virtual Publisher? Publisher { get; set; }
         #endregion
         #region Navigation properties
         [JsonIgnore]
-        public List<BookItem> BookItems { get; set; }
+        public List<BookItem>? BookItems { get; set; }
         [JsonIgnore]
-        public List<BookAuthor> BookAuthors { get; set; }
+        public List<BookAuthor>? BookAuthors { get; set; }
         [JsonIgnore]
-        public List<BookCategory> BookCategories { get; set; }
+        public List<BookCategory>? BookCategories { get; set; }
         [JsonIgnore]
-        public List<BookDiscount> BookDiscounts { get; set; }
+        public List<BookDiscount>? BookDiscounts { get; set; }
         [JsonIgnore]
-        public List<BookImages> BookImages { get; set; }
+        public List<BookImages>? BookImages { get; set; }
         [JsonIgnore]
-        public List<BookReview> BookReviews { get; set; }
+        public List<BookReview>? BookReviews { get; set; }
         #endregion
-        public List<ListOfIds> ListOfBookAuthors { get; set; }
-        public List<ListOfIds> ListOfBookCategories { get; set; }
     }
 }

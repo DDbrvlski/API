@@ -1,5 +1,5 @@
 ﻿using BookStoreAPI.Data;
-using BookStoreAPI.Helpers;
+using BookStoreAPI.Helpers.BaseController;
 using BookStoreAPI.Models.PageContent;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

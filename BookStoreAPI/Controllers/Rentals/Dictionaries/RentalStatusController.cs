@@ -1,5 +1,5 @@
 ﻿using BookStoreAPI.Data;
-using BookStoreAPI.Helpers;
+using BookStoreAPI.Helpers.BaseController;
 using BookStoreAPI.Models.Customers.CustomerDictionaries;
 using BookStoreAPI.Models.Rentals.Dictionaries;
 using Microsoft.AspNetCore.Http;

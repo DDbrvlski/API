@@ -1,5 +1,6 @@
 ﻿using BookStoreAPI.Data;
 using BookStoreAPI.Helpers;
+using BookStoreAPI.Helpers.BaseController;
 using BookStoreAPI.Models.BusinessLogic;
 using BookStoreAPI.Models.PageContent;
 using BookStoreAPI.ViewModels.PageContent;

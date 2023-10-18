@@ -1,5 +1,4 @@
 ﻿using BookStoreAPI.Data;
-using BookStoreAPI.Helpers;
 using BookStoreAPI.Models.Products.BookItems;
 using BookStoreAPI.ViewModels.Products.Books.Dictionaries;
 using BookStoreAPI.ViewModels.Products.Books;
@@ -8,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookStoreAPI.ViewModels.Products.BookItems;
 using System.Xml.Linq;
+using BookStoreAPI.Helpers.BaseController;
+using BookStoreAPI.Helpers;
 
 namespace BookStoreAPI.Controllers.Products.BookItems
 {

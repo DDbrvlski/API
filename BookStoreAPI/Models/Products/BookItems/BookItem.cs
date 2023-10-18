@@ -7,6 +7,7 @@ using BookStoreAPI.Models.Products.BookItems.BookItemDictionaries;
 using Microsoft.Data.SqlClient.Server;
 using BookStoreAPI.Models.Products.Books.BookDictionaries;
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreAPI.Models.Products.BookItems
 {

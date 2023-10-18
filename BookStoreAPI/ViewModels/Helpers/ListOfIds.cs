@@ -2,6 +2,7 @@
 {
     public class ListOfIds
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
+
     }
 }
