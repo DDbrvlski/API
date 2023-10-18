@@ -13,170 +13,166 @@ namespace BookStoreAPI.Models.BusinessLogic
     {
         public static async Task<IActionResult> ConvertBookPostForViewAndSave(BookPostForView book, BookStoreContext _context)
         {
-            Book newBook = new Book();
-            newBook.CopyProperties(book);
-            try
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                _context.Book.Add(newBook);
-                _context.SaveChanges();
                 try
                 {
-                    List<int?> listOfBookAuthors = book.ListOfBookAuthors.Select(x => x.Id).ToList();
-                    await AddNewBookAuthor(newBook, listOfBookAuthors, _context);
+                    Book newBook = new Book();
+                    newBook.CopyProperties(book);
 
-                    List<int?> listOfBookCategories = book.ListOfBookCategories.Select(x => x.Id).ToList();
-                    await AddNewBookCategory(newBook, listOfBookCategories, _context);
-
+                    _context.Book.Add(newBook);
                     _context.SaveChanges();
+
+                    List<int?> listOfBookAuthors = book.ListOfBookAuthors.Select(x => x.Id).ToList();
+                    List<int?> listOfBookCategories = book.ListOfBookCategories.Select(x => x.Id).ToList();
+
+                    await UpdateAuthorAndCategoryLists(newBook, listOfBookAuthors, listOfBookCategories, _context);
+
+                    transaction.Commit();
+                    return new OkResult();
                 }
                 catch (Exception ex)
                 {
+                    transaction.Rollback();
                     return new BadRequestObjectResult(ex.Message);
                 }
-                return new OkResult();
-            }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex.Message);
             }
         }
 
         public static async Task<IActionResult> ConvertBookPostForViewAndUpdate(Book oldEntity, BookPostForView updatedEntity, BookStoreContext _context)
         {
-            try
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                oldEntity.CopyProperties(updatedEntity);
-
-                List<int?> existingAuthorIds = new List<int?>();
-                List<int?> existingCategoryIds = new List<int?>();
-
-                var authorIds = updatedEntity.ListOfBookAuthors.Select(x => x.Id).ToList();
-                if (authorIds?.Count() > 0)
-                {
-                    existingAuthorIds = await _context.BookAuthor.Where(x => x.BookID == oldEntity.Id).Select(x => x.AuthorID).ToListAsync();
-                }
-                
-                var categoryIds = updatedEntity.ListOfBookCategories.Select(x => x.Id).ToList();
-                if (categoryIds?.Count() > 0)
-                {
-                    existingCategoryIds = await _context.BookCategory.Where(x => x.BookID == oldEntity.Id).Select(x => x.CategoryID).ToListAsync();
-                }
-
                 try
                 {
-                    if (existingAuthorIds?.Count() > 0)
-                    {
-                        var bookAuthorsToDeactive = existingAuthorIds.Where(x => !authorIds.Contains(x)).ToList();
-                        var bookAuthorsToAdd = authorIds.Where(x => !existingAuthorIds.Contains(x.Value)).ToList();
-                        if (bookAuthorsToDeactive?.Count > 0)
-                        {
-                            await DeactivateBookAuthor(oldEntity, bookAuthorsToDeactive, _context);
-                        }
-                        if (bookAuthorsToAdd?.Count > 0)
-                        {
-                            await AddNewBookAuthor(oldEntity, bookAuthorsToAdd, _context);
-                        }
-                    }
+                    oldEntity.CopyProperties(updatedEntity);
 
-                    if (existingCategoryIds?.Count() > 0)
-                    {
-                        var bookCategoriesToDeactive = existingCategoryIds.Where(x => !categoryIds.Contains(x)).ToList();
-                        var bookCategoriesToAdd = categoryIds.Where(x => !existingCategoryIds.Contains(x.Value)).ToList();
-                        if (bookCategoriesToDeactive?.Count > 0)
-                        {
-                            await DeactivateBookCategory(oldEntity, bookCategoriesToDeactive, _context);
-                        }
-                        if (bookCategoriesToAdd?.Count > 0)
-                        {
-                            await AddNewBookCategory(oldEntity, bookCategoriesToAdd, _context);
-                        }
-                    }
+                    List<int?> authorIds = updatedEntity.ListOfBookAuthors.Select(x => x.Id).ToList();
+                    List<int?> categoryIds = updatedEntity.ListOfBookCategories.Select(x => x.Id).ToList();
 
-                    _context.SaveChanges();
+                    await UpdateAuthorAndCategoryLists(oldEntity, authorIds, categoryIds, _context);
+
+                    transaction.Commit();
+                    return new OkResult();
                 }
                 catch (Exception ex)
                 {
+                    transaction.Rollback();
                     return new BadRequestObjectResult(ex.Message);
                 }
-                return new OkResult();
-            }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex.Message);
             }
         }
         public static async Task<IActionResult> DeactivateBook(Book book, BookStoreContext _context)
         {
-            try
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                book.IsActive = false;
-                var listOfBookAuthorsToDeactive = _context.BookAuthor.Where(x => x.BookID == book.Id).ToList();
-                var listOfBookCategoriesToDeactive = _context.BookCategory.Where(x => x.BookID == book.Id).ToList();
-                if (listOfBookAuthorsToDeactive?.Count > 0)
+                try
                 {
-                    foreach (var item in listOfBookAuthorsToDeactive)
-                    {
-                        item.IsActive = false;
-                    }
+                    book.IsActive = false;
+
+                    await DeactivateBookAuthorsAndCategories(book, _context);
+
+                    transaction.Commit();
+                    return new OkResult();
                 }
-                if (listOfBookCategoriesToDeactive?.Count > 0)
+                catch (Exception ex)
                 {
-                    foreach (var item in listOfBookCategoriesToDeactive)
-                    {
-                        item.IsActive = false;
-                    }
+                    transaction.Rollback();
+                    return new BadRequestObjectResult(ex.Message);
                 }
-                return new OkResult();
-            }
-            catch(Exception ex)
-            {
-                return new BadRequestObjectResult(ex.Message);
             }
         }
 
-        private static async Task AddNewBookAuthor(Book book, List<int?> listOfBookAuthors, BookStoreContext _context)
+        private static async Task UpdateAuthorAndCategoryLists(Book book, List<int?> authorIds, List<int?> categoryIds, BookStoreContext _context)
         {
-            foreach (var item in listOfBookAuthors)
+            var existingAuthorIds = await _context.BookAuthor
+                .Where(x => x.BookID == book.Id)
+                .Select(x => x.AuthorID)
+                .ToListAsync();
+
+            var existingCategoryIds = await _context.BookCategory
+                .Where(x => x.BookID == book.Id)
+                .Select(x => x.CategoryID)
+                .ToListAsync();
+
+            var authorsToDeactivate = existingAuthorIds.Except(authorIds).ToList();
+            var authorsToAdd = authorIds.Except(existingAuthorIds).ToList();
+
+            var categoriesToDeactivate = existingCategoryIds.Except(categoryIds).ToList();
+            var categoriesToAdd = categoryIds.Except(existingCategoryIds).ToList();
+
+            await DeactivateAuthorsAndCategories(book, authorsToDeactivate, categoriesToDeactivate, _context);
+            await AddNewAuthorsAndCategories(book, authorsToAdd, categoriesToAdd, _context);
+        }
+
+        private static async Task DeactivateAuthorsAndCategories(Book book, List<int?> authors, List<int?> categories, BookStoreContext _context)
+        {
+            foreach (var authorId in authors)
             {
-                BookAuthor bookAuthor = new BookAuthor();
-                bookAuthor.AuthorID = item;
-                bookAuthor.BookID = book.Id;
+                var author = await _context.BookAuthor
+                    .FirstOrDefaultAsync(x => x.BookID == book.Id && x.AuthorID == authorId);
+
+                if (author != null)
+                {
+                    author.IsActive = false;
+                }
+            }
+
+            foreach (var categoryId in categories)
+            {
+                var category = await _context.BookCategory
+                    .FirstOrDefaultAsync(x => x.BookID == book.Id && x.CategoryID == categoryId);
+
+                if (category != null)
+                {
+                    category.IsActive = false;
+                }
+            }
+        }
+
+        private static async Task AddNewAuthorsAndCategories(Book book, List<int?> authors, List<int?> categories, BookStoreContext _context)
+        {
+            foreach (var authorId in authors)
+            {
+                BookAuthor bookAuthor = new BookAuthor
+                {
+                    AuthorID = authorId,
+                    BookID = book.Id
+                };
+
                 _context.BookAuthor.Add(bookAuthor);
             }
-        }
 
-        private static async Task AddNewBookCategory(Book book, List<int?> listOfBookCategories, BookStoreContext _context)
-        {
-            foreach (var item in listOfBookCategories)
+            foreach (var categoryId in categories)
             {
-                BookCategory bookCategory = new BookCategory();
-                bookCategory.CategoryID = item;
-                bookCategory.BookID = book.Id;
+                BookCategory bookCategory = new BookCategory
+                {
+                    CategoryID = categoryId,
+                    BookID = book.Id
+                };
+
                 _context.BookCategory.Add(bookCategory);
             }
         }
 
-        private static async Task DeactivateBookAuthor(Book book, List<int?> listOfBookAuthorsToDeactive, BookStoreContext _context)
+        private static async Task DeactivateBookAuthorsAndCategories(Book book, BookStoreContext _context)
         {
-            foreach (var item in listOfBookAuthorsToDeactive)
-            {
-                var bookAuthor = _context.BookAuthor.Where(x => x.BookID == book.Id && x.AuthorID == item).First();
-                if (bookAuthor != null)
-                {
-                    bookAuthor.IsActive = false;
-                }
-            }
-        }
+            var authors = await _context.BookAuthor
+                .Where(x => x.BookID == book.Id)
+                .ToListAsync();
 
-        private static async Task DeactivateBookCategory(Book book, List<int?> listOfBookCategoriesToDeactive, BookStoreContext _context)
-        {
-            foreach (var item in listOfBookCategoriesToDeactive)
+            var categories = await _context.BookCategory
+                .Where(x => x.BookID == book.Id)
+                .ToListAsync();
+
+            foreach (var author in authors)
             {
-                var bookCategory = _context.BookCategory.Where(x => x.BookID == book.Id && x.CategoryID == item).First();
-                if (bookCategory != null)
-                {
-                    bookCategory.IsActive = false;
-                }
+                author.IsActive = false;
+            }
+
+            foreach (var category in categories)
+            {
+                category.IsActive = false;
             }
         }
     }
