@@ -1,8 +1,9 @@
-﻿using BookStoreAPI.ViewModels.Products.Books.Dictionaries;
+﻿using BookStoreAPI.ViewModels.Helpers;
+using BookStoreAPI.ViewModels.Products.Books.Dictionaries;
 
 namespace BookStoreAPI.ViewModels.Products.BookItems
 {
-    public class BookItemsDetailsForView
+    public class BookItemsDetailsForView : BaseView
     {
         public float VAT { get; set; }
         public decimal NettoPrice { get; set; }
@@ -16,11 +17,6 @@ namespace BookStoreAPI.ViewModels.Products.BookItems
         public string FileFormatName { get; set; }
         public string FormName { get; set; }
         public string AvailabilityName { get; set; }
-        public string BookTitle { get; set; }
-        public string BookDescription { get; set; }
-        public string BookOriginalLanguageName { get; set; }
-        public string BookPublisherName { get; set; }
-        public List<CategoryForView> BookCategories { get; set; } = new List<CategoryForView>();
-        public List<AuthorsForView> BookAuthors { get; set; } = new List<AuthorsForView>();
+        public int BookId { get; set; }
     }
 }

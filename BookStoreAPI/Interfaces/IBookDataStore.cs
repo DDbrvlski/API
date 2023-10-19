@@ -5,10 +5,10 @@ namespace BookStoreAPI.Interfaces
 {
     public interface IBookDataStore
     {
-        Task<ActionResult<IEnumerable<BookDetailsForView>>> GetEntities();
-        Task<ActionResult<BookDetailsForView>> GetEntity(int id);
-        Task<IActionResult> PostEntity(BookPostForView entity);
-        Task<IActionResult> PutEntity(int id, [FromBody] BookPostForView entity);
-        Task<IActionResult> DeleteEntity(int id);
+        Task<ActionResult<IEnumerable<BookForView>>> GetBooks();
+        Task<ActionResult<BookDetailsForView>> GetBook(int id);
+        Task<IActionResult> PostBook(BookPostForView entity);
+        Task<IActionResult> PutBook(int id, [FromBody] BookPostForView entity);
+        Task<IActionResult> DeleteBook(int id);
     }
 }

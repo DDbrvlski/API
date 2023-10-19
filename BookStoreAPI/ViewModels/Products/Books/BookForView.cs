@@ -1,6 +1,12 @@
-﻿namespace BookStoreAPI.ViewModels.Products.Books
+﻿using BookStoreAPI.ViewModels.Helpers;
+using BookStoreAPI.ViewModels.Products.Books.Dictionaries;
+
+namespace BookStoreAPI.ViewModels.Products.Books
 {
-    public class BookForView
+    public class BookForView : BaseView
     {
+        public int Title { get; set; }
+        public string PublisherName { get; set; }
+        public List<AuthorsForView> Authors { get; set; } = new List<AuthorsForView>();
     }
 }

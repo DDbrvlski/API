@@ -14,7 +14,6 @@ namespace BookStoreAPI.ViewModels.Products.Books
         public string Description { get; set; }
 
         public string OriginalLanguageName { get; set; }
-        public string TranslatorName { get; set; }
         public string PublisherName { get; set; }
         public List<CategoryForView> Categories { get; set; } = new List<CategoryForView>();
         public List<AuthorsForView> Authors { get; set; } = new List<AuthorsForView>();

@@ -33,7 +33,7 @@ namespace BookStoreAPI.Helpers.BaseBookController
             return await DeleteEntityCustomAsync(entity);
         }
 
-        protected override async Task<ActionResult<IEnumerable<BookDetailsForView>>> GetAllEntitiesAsync()
+        protected override async Task<ActionResult<IEnumerable<BookForView>>> GetAllEntitiesAsync()
         {
             return await GetAllEntitiesCustomAsync();
         }
@@ -126,7 +126,7 @@ namespace BookStoreAPI.Helpers.BaseBookController
             }.CopyProperties(element);
         }
 
-        protected override async Task<ActionResult<IEnumerable<BookDetailsForView>>> GetAllEntitiesCustomAsync()
+        protected override async Task<ActionResult<IEnumerable<BookForView>>> GetAllEntitiesCustomAsync()
         {
             return await _context.Book
                 .Include(x => x.OriginalLanguage)
@@ -138,18 +138,10 @@ namespace BookStoreAPI.Helpers.BaseBookController
                 .Include(x => x.BookImages)
                     .ThenInclude(x => x.Image)
                 .Where(x => x.IsActive == true)
-                .Select(x => new BookDetailsForView
+                .Select(x => new BookForView
                 {
                     Id = x.Id,
-                    OriginalLanguageName = x.OriginalLanguage.Name,
                     PublisherName = x.Publisher.Name,
-                    Categories = x.BookCategories
-                            .Where(y => y.IsActive == true)
-                            .Select(y => new CategoryForView
-                            {
-                                Id = y.Category.Id,
-                                Name = y.Category.Name,
-                            }).ToList(),
                     Authors = x.BookAuthors
                             .Where(y => y.IsActive == true)
                             .Select(y => new AuthorsForView
@@ -157,15 +149,7 @@ namespace BookStoreAPI.Helpers.BaseBookController
                                 Id = y.Author.Id,
                                 Name = y.Author.Name,
                                 Surname = y.Author.Surname,
-                            }).ToList(),
-                    Images = x.BookImages
-                            .Where(y => y.IsActive == true)
-                            .Select(y => new ImagesForView
-                            {
-                                Id = y.Image.Id,
-                                Title = y.Image.Title,
-                                ImageURL = y.Image.ImageURL,
-                            }).ToList(),
+                            }).ToList()
                 }.CopyProperties(x))
                 .ToListAsync();
         }
