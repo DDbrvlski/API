@@ -3,7 +3,7 @@ using BookStoreAPI.Helpers;
 using BookStoreAPI.Models.PageContent;
 using BookStoreAPI.ViewModels.PageContent;
 
-namespace BookStoreAPI.Models.BusinessLogic
+namespace BookStoreAPI.Models.BusinessLogic.FooterLinksLogic
 {
     public class FooterLinksB
     {

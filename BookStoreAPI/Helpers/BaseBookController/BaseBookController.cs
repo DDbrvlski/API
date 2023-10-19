@@ -1,5 +1,5 @@
 ﻿using BookStoreAPI.Data;
-using BookStoreAPI.Models.BusinessLogic;
+using BookStoreAPI.Models.BusinessLogic.BookLogic;
 using BookStoreAPI.Models.Helpers;
 using BookStoreAPI.Models.Products.Books;
 using BookStoreAPI.ViewModels.Products.Books;
