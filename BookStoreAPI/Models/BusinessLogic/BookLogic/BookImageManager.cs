@@ -11,7 +11,7 @@ namespace BookStoreAPI.Models.BusinessLogic.BookLogic
         public static async Task UpdateImages(Book book, List<ImagesForView?> images, BookStoreContext _context)
         {
             var existingImageIds = await _context.BookImages
-                .Where(x => x.BookID == book.Id)
+                .Where(x => x.BookID == book.Id && x.IsActive == true)
                 .Select(x => x.ImageID)
                 .ToListAsync();
 
@@ -52,7 +52,7 @@ namespace BookStoreAPI.Models.BusinessLogic.BookLogic
         public static async Task DeactivateAllImages(Book book, BookStoreContext _context)
         {
             var images = await _context.BookImages
-                .Where(x => x.BookID == book.Id)
+                .Where(x => x.BookID == book.Id && x.IsActive == true)
                 .ToListAsync();
 
             foreach (var image in images)
@@ -65,7 +65,7 @@ namespace BookStoreAPI.Models.BusinessLogic.BookLogic
         public static async Task DeactivateChosenImages(Book book, List<int?> imageIdsToDeactivate, BookStoreContext _context)
         {
             var bookImagesToDeactivate = await _context.BookImages
-                .Where(x => x.BookID == book.Id && imageIdsToDeactivate.Contains(x.ImageID))
+                .Where(x => x.BookID == book.Id && imageIdsToDeactivate.Contains(x.ImageID) && x.IsActive == true)
                 .ToListAsync();
 
             foreach (var bookImage in bookImagesToDeactivate)
@@ -74,7 +74,7 @@ namespace BookStoreAPI.Models.BusinessLogic.BookLogic
             }
 
             var imagesToDeactivate = await _context.Images
-                .Where(x => imageIdsToDeactivate.Contains(x.Id))
+                .Where(x => imageIdsToDeactivate.Contains(x.Id) && x.IsActive == true)
                 .ToListAsync();
 
             foreach (var image in imagesToDeactivate)

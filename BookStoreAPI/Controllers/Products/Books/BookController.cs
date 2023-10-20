@@ -34,6 +34,7 @@ namespace BookStoreAPI.Controllers.Products.Books
 
             return new BookDetailsForView
             {
+                Id = element.Id,
                 OriginalLanguageName = element.OriginalLanguage.Name,
                 PublisherName = element.Publisher.Name,
                 Categories = element.BookCategories

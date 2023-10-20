@@ -12,7 +12,7 @@ namespace BookStoreAPI.Models.BusinessLogic.DiscountLogic
         public static async Task UpdateDiscounts(Discount discount, List<int?> bookItemIds, BookStoreContext _context)
         {
             var existingBookItemIds = await _context.BookDiscount
-                .Where(x => x.DiscountID == discount.Id)
+                .Where(x => x.DiscountID == discount.Id && x.IsActive == true)
                 .Select(x => x.BookItemID)
                 .ToListAsync();
 
@@ -36,7 +36,7 @@ namespace BookStoreAPI.Models.BusinessLogic.DiscountLogic
         public static async Task DeactivateAllDiscounts(Discount discount, BookStoreContext _context)
         {
             var discounts = await _context.BookDiscount
-                .Where(x => x.DiscountID == discount.Id)
+                .Where(x => x.DiscountID == discount.Id && x.IsActive == true)
                 .ToListAsync();
 
             foreach (var bookDiscount in discounts)
@@ -49,7 +49,7 @@ namespace BookStoreAPI.Models.BusinessLogic.DiscountLogic
         public static async Task DeactivateChosenDiscounts(Discount discount, List<int?> bookItemIdsToDeactivate, BookStoreContext _context)
         {
             var discountsToDeactivate = await _context.BookDiscount
-                .Where(x => x.DiscountID == discount.Id && bookItemIdsToDeactivate.Contains(x.BookItemID))
+                .Where(x => x.DiscountID == discount.Id && bookItemIdsToDeactivate.Contains(x.BookItemID) && x.IsActive == true)
                 .ToListAsync();
 
             foreach (var discountItem in discountsToDeactivate)

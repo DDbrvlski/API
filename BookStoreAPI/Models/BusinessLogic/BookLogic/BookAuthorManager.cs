@@ -9,7 +9,7 @@ namespace BookStoreAPI.Models.BusinessLogic.BookLogic
         public static async Task UpdateAuthors(Book book, List<int?> authorIds, BookStoreContext _context)
         {
             var existingAuthorIds = await _context.BookAuthor
-                .Where(x => x.BookID == book.Id)
+                .Where(x => x.BookID == book.Id && x.IsActive == true)
                 .Select(x => x.AuthorID)
                 .ToListAsync();
 
@@ -35,7 +35,7 @@ namespace BookStoreAPI.Models.BusinessLogic.BookLogic
         public static async Task DeactivateAllAuthors(Book book, BookStoreContext _context)
         {
             var authors = await _context.BookAuthor
-                .Where(x => x.BookID == book.Id)
+                .Where(x => x.BookID == book.Id && x.IsActive == true)
                 .ToListAsync();
 
             foreach (var author in authors)
@@ -49,7 +49,7 @@ namespace BookStoreAPI.Models.BusinessLogic.BookLogic
         public static async Task DeactivateChosenAuthors(Book book, List<int?> authorIdsToDeactivate, BookStoreContext _context)
         {
             var authorsToDeactivate = await _context.BookAuthor
-                .Where(x => x.BookID == book.Id && authorIdsToDeactivate.Contains(x.AuthorID))
+                .Where(x => x.BookID == book.Id && authorIdsToDeactivate.Contains(x.AuthorID) && x.IsActive == true)
                 .ToListAsync();
 
             foreach (var author in authorsToDeactivate)

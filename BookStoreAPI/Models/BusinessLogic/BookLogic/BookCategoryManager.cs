@@ -9,7 +9,7 @@ namespace BookStoreAPI.Models.BusinessLogic.BookLogic
         public static async Task UpdateCategories(Book book, List<int?> categoryIds, BookStoreContext _context)
         {
             var existingCategoryIds = await _context.BookCategory
-                .Where(x => x.BookID == book.Id)
+                .Where(x => x.BookID == book.Id && x.IsActive == true)
                 .Select(x => x.CategoryID)
                 .ToListAsync();
 
@@ -33,7 +33,7 @@ namespace BookStoreAPI.Models.BusinessLogic.BookLogic
         public static async Task DeactivateAllCategories(Book book, BookStoreContext _context)
         {
             var categories = await _context.BookCategory
-                .Where(x => x.BookID == book.Id)
+                .Where(x => x.BookID == book.Id && x.IsActive == true)
                 .ToListAsync();
 
             foreach (var category in categories)
@@ -46,7 +46,7 @@ namespace BookStoreAPI.Models.BusinessLogic.BookLogic
         public static async Task DeactivateChosenCategories(Book book, List<int?> categoryIdsToDeactivate, BookStoreContext _context)
         {
             var categoriesToDeactivate = await _context.BookCategory
-                .Where(x => x.BookID == book.Id && categoryIdsToDeactivate.Contains(x.CategoryID))
+                .Where(x => x.BookID == book.Id && categoryIdsToDeactivate.Contains(x.CategoryID) && x.IsActive == true)
                 .ToListAsync();
 
             foreach (var category in categoriesToDeactivate)
