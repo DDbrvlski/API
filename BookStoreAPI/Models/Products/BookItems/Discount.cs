@@ -8,7 +8,6 @@ namespace BookStoreAPI.Models.Products.BookItems
     {
         public string Title { get; set; }
         public decimal PercentOfDiscount { get; set; }
-        public bool Valid { get; set; }
         public DateTime ExpiryDate { get; set; }
         public DateTime StartingDate { get; set; }
         public string Description { get; set; }

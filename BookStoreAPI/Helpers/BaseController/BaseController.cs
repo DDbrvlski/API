@@ -1,9 +1,12 @@
 ﻿using BookStoreAPI.Data;
 using BookStoreAPI.Interfaces;
 using BookStoreAPI.Models.Helpers;
+using BookStoreAPI.Models.Products.Books;
+using BookStoreAPI.ViewModels.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BookStoreAPI.Helpers.BaseController
 {
@@ -80,7 +83,7 @@ namespace BookStoreAPI.Helpers.BaseController
 
         protected override bool EntityExists(int id)
         {
-            return _context.Set<TEntity>().Find(id) != null;
+            return _context.Set<TEntity>().FirstOrDefault(x => x.Id == id && x.IsActive) != null;
         }
 
         protected override async Task<TEntity?> GetEntityByIdAsync(int id)
@@ -118,6 +121,80 @@ namespace BookStoreAPI.Helpers.BaseController
             }
         }
 
+    }
+
+    public class BaseController<TEntity, TEntityPost, TEntityForView, TEntityDetailsForView> : ABaseController<TEntity, TEntityPost, TEntityForView, TEntityDetailsForView>
+        where TEntity : BaseEntity
+        where TEntityPost : BaseView
+    {
+        protected readonly BookStoreContext _context;
+
+        public BaseController(BookStoreContext context)
+        {
+            _context = context;
+        }
+
+        protected override async Task<IActionResult> CreateEntityAsync(TEntityPost entity)
+        {
+            return await CreateEntityCustomAsync(entity);
+        }
+        protected override async Task<IActionResult> DeleteEntityAsync(int id)
+        {
+            var entity = await GetEntityByIdAsync(id);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            return await DeleteEntityCustomAsync(entity);
+        }
+        protected override bool EntityExists(int id)
+        {
+            return _context.Set<TEntity>().FirstOrDefault(x => x.Id == id && x.IsActive) != null;
+        }
+        protected override async Task<ActionResult<IEnumerable<TEntityForView>>> GetAllEntitiesAsync()
+        {
+            return await GetAllEntitiesCustomAsync();
+        }
+        protected override async Task<IActionResult> UpdateEntityAsync(int id, TEntityPost updatedEntity)
+        {
+            if (id != updatedEntity.Id)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            var entity = await GetEntityByIdAsync(id);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            await UpdateEntityCustomAsync(entity, updatedEntity);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EntityExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok(updatedEntity);
+        }
+        protected override async Task<TEntity?> GetEntityByIdAsync(int id)
+        {
+            return await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id && x.IsActive);
+        }
     }
 }
 

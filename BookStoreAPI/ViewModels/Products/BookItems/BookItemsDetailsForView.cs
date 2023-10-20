@@ -5,8 +5,7 @@ namespace BookStoreAPI.ViewModels.Products.BookItems
 {
     public class BookItemsDetailsForView : BaseView
     {
-        public float VAT { get; set; }
-        public decimal NettoPrice { get; set; }
+        public decimal BruttoPrice { get; set; }
         public string ISBN { get; set; }
         public int Pages { get; set; }
         public DateTime PublishingDate { get; set; }

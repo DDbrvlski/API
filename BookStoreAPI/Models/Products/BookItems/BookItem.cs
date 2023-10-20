@@ -91,5 +91,8 @@ namespace BookStoreAPI.Models.Products.BookItems
         [JsonIgnore]
         public virtual Availability Availability { get; set; }
         #endregion
+
+        [JsonIgnore]
+        public List<BookDiscount>? BookDiscounts { get; set; }
     }
 }

@@ -472,7 +472,6 @@ namespace BookStoreAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImageURL")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -482,7 +481,6 @@ namespace BookStoreAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -763,6 +761,40 @@ namespace BookStoreAPI.Migrations
                     b.ToTable("BookDiscount");
                 });
 
+            modelBuilder.Entity("BookStoreAPI.Models.Products.BookItems.BookDiscountCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BookItemID")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DiscountCodeID")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookItemID");
+
+                    b.HasIndex("DiscountCodeID");
+
+                    b.ToTable("BookDiscountCode");
+                });
+
             modelBuilder.Entity("BookStoreAPI.Models.Products.BookItems.BookItem", b =>
                 {
                     b.Property<int>("Id")
@@ -781,6 +813,12 @@ namespace BookStoreAPI.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("DiscountCodeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DiscountId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("EditionID")
                         .IsRequired()
@@ -830,6 +868,10 @@ namespace BookStoreAPI.Migrations
                     b.HasIndex("AvailabilityID");
 
                     b.HasIndex("BookID");
+
+                    b.HasIndex("DiscountCodeId");
+
+                    b.HasIndex("DiscountId");
 
                     b.HasIndex("EditionID");
 
@@ -981,12 +1023,51 @@ namespace BookStoreAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Valid")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.ToTable("Discount");
+                });
+
+            modelBuilder.Entity("BookStoreAPI.Models.Products.BookItems.DiscountCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PercentOfDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("StartingDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DiscountCode");
                 });
 
             modelBuilder.Entity("BookStoreAPI.Models.Products.BookItems.RecommendedBooks", b =>
@@ -2001,13 +2082,13 @@ namespace BookStoreAPI.Migrations
                         .HasForeignKey("BookId");
 
                     b.HasOne("BookStoreAPI.Models.Products.BookItems.BookItem", "BookItem")
-                        .WithMany()
+                        .WithMany("BookDiscounts")
                         .HasForeignKey("BookItemID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BookStoreAPI.Models.Products.BookItems.Discount", "Discount")
-                        .WithMany()
+                        .WithMany("BookDiscounts")
                         .HasForeignKey("DiscountID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2015,6 +2096,25 @@ namespace BookStoreAPI.Migrations
                     b.Navigation("BookItem");
 
                     b.Navigation("Discount");
+                });
+
+            modelBuilder.Entity("BookStoreAPI.Models.Products.BookItems.BookDiscountCode", b =>
+                {
+                    b.HasOne("BookStoreAPI.Models.Products.BookItems.BookItem", "BookItem")
+                        .WithMany()
+                        .HasForeignKey("BookItemID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookStoreAPI.Models.Products.BookItems.DiscountCode", "DiscountCode")
+                        .WithMany("BookDiscountCodes")
+                        .HasForeignKey("DiscountCodeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BookItem");
+
+                    b.Navigation("DiscountCode");
                 });
 
             modelBuilder.Entity("BookStoreAPI.Models.Products.BookItems.BookItem", b =>
@@ -2030,6 +2130,14 @@ namespace BookStoreAPI.Migrations
                         .HasForeignKey("BookID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("BookStoreAPI.Models.Products.BookItems.DiscountCode", null)
+                        .WithMany("BookItems")
+                        .HasForeignKey("DiscountCodeId");
+
+                    b.HasOne("BookStoreAPI.Models.Products.BookItems.Discount", null)
+                        .WithMany("BookItems")
+                        .HasForeignKey("DiscountId");
 
                     b.HasOne("BookStoreAPI.Models.Products.BookItems.BookItemDictionaries.Edition", "Edition")
                         .WithMany()
@@ -2329,6 +2437,25 @@ namespace BookStoreAPI.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("PaymentMethod");
+                });
+
+            modelBuilder.Entity("BookStoreAPI.Models.Products.BookItems.BookItem", b =>
+                {
+                    b.Navigation("BookDiscounts");
+                });
+
+            modelBuilder.Entity("BookStoreAPI.Models.Products.BookItems.Discount", b =>
+                {
+                    b.Navigation("BookDiscounts");
+
+                    b.Navigation("BookItems");
+                });
+
+            modelBuilder.Entity("BookStoreAPI.Models.Products.BookItems.DiscountCode", b =>
+                {
+                    b.Navigation("BookDiscountCodes");
+
+                    b.Navigation("BookItems");
                 });
 
             modelBuilder.Entity("BookStoreAPI.Models.Products.Books.Book", b =>
