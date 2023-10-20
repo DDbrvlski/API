@@ -5,7 +5,7 @@ namespace BookStoreAPI.ViewModels.Products.Books
 {
     public class BookForView : BaseView
     {
-        public int Title { get; set; }
+        public string Title { get; set; }
         public string PublisherName { get; set; }
         public List<AuthorsForView> Authors { get; set; } = new List<AuthorsForView>();
     }
