@@ -1,4 +1,5 @@
 ﻿using BookStoreAPI.ViewModels.Helpers;
+using BookStoreAPI.ViewModels.Products.BookItems;
 
 namespace BookStoreAPI.ViewModels.Products.DiscountCodes
 {
@@ -6,5 +7,6 @@ namespace BookStoreAPI.ViewModels.Products.DiscountCodes
     {
         public string Code { get; set; }
         public bool IsAvailable { get; set; }
+        public List<BookItemsForView>? ListOfBookItems { get; set; }
     }
 }

@@ -82,13 +82,46 @@ namespace BookStoreAPI.Models.BusinessLogic.BookItemsLogic
             newBook.CopyProperties(bookItemWithData);
 
             _context.BookItem.Add(newBook);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Exception innerException = ex.InnerException;
+
+                if (innerException != null)
+                {
+                    Console.WriteLine($"Wewnętrzny wyjątek: {innerException.Message}");
+                }
+                else
+                {
+                    Console.WriteLine($"Wystąpił błąd podczas zapisywania zmian w bazie danych: {ex.Message}");
+                }
+            }
         }
 
         private static async Task UpdateBookItem(BookItem oldEntity, BookItemsPostForView updatedEntity, BookStoreContext _context)
         {
             oldEntity.CopyProperties(updatedEntity);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Exception innerException = ex.InnerException;
+
+                if (innerException != null)
+                {
+                    Console.WriteLine($"Wewnętrzny wyjątek: {innerException.Message}");
+                }
+                else
+                {
+                    Console.WriteLine($"Wystąpił błąd podczas zapisywania zmian w bazie danych: {ex.Message}");
+                }
+            }
         }
     }
 }

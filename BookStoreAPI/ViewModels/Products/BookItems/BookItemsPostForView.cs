@@ -9,12 +9,12 @@ namespace BookStoreAPI.ViewModels.Products.BookItems
         public string ISBN { get; set; }
         public int Pages { get; set; }
         public DateTime PublishingDate { get; set; }
-        public int TranslatorId { get; set; }
-        public int LanguageId { get; set; }
-        public int EditionId { get; set; }
-        public int FileFormatId { get; set; }
-        public int FormId { get; set; }
-        public int AvailabilityId { get; set; }
-        public int BookId { get; set; }
+        public int? TranslatorID { get; set; }
+        public int? LanguageID { get; set; }
+        public int? EditionID { get; set; }
+        public int? FileFormatID { get; set; }
+        public int? FormID { get; set; }
+        public int? AvailabilityID { get; set; }
+        public int? BookID { get; set; }
     }
 }
