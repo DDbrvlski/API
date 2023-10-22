@@ -10,9 +10,9 @@ namespace BookStoreAPI.Models.Customers
     {
         #region Properties
         public string Street { get; set; }
-        public string StreetNumber { get; set; }
-        public string HouseNumber { get; set; }
-        public string Postcode { get; set; }
+        public string? StreetNumber { get; set; }
+        public string? HouseNumber { get; set; }
+        public string? Postcode { get; set; }
         #endregion
         #region Foreign Keys
         //City

@@ -33,6 +33,7 @@ namespace BookStoreAPI.Controllers.Products.BookItems
 
             return new BookItemsDetailsForView
             {
+                Id = element.Id,
                 TranslatorName = element.Translator.Name + " " + element.Translator.Surname,
                 LanguageName = element.Language.Name,
                 EditionName = element.Edition.Name,
@@ -41,16 +42,19 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 AvailabilityName = element.Availability.Name,
                 BookId = (int)element.BookID,
                 BookName = element.Book.Title,
-                BruttoPrice = element.NettoPrice * (1 + (decimal)(100.0f / element.VAT))
+                BruttoPrice = element.NettoPrice * (1 + (decimal)(element.VAT / 100.0f))
             }.CopyProperties(element);
         }
         protected override async Task<ActionResult<IEnumerable<BookItemsForView>>> GetAllEntitiesCustomAsync()
         {
             return await _context.BookItem
                 .Include(x => x.Book)
+                .Include(x => x.Form)
                 .Where(x => x.IsActive == true)
                 .Select(x => new BookItemsForView
                 {
+                    Id = x.Id,
+                    FormName = x.Form.Name,
                     BookId = (int)x.BookID,
                     BookTitle = x.Book.Title
                 }.CopyProperties(x))

@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using BookStoreAPI.Models.Customers.CustomerDictionaries;
+using BookStoreAPI.Models.Products.Books;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Customers
 {
@@ -24,5 +26,7 @@ namespace BookStoreAPI.Models.Customers
         [ForeignKey("GenderID")]
         public virtual Gender Gender { get; set; }
         #endregion
+        [JsonIgnore]
+        public List<CustomerAddress>? CustomerAddresses { get; set; }
     }
 }
