@@ -93,17 +93,17 @@ namespace BookStoreAPI.Controllers.Products.Books
 
         protected override async Task<IActionResult> CreateEntityCustomAsync(BookPostForView entity)
         {
-            return await BookB.ConvertBookPostForViewAndSave(entity, _context);
+            return await BookB.ConvertEntityPostForViewAndSave(entity, _context);
         }
 
         protected override async Task UpdateEntityCustomAsync(Book oldEntity, BookPostForView updatedEntity)
         {
-            await BookB.ConvertBookPostForViewAndUpdate(oldEntity, updatedEntity, _context);
+            await BookB.ConvertEntityPostForViewAndUpdate(oldEntity, updatedEntity, _context);
         }
 
         protected override async Task<IActionResult> DeleteEntityCustomAsync(Book entity)
         {
-            return await BookB.DeactivateBook(entity, _context);
+            return await BookB.DeactivateEntityAndSave(entity, _context);
         }
     }
 }

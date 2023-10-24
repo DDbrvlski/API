@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Products.BookItems
 {
-    public class DiscountCode : DictionaryTable
+    public class DiscountCode : BaseEntity
     {
         public string Code { get; set; }
         public decimal PercentOfDiscount { get; set; }

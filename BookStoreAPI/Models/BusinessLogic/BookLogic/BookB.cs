@@ -1,5 +1,6 @@
 ﻿using BookStoreAPI.Data;
 using BookStoreAPI.Helpers;
+using BookStoreAPI.Helpers.BaseBusinessLogic;
 using BookStoreAPI.Models.Media;
 using BookStoreAPI.Models.Products.Books;
 using BookStoreAPI.Models.Products.Books.BookDictionaries;
@@ -14,84 +15,22 @@ using System.Security.Principal;
 
 namespace BookStoreAPI.Models.BusinessLogic.BookLogic
 {
-    public static class BookB
+    public class BookB : BaseBusinessLogic<Book, BookPostForView>
     {
-        public static async Task<IActionResult> ConvertBookPostForViewAndSave(BookPostForView bookWithData, BookStoreContext _context)
+        protected override async Task ConvertListsToUpdate(Book entity, BookPostForView entityWithData, BookStoreContext context)
         {
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    Book newBook = new Book();
-                    newBook.CopyProperties(bookWithData);
+            List<int?> authorIds = entityWithData.ListOfBookAuthors.Select(x => x.Id).ToList();
+            List<int?> categoryIds = entityWithData.ListOfBookCategories.Select(x => x.Id).ToList();
+            List<ImagesForView> images = entityWithData.ListOfBookImages.ToList();
 
-                    _context.Book.Add(newBook);
-                    await _context.SaveChangesAsync();
-
-                    await ConvertListsToUpdate(newBook, bookWithData, _context);
-
-                    transaction.Commit();
-                    return new OkResult();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return new BadRequestObjectResult(ex.Message);
-                }
-            }
+            await UpdateAllConnectedEntitiesLists(entity, authorIds, categoryIds, images, context);
         }
 
-        public static async Task<IActionResult> ConvertBookPostForViewAndUpdate(Book oldEntity, BookPostForView updatedEntity, BookStoreContext _context)
+        protected override async Task DeactivateAllConnectedEntities(Book entity, BookStoreContext context)
         {
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    oldEntity.CopyProperties(updatedEntity);
-                    await _context.SaveChangesAsync();
-
-                    await ConvertListsToUpdate(oldEntity, updatedEntity, _context);
-
-                    transaction.Commit();
-                    return new OkResult();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return new BadRequestObjectResult(ex.Message);
-                }
-            }
-        }
-
-        public static async Task<IActionResult> DeactivateBook(Book book, BookStoreContext _context)
-        {
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    book.IsActive = false;
-                    await _context.SaveChangesAsync();
-
-                    await DeactivateAllConnectedEntities(book, _context);
-
-                    transaction.Commit();
-                    return new OkResult();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return new BadRequestObjectResult(ex.Message);
-                }
-            }
-        }
-
-        private static async Task ConvertListsToUpdate(Book bookToUpdate, BookPostForView bookWithData, BookStoreContext _context)
-        {
-            List<int?> authorIds = bookWithData.ListOfBookAuthors.Select(x => x.Id).ToList();
-            List<int?> categoryIds = bookWithData.ListOfBookCategories.Select(x => x.Id).ToList();
-            List<ImagesForView> images = bookWithData.ListOfBookImages.ToList();
-
-            await UpdateAllConnectedEntitiesLists(bookToUpdate, authorIds, categoryIds, images, _context);
+            await BookAuthorManager.DeactivateAllAuthors(entity, context);
+            await BookCategoryManager.DeactivateAllCategories(entity, context);
+            await BookImageManager.DeactivateAllImages(entity, context);
         }
 
         private static async Task UpdateAllConnectedEntitiesLists(Book book, List<int?> authorIds, List<int?> categoryIds, List<ImagesForView?> images, BookStoreContext _context)
@@ -99,13 +38,6 @@ namespace BookStoreAPI.Models.BusinessLogic.BookLogic
             await BookAuthorManager.UpdateAuthors(book, authorIds, _context);
             await BookCategoryManager.UpdateCategories(book, categoryIds, _context);
             await BookImageManager.UpdateImages(book, images, _context);
-        }
-
-        private static async Task DeactivateAllConnectedEntities(Book book, BookStoreContext _context)
-        {
-            await BookAuthorManager.DeactivateAllAuthors(book, _context);
-            await BookCategoryManager.DeactivateAllCategories(book, _context);
-            await BookImageManager.DeactivateAllImages(book, _context);
         }
     }
 }

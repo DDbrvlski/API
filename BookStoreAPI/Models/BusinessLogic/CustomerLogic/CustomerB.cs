@@ -1,88 +1,26 @@
 ﻿using BookStoreAPI.Data;
 using BookStoreAPI.Helpers;
+using BookStoreAPI.Helpers.BaseBusinessLogic;
 using BookStoreAPI.Models.Customers;
 using BookStoreAPI.ViewModels.Customers;
 using BookStoreAPI.ViewModels.Customers.Address;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CustomerStoreAPI.Models.BusinessLogic.CustomerLogic
 {
-    public class CustomerB
+    public class CustomerB : BaseBusinessLogic<Customer, CustomerPostForView>
     {
-        public static async Task<IActionResult> ConvertCustomerPostForViewAndSave(CustomerPostForView customerWithData, BookStoreContext _context)
+        protected override async Task ConvertListsToUpdate(Customer entity, CustomerPostForView entityWithData, BookStoreContext context)
         {
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    Customer newCustomer = new Customer();
-                    newCustomer.CopyProperties(customerWithData);
+            List<AddressPostForView> addresses = entityWithData.ListOfCustomerAdresses.ToList();
 
-                    _context.Customer.Add(newCustomer);
-                    await _context.SaveChangesAsync();
-
-                    await ConvertListsToUpdate(newCustomer, customerWithData, _context);
-
-                    transaction.Commit();
-                    return new OkResult();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return new BadRequestObjectResult(ex.Message);
-                }
-            }
+            await UpdateAllConnectedEntitiesLists(entity, addresses, context);
         }
 
-        public static async Task<IActionResult> ConvertCustomerPostForViewAndUpdate(Customer oldEntity, CustomerPostForView updatedEntity, BookStoreContext _context)
+        protected override async Task DeactivateAllConnectedEntities(Customer entity, BookStoreContext context)
         {
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    oldEntity.CopyProperties(updatedEntity);
-                    await _context.SaveChangesAsync();
-
-                    await ConvertListsToUpdate(oldEntity, updatedEntity, _context);
-
-                    transaction.Commit();
-                    return new OkResult();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return new BadRequestObjectResult(ex.Message);
-                }
-            }
-        }
-
-        public static async Task<IActionResult> DeactivateCustomer(Customer customer, BookStoreContext _context)
-        {
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    customer.IsActive = false;
-                    await _context.SaveChangesAsync();
-
-                    await DeactivateAllConnectedEntities(customer, _context);
-
-                    transaction.Commit();
-                    return new OkResult();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return new BadRequestObjectResult(ex.Message);
-                }
-            }
-        }
-
-        private static async Task ConvertListsToUpdate(Customer customerToUpdate, CustomerPostForView customerWithData, BookStoreContext _context)
-        {
-            List<AddressPostForView> addresses = customerWithData.ListOfCustomerAdresses.ToList();
-
-            await UpdateAllConnectedEntitiesLists(customerToUpdate, addresses, _context);
+            await CustomerAddressManager.DeactivateAllAddresses(entity, context);
         }
 
         private static async Task UpdateAllConnectedEntitiesLists(Customer customer, List<AddressPostForView?> addresses, BookStoreContext _context)
@@ -90,9 +28,5 @@ namespace CustomerStoreAPI.Models.BusinessLogic.CustomerLogic
             await CustomerAddressManager.UpdateAddresses(customer, addresses, _context);
         }
 
-        private static async Task DeactivateAllConnectedEntities(Customer customer, BookStoreContext _context)
-        {
-            await CustomerAddressManager.DeactivateAllAddresses(customer, _context);
-        }
     }
 }

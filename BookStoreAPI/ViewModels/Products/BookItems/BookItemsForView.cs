@@ -7,7 +7,7 @@ namespace BookStoreAPI.ViewModels.Products.BookItems
         public decimal NettoPrice { get; set; }
         public string ISBN { get; set; }
         public string FormName { get; set; }
-        public int BookId { get; set; }
+        public int? BookID { get; set; }
         public string BookTitle { get; set; }
     }
 }

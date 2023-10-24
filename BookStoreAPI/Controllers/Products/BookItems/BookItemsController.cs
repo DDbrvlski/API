@@ -40,7 +40,6 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 FileFormatName = element.FileFormat.Name,
                 FormName = element.Form.Name,
                 AvailabilityName = element.Availability.Name,
-                BookId = (int)element.BookID,
                 BookName = element.Book.Title,
                 BruttoPrice = element.NettoPrice * (1 + (decimal)(element.VAT / 100.0f))
             }.CopyProperties(element);
@@ -55,22 +54,21 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 {
                     Id = x.Id,
                     FormName = x.Form.Name,
-                    BookId = (int)x.BookID,
                     BookTitle = x.Book.Title
                 }.CopyProperties(x))
                 .ToListAsync();
         }
         protected override async Task<IActionResult> CreateEntityCustomAsync(BookItemsPostForView entity)
         {
-            return await BookItemB.ConvertBookItemPostForViewAndSave(entity, _context);
+            return await BookItemB.ConvertEntityPostForViewAndSave(entity, _context);
         }
         protected override async Task UpdateEntityCustomAsync(BookItem oldEntity, BookItemsPostForView updatedEntity)
         {
-            await BookItemB.ConvertBookItemPostForViewAndUpdate(oldEntity, updatedEntity, _context);
+            await BookItemB.ConvertEntityPostForViewAndUpdate(oldEntity, updatedEntity, _context);
         }
         protected override async Task<IActionResult> DeleteEntityCustomAsync(BookItem entity)
         {
-            return await BookItemB.DeactivateBookItem(entity, _context);
+            return await BookItemB.DeactivateEntityAndSave(entity, _context);
         }
     }
 }

@@ -31,13 +31,18 @@ namespace BookStoreAPI.Controllers.Products.BookItems
 
             return new DiscountCodeDetailsForView
             {
+                Id = element.Id,
                 IsAvailable = DateTime.Today >= element.StartingDate && DateTime.Today <= element.ExpiryDate,
                 ListOfBookItems = element.BookDiscountCodes
                 .Where(x => x.IsActive == true)
                 .Select(x => new BookItemsForView
                 {
-                    BookId = x.BookItem.Book.Id,
-                    BookTitle = x.BookItem.Book.Title
+                    Id = x.Id,
+                    BookID = x.BookItem.BookID,
+                    BookTitle = x.BookItem.Book.Title,
+                    ISBN = x.BookItem.ISBN,
+                    FormName = x.BookItem.Form.Name,
+                    NettoPrice = x.BookItem.NettoPrice
                 }.CopyProperties(x)).ToList()
             }.CopyProperties(element);
         }
@@ -50,21 +55,22 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 .Where(x => x.IsActive == true)
                 .Select(x => new DiscountCodeForView
                 {
+                    Id = x.Id,
                     IsAvailable = DateTime.Today >= x.StartingDate && DateTime.Today <= x.ExpiryDate,
                 }.CopyProperties(x))
                 .ToListAsync();
         }
         protected override async Task<IActionResult> CreateEntityCustomAsync(DiscountCodePostForView entity)
         {
-            return await DiscountCodeB.ConvertDiscountCodePostForViewAndSave(entity, _context);
+            return await DiscountCodeB.ConvertEntityPostForViewAndSave(entity, _context);
         }
         protected override async Task UpdateEntityCustomAsync(DiscountCode oldEntity, DiscountCodePostForView updatedEntity)
         {
-            await DiscountCodeB.ConvertDiscountCodePostForViewAndUpdate(oldEntity, updatedEntity, _context);
+            await DiscountCodeB.ConvertEntityPostForViewAndUpdate(oldEntity, updatedEntity, _context);
         }
         protected override async Task<IActionResult> DeleteEntityCustomAsync(DiscountCode entity)
         {
-            return await DiscountCodeB.DeactivateDiscountCode(entity, _context);
+            return await DiscountCodeB.DeactivateEntityAndSave(entity, _context);
         }
     }
 }

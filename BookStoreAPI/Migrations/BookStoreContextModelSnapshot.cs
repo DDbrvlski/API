@@ -204,7 +204,6 @@ namespace BookStoreAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("HouseNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -214,7 +213,6 @@ namespace BookStoreAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Postcode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
@@ -222,7 +220,6 @@ namespace BookStoreAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StreetNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -1010,9 +1007,6 @@ namespace BookStoreAPI.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("PercentOfDiscount")
                         .HasColumnType("decimal(18,2)");
 
@@ -1055,9 +1049,6 @@ namespace BookStoreAPI.Migrations
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PercentOfDiscount")
                         .HasColumnType("decimal(18,2)");
@@ -1997,7 +1988,7 @@ namespace BookStoreAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("BookStoreAPI.Models.Customers.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("CustomerAddresses")
                         .HasForeignKey("CustomerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2437,6 +2428,11 @@ namespace BookStoreAPI.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("PaymentMethod");
+                });
+
+            modelBuilder.Entity("BookStoreAPI.Models.Customers.Customer", b =>
+                {
+                    b.Navigation("CustomerAddresses");
                 });
 
             modelBuilder.Entity("BookStoreAPI.Models.Products.BookItems.BookItem", b =>

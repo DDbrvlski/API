@@ -46,6 +46,19 @@ namespace BookStoreAPI.Models.BusinessLogic.DiscountLogic
 
             await _context.SaveChangesAsync();
         }
+        public static async Task DeactivateAllDiscounts(BookItem bookItem, BookStoreContext _context)
+        {
+            var discounts = await _context.BookDiscount
+                .Where(x => x.BookItemID == bookItem.Id && x.IsActive == true)
+                .ToListAsync();
+
+            foreach (var bookDiscount in discounts)
+            {
+                bookDiscount.IsActive = false;
+            }
+
+            await _context.SaveChangesAsync();
+        }
         public static async Task DeactivateChosenDiscounts(Discount discount, List<int?> bookItemIdsToDeactivate, BookStoreContext _context)
         {
             var discountsToDeactivate = await _context.BookDiscount
