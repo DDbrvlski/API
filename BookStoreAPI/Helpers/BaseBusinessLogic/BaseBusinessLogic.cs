@@ -85,10 +85,9 @@ namespace BookStoreAPI.Helpers.BaseBusinessLogic
         {
             TEntity newEntity = Activator.CreateInstance<TEntity>();
             newEntity.CopyProperties(entityWithData);
+            context.Set<TEntity>().Add(newEntity);
 
             await ConvertListsToUpdate(newEntity, entityWithData, context);
-
-            context.Set<TEntity>().Add(newEntity);
         }
 
         protected virtual async Task UpdateEntityAsync(TEntity oldEntity, TEntityPost updatedEntity, BookStoreContext context)

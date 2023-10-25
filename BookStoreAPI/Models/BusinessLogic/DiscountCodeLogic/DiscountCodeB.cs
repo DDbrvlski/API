@@ -13,6 +13,8 @@ namespace BookStoreAPI.Models.BusinessLogic.DiscountCodeCodeLogic
     {
         protected override async Task ConvertListsToUpdate(DiscountCode entity, DiscountCodePostForView entityWithData, BookStoreContext context)
         {
+            entity.StartingDate = entity.StartingDate.Date;
+            entity.ExpiryDate = entity.ExpiryDate.Date;
             List<int?> bookItemsIds = entityWithData.ListOfBookItems.Select(x => x.Id).ToList();
             await UpdateAllConnectedEntitiesLists(entity, bookItemsIds, context);
         }

@@ -32,7 +32,7 @@ namespace BookStoreAPI.Controllers.Products.BookItems
             return new DiscountCodeDetailsForView
             {
                 Id = element.Id,
-                IsAvailable = DateTime.Today >= element.StartingDate && DateTime.Today <= element.ExpiryDate,
+                IsAvailable = DateTime.Today >= element.StartingDate && DateTime.Today <= element.ExpiryDate.AddDays(1),
                 ListOfBookItems = element.BookDiscountCodes
                 .Where(x => x.IsActive == true)
                 .Select(x => new BookItemsForView
@@ -56,7 +56,7 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 .Select(x => new DiscountCodeForView
                 {
                     Id = x.Id,
-                    IsAvailable = DateTime.Today >= x.StartingDate && DateTime.Today <= x.ExpiryDate,
+                    IsAvailable = DateTime.Today >= x.StartingDate && DateTime.Today <= x.ExpiryDate.AddDays(1),
                 }.CopyProperties(x))
                 .ToListAsync();
         }
