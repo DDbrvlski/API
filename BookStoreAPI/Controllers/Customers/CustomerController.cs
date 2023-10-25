@@ -68,15 +68,15 @@ namespace BookStoreAPI.Controllers.Customers
         }
         protected override async Task<IActionResult> CreateEntityCustomAsync(CustomerPostForView entity)
         {
-            return await CustomerB.ConvertEntityPostForViewAndSave(entity, _context);
+            return await CustomerB.ConvertEntityPostForViewAndSave<CustomerB>(entity, _context);
         }
         protected override async Task UpdateEntityCustomAsync(Customer oldEntity, CustomerPostForView updatedEntity)
         {
-            await CustomerB.ConvertEntityPostForViewAndUpdate(oldEntity, updatedEntity, _context);
+            await CustomerB.ConvertEntityPostForViewAndUpdate<CustomerB>(oldEntity, updatedEntity, _context);
         }
         protected override async Task<IActionResult> DeleteEntityCustomAsync(Customer entity)
         {
-            return await CustomerB.DeactivateEntityAndSave(entity, _context);
+            return await CustomerB.DeactivateEntityAndSave<CustomerB>(entity, _context);
         }
     }
 }

@@ -2,6 +2,7 @@
 using BookStoreAPI.Helpers;
 using BookStoreAPI.Helpers.BaseController;
 using BookStoreAPI.Models.BusinessLogic.BookItemsLogic;
+using BookStoreAPI.Models.BusinessLogic.BookLogic;
 using BookStoreAPI.Models.Products.BookItems;
 using BookStoreAPI.ViewModels.Products.BookItems;
 using Microsoft.AspNetCore.Mvc;
@@ -60,15 +61,15 @@ namespace BookStoreAPI.Controllers.Products.BookItems
         }
         protected override async Task<IActionResult> CreateEntityCustomAsync(BookItemsPostForView entity)
         {
-            return await BookItemB.ConvertEntityPostForViewAndSave(entity, _context);
+            return await BookItemB.ConvertEntityPostForViewAndSave<BookItemB>(entity, _context);
         }
         protected override async Task UpdateEntityCustomAsync(BookItem oldEntity, BookItemsPostForView updatedEntity)
         {
-            await BookItemB.ConvertEntityPostForViewAndUpdate(oldEntity, updatedEntity, _context);
+            await BookItemB.ConvertEntityPostForViewAndUpdate<BookItemB>(oldEntity, updatedEntity, _context);
         }
         protected override async Task<IActionResult> DeleteEntityCustomAsync(BookItem entity)
         {
-            return await BookItemB.DeactivateEntityAndSave(entity, _context);
+            return await BookItemB.DeactivateEntityAndSave<BookItemB>(entity, _context);
         }
     }
 }

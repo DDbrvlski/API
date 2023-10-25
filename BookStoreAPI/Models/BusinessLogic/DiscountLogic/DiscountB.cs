@@ -1,6 +1,7 @@
 ﻿using BookStoreAPI.Data;
 using BookStoreAPI.Helpers;
 using BookStoreAPI.Helpers.BaseBusinessLogic;
+using BookStoreAPI.Interfaces;
 using BookStoreAPI.Models.BusinessLogic.BookLogic;
 using BookStoreAPI.Models.Media;
 using BookStoreAPI.Models.Products.BookItems;
@@ -28,6 +29,5 @@ namespace BookStoreAPI.Models.BusinessLogic.DiscountLogic
         {
             await BookDiscountManager.UpdateDiscounts(discount, bookItemsIds, _context);
         }
-        
     }
 }

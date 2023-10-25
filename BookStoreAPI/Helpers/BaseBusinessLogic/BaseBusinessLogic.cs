@@ -13,31 +13,34 @@ namespace BookStoreAPI.Helpers.BaseBusinessLogic
         where TEntity : BaseEntity
         where TEntityPost : BaseView
     {
-        public static async Task<IActionResult> ConvertEntityPostForViewAndSave(TEntityPost entityWithData, BookStoreContext context)
+        public static async Task<IActionResult> ConvertEntityPostForViewAndSave<TEntityB>(TEntityPost entityWithData, BookStoreContext context)
+            where TEntityB : BaseBusinessLogic<TEntity, TEntityPost>, new()
         {
             return await PerformTransactionAsync(
-                async () => await new BaseBusinessLogic<TEntity, TEntityPost>().AddNewEntityAsync(entityWithData, context),
+                async () => await new TEntityB().AddNewEntityAsync(entityWithData, context),
                 context
             );
         }
 
-        public static async Task<IActionResult> ConvertEntityPostForViewAndUpdate(TEntity oldEntity, TEntityPost updatedEntity, BookStoreContext context)
+        public static async Task<IActionResult> ConvertEntityPostForViewAndUpdate<TEntityB>(TEntity oldEntity, TEntityPost updatedEntity, BookStoreContext context)
+            where TEntityB : BaseBusinessLogic<TEntity, TEntityPost>, new()
         {
             return await PerformTransactionAsync(
-                async () => await new BaseBusinessLogic<TEntity, TEntityPost>().UpdateEntityAsync(oldEntity, updatedEntity, context),
+                async () => await new TEntityB().UpdateEntityAsync(oldEntity, updatedEntity, context),
                 context
             );
         }
 
-        public static async Task<IActionResult> DeactivateEntityAndSave(TEntity entity, BookStoreContext context)
+        public static async Task<IActionResult> DeactivateEntityAndSave<TEntityB>(TEntity entity, BookStoreContext context)
+            where TEntityB : BaseBusinessLogic<TEntity, TEntityPost>, new()
         {
             return await PerformTransactionAsync(
-                async () => await new BaseBusinessLogic<TEntity, TEntityPost>().DeactivateEntityAsync(entity, context),
+                async () => await new TEntityB().DeactivateEntityAsync(entity, context),
                 context
             );
         }
 
-        private static async Task<IActionResult> PerformTransactionAsync(Func<Task> businessLogicAction, BookStoreContext context)
+        protected static async Task<IActionResult> PerformTransactionAsync(Func<Task> businessLogicAction, BookStoreContext context)
         {
             using (var transaction = context.Database.BeginTransaction())
             {

@@ -63,15 +63,15 @@ namespace BookStoreAPI.Controllers.Products.BookItems
         }
         protected override async Task<IActionResult> CreateEntityCustomAsync(DiscountPostForView entity)
         {
-            return await DiscountB.ConvertEntityPostForViewAndSave(entity, _context);
+            return await DiscountB.ConvertEntityPostForViewAndSave<DiscountB>(entity, _context);
         }
         protected override async Task UpdateEntityCustomAsync(Discount oldEntity, DiscountPostForView updatedEntity)
         {
-            await DiscountB.ConvertEntityPostForViewAndUpdate(oldEntity, updatedEntity, _context);
+            await DiscountB.ConvertEntityPostForViewAndUpdate<DiscountB>(oldEntity, updatedEntity, _context);
         }
         protected override async Task<IActionResult> DeleteEntityCustomAsync(Discount entity)
         {
-            return await DiscountB.DeactivateEntityAndSave(entity, _context);
+            return await DiscountB.DeactivateEntityAndSave<DiscountB>(entity, _context);
         }
     }
 }
