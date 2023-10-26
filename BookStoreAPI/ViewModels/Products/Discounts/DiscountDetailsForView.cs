@@ -7,6 +7,6 @@ namespace BookStoreAPI.ViewModels.Products.Discounts
     {
         public string Title { get; set; }
         public bool IsAvailable { get; set; }
-        public List<BookItemsForView>? ListOfBookItems { get; set; }
+        public List<BookItemsForDiscountForView>? ListOfBookItems { get; set; }
     }
 }

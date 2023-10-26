@@ -29,6 +29,10 @@ namespace BookStoreAPI.Controllers.Customers
                 .Include(x => x.Gender)
                 .Include(x => x.CustomerAddresses)
                     .ThenInclude(x => x.Address)
+                    .ThenInclude(x => x.City)
+                .Include(x => x.CustomerAddresses)
+                    .ThenInclude(x => x.Address)
+                    .ThenInclude(x => x.Country)
                 .FirstOrDefaultAsync(x => x.Id == id && x.IsActive);
 
             return new CustomerDetailsForView
@@ -44,9 +48,9 @@ namespace BookStoreAPI.Controllers.Customers
                                 StreetNumber = y.Address.StreetNumber,
                                 HouseNumber = y.Address.HouseNumber,
                                 Postcode = y.Address.Postcode,
-                                CityID = (int)y.Address.CityID,
+                                CityID = y.Address.CityID,
                                 CityName = y.Address.City.Name,
-                                CountryID = (int)y.Address.CountryID,
+                                CountryID = y.Address.CountryID,
                                 CountryName = y.Address.Country.Name
                             }).ToList(),
 

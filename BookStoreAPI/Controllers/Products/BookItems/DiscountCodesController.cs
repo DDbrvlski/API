@@ -35,9 +35,10 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 IsAvailable = DateTime.Today >= element.StartingDate && DateTime.Today <= element.ExpiryDate.AddDays(1),
                 ListOfBookItems = element.BookDiscountCodes
                 .Where(x => x.IsActive == true)
-                .Select(x => new BookItemsForView
+                .Select(x => new BookItemsForDiscountForView
                 {
                     Id = x.Id,
+                    BookItemID = x.BookItemID,
                     BookID = x.BookItem.BookID,
                     BookTitle = x.BookItem.Book.Title,
                     ISBN = x.BookItem.ISBN,
