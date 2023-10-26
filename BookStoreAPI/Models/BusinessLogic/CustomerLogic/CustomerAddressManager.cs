@@ -1,4 +1,5 @@
 ﻿using BookStoreAPI.Data;
+using BookStoreAPI.Helpers;
 using BookStoreAPI.Models.Customers;
 using BookStoreAPI.Models.Media;
 using BookStoreAPI.Models.Products.Books;
@@ -32,11 +33,11 @@ namespace CustomerStoreAPI.Models.BusinessLogic.CustomerLogic
             if (addressesToAdd?.Count > 0)
             {
                 var newAddresses = addressesToAdd
-                    .Where(image => image != null)
-                    .Select(image => new Address
+                    .Where(address => address != null)
+                    .Select(address => new Address
                     {
                         
-                    }).ToList();
+                    }.CopyProperties(address)).ToList();
 
                 _context.Address.AddRange(newAddresses);
                 await _context.SaveChangesAsync();
