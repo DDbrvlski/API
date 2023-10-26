@@ -62,6 +62,7 @@ namespace BookStoreAPI.Data
         //Orders
         public DbSet<DeliveryMethod> DeliveryMethod { get; set; }
         public DbSet<OrderStatus> OrderStatus { get; set; }
+        public DbSet<OrderItems> OrderItems { get; set; }
         public DbSet<Order> Order { get; set; }
 
         //PageContent

@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using BookStoreAPI.Models.Delivery.Dictionaries;
 using BookStoreAPI.Models.Customers;
 using BookStoreAPI.Models.Orders;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Delivery
 {
@@ -22,6 +23,7 @@ namespace BookStoreAPI.Models.Delivery
         public int? OrderID { get; set; }
 
         [ForeignKey("OrderID")]
+        [JsonIgnore]
         public virtual Order Order { get; set; }
 
         //Address
@@ -30,6 +32,7 @@ namespace BookStoreAPI.Models.Delivery
         public int? AddressID { get; set; }
 
         [ForeignKey("AddressID")]
+        [JsonIgnore]
         public virtual Address Address { get; set; }
 
         //ShippingStatus
@@ -38,6 +41,7 @@ namespace BookStoreAPI.Models.Delivery
         public int? ShippingStatusID { get; set; }
 
         [ForeignKey("ShippingStatusID")]
+        [JsonIgnore]
         public virtual ShippingStatus ShippingStatus { get; set; }
         #endregion
     }

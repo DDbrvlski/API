@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using BookStoreAPI.Models.Transactions.Dictionaries;
 using System.Transactions;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Transactions
 {
@@ -21,6 +22,7 @@ namespace BookStoreAPI.Models.Transactions
         public int? OrderID { get; set; }
 
         [ForeignKey("OrderID")]
+        [JsonIgnore]
         public virtual Order Order { get; set; }
 
         //PaymentMethod
@@ -29,6 +31,7 @@ namespace BookStoreAPI.Models.Transactions
         public int? PaymentMethodID { get; set; }
 
         [ForeignKey("PaymentMethodID")]
+        [JsonIgnore]
         public virtual PaymentMethod PaymentMethod { get; set; }
 
         //TransactionStatus
@@ -37,6 +40,7 @@ namespace BookStoreAPI.Models.Transactions
         public int? TransactionStatusID { get; set; }
 
         [ForeignKey("TransactionStatusID")]
+        [JsonIgnore]
         public virtual TransactionStatus TransactionStatus { get; set; }
         #endregion
     }

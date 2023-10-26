@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using BookStoreAPI.Models.Orders.Dictionaries;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Orders
 {
@@ -18,6 +19,7 @@ namespace BookStoreAPI.Models.Orders
         public int? OrderStatusID { get; set; }
 
         [ForeignKey("OrderStatusID")]
+        [JsonIgnore]
         public virtual OrderStatus OrderStatus { get; set; }
 
         //DeliveryMethod
@@ -26,6 +28,7 @@ namespace BookStoreAPI.Models.Orders
         public int? DeliveryMethodID { get; set; }
 
         [ForeignKey("DeliveryMethodID")]
+        [JsonIgnore]
         public virtual DeliveryMethod DeliveryMethod { get; set; }
     }
 }

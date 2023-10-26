@@ -3,6 +3,7 @@ using BookStoreAPI.Models.Media;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.PageContent
 {
@@ -19,6 +20,7 @@ namespace BookStoreAPI.Models.PageContent
         public int? ImageID { get; set; }
 
         [ForeignKey("ImageID")]
+        [JsonIgnore]
         public virtual Images Image { get; set; }
         #endregion
     }

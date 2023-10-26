@@ -1,11 +1,9 @@
-﻿using BookStoreAPI.Models.Customers.CustomerDictionaries;
-using BookStoreAPI.Models.Helpers;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
-using BookStoreAPI.Models.Accounts.Dictionaries;
+﻿using BookStoreAPI.Models.Accounts.Dictionaries;
 using BookStoreAPI.Models.Customers;
+using BookStoreAPI.Models.Helpers;
 using BookStoreAPI.Models.Media;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookStoreAPI.Models.Accounts
 {

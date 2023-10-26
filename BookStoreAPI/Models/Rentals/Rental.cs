@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using BookStoreAPI.Models.Products.BookItems;
 using BookStoreAPI.Models.Accounts;
 using BookStoreAPI.Models.Rentals.Dictionaries;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Rental
 {
@@ -22,6 +23,7 @@ namespace BookStoreAPI.Models.Rental
         public int? BookItemID { get; set; }
 
         [ForeignKey("BookItemID")]
+        [JsonIgnore]
         public virtual BookItem BookItem { get; set; }
 
         //User
@@ -30,6 +32,7 @@ namespace BookStoreAPI.Models.Rental
         public int? UserID { get; set; }
 
         [ForeignKey("UserID")]
+        [JsonIgnore]
         public virtual User User { get; set; }
 
         //RentalType
@@ -38,6 +41,7 @@ namespace BookStoreAPI.Models.Rental
         public int? RentalTypeID { get; set; }
 
         [ForeignKey("RentalTypeID")]
+        [JsonIgnore]
         public virtual RentalType RentalType { get; set; }
 
         //RentalStatus
@@ -46,6 +50,7 @@ namespace BookStoreAPI.Models.Rental
         public int? RentalStatusID { get; set; }
 
         [ForeignKey("RentalStatusID")]
+        [JsonIgnore]
         public virtual RentalStatus RentalStatus { get; set; }
         #endregion
     }

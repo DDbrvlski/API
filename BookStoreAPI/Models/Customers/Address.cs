@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using BookStoreAPI.Models.Customers.AddressDictionaries;
+using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Customers
 {
@@ -21,6 +22,7 @@ namespace BookStoreAPI.Models.Customers
         public int? CityID { get; set; }
 
         [ForeignKey("CityID")]
+        [JsonIgnore]
         public virtual City City { get; set; }
 
         //Country
@@ -29,6 +31,7 @@ namespace BookStoreAPI.Models.Customers
         public int? CountryID { get; set; }
 
         [ForeignKey("CountryID")]
+        [JsonIgnore]
         public virtual Country Country { get; set; }
         #endregion
     }
