@@ -1,10 +1,7 @@
 ﻿using BookStoreAPI.Models.Helpers;
-using BookStoreAPI.Models.Orders;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 using BookStoreAPI.Models.Transactions.Dictionaries;
-using System.Transactions;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Transactions
@@ -13,17 +10,9 @@ namespace BookStoreAPI.Models.Transactions
     {
         #region Properties
         public decimal Amount { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
         #endregion
         #region Foreign Keys
-        //Order
-        [Required(ErrorMessage = "Zamówienie jest wymagana.")]
-        [Display(Name = "Zamówienie")]
-        public int? OrderID { get; set; }
-
-        [ForeignKey("OrderID")]
-        [JsonIgnore]
-        public virtual Order Order { get; set; }
 
         //PaymentMethod
         [Required(ErrorMessage = "Metoda płatności jest wymagana.")]
@@ -41,7 +30,7 @@ namespace BookStoreAPI.Models.Transactions
 
         [ForeignKey("TransactionStatusID")]
         [JsonIgnore]
-        public virtual TransactionStatus TransactionStatus { get; set; }
+        public virtual TransactionsStatus TransactionStatus { get; set; }
         #endregion
     }
 }

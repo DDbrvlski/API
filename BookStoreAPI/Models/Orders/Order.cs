@@ -1,10 +1,10 @@
-﻿using BookStoreAPI.Models.Helpers;
-using BookStoreAPI.Models.Products.Books.BookDictionaries;
-using BookStoreAPI.Models.Products.Books;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
+﻿using BookStoreAPI.Models.Customers;
+using BookStoreAPI.Models.Delivery;
+using BookStoreAPI.Models.Helpers;
 using BookStoreAPI.Models.Orders.Dictionaries;
+using BookStoreAPI.Models.Transactions;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace BookStoreAPI.Models.Orders
@@ -30,5 +30,36 @@ namespace BookStoreAPI.Models.Orders
         [ForeignKey("DeliveryMethodID")]
         [JsonIgnore]
         public virtual DeliveryMethod DeliveryMethod { get; set; }
+
+        //Payment
+        [Required(ErrorMessage = "Sposób dostawy jest wymagany.")]
+        [Display(Name = "Sposób dostawy")]
+        public int? PaymentID { get; set; }
+
+        [ForeignKey("PaymentID")]
+        [JsonIgnore]
+        public virtual Payment Payment { get; set; }
+
+        //Shipping
+        [Required(ErrorMessage = "Sposób dostawy jest wymagany.")]
+        [Display(Name = "Sposób dostawy")]
+        public int? ShippingID { get; set; }
+
+        [ForeignKey("ShippingID")]
+        [JsonIgnore]
+        public virtual Shipping Shipping { get; set; }
+
+        //Customer
+        [Required(ErrorMessage = "Sposób dostawy jest wymagany.")]
+        [Display(Name = "Sposób dostawy")]
+        public int? CustomerID { get; set; }
+
+        [ForeignKey("CustomerID")]
+        [JsonIgnore]
+        public virtual Customer Customer { get; set; }
+
+
+        [JsonIgnore]
+        public List<OrderItems>? OrderItems { get; set; }
     }
 }

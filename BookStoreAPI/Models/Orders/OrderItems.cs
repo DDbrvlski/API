@@ -9,6 +9,7 @@ namespace BookStoreAPI.Models.Orders
     public class OrderItems : BaseEntity
     {
         public int Quantity { get; set; }
+        public decimal BruttoPrice { get; set; }
 
         //BookItem
         [Required(ErrorMessage = "Książka jest wymagana.")]

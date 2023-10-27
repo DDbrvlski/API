@@ -22,6 +22,6 @@ namespace BookStoreAPI.Controllers.Accounts.Dictionaries
         {
         }
 
-        
+
     }
 }

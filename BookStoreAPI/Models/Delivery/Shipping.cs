@@ -13,18 +13,10 @@ namespace BookStoreAPI.Models.Delivery
     public class Shipping : BaseEntity
     {
         #region Properties
-        public DateTime ShippingDate { get; set; }
-        public DateTime DeliveryDate { get; set; }
+        public DateTime? ShippingDate { get; set; }
+        public DateTime? DeliveryDate { get; set; }
         #endregion
         #region Foreign Keys
-        //Order
-        [Required(ErrorMessage = "Zamówienie jest wymagana.")]
-        [Display(Name = "Zamówienie")]
-        public int? OrderID { get; set; }
-
-        [ForeignKey("OrderID")]
-        [JsonIgnore]
-        public virtual Order Order { get; set; }
 
         //Address
         [Required(ErrorMessage = "Adres jest wymagany.")]

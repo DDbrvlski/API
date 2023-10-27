@@ -13,6 +13,6 @@ namespace BookStoreAPI.ViewModels.Customers
         public bool IsSubscribed { get; set; }
         public int GenderID { get; set; }
         public string GenderName { get; set; }
-        public List<AddressForView>? ListOfCustomerAdresses { get; set; }
+        public List<AddressDetailsForView>? ListOfCustomerAdresses { get; set; }
     }
 }

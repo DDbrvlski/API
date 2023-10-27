@@ -22,8 +22,6 @@ C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\ne
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.AspNetCore.Connections.Abstractions.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.AspNetCore.CookiePolicy.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.AspNetCore.Cors.dll
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.AspNetCore.Cryptography.Internal.dll
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.AspNetCore.DataProtection.Abstractions.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.AspNetCore.DataProtection.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.AspNetCore.DataProtection.Extensions.dll
@@ -116,8 +114,6 @@ C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\ne
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.Extensions.Hosting.Abstractions.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.Extensions.Hosting.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.Extensions.Http.dll
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.Extensions.Identity.Core.dll
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.Extensions.Localization.Abstractions.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.Extensions.Localization.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\refs\Microsoft.Extensions.Logging.Abstractions.dll
@@ -554,3 +550,8 @@ C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\ne
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.pdb
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.genruntimeconfig.cache
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\ref\BookStoreAPI.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll

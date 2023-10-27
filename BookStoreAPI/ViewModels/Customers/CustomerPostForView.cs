@@ -3,7 +3,7 @@ using BookStoreAPI.ViewModels.Helpers;
 
 namespace BookStoreAPI.ViewModels.Customers
 {
-    public class CustomerPostForView : BaseView
+    public class CustomerPostForView : BasePostView
     {
         public string Name { get; set; }
         public string Surname { get; set; }

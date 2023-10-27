@@ -41,7 +41,7 @@ namespace BookStoreAPI.Controllers.Customers
                 GenderName = element.Gender.Name,
                 ListOfCustomerAdresses = element.CustomerAddresses
                             .Where(z => z.IsActive == true)
-                            .Select(y => new AddressForView
+                            .Select(y => new AddressDetailsForView
                             {
                                 Id = y.Address.Id,
                                 Street = y.Address.Street,

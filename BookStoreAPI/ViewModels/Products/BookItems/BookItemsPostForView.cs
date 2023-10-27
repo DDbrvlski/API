@@ -2,7 +2,7 @@
 
 namespace BookStoreAPI.ViewModels.Products.BookItems
 {
-    public class BookItemsPostForView : BaseView
+    public class BookItemsPostForView : BasePostView
     {
         public float VAT { get; set; }
         public decimal NettoPrice { get; set; }

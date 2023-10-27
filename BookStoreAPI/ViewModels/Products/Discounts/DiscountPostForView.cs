@@ -2,7 +2,7 @@
 
 namespace BookStoreAPI.ViewModels.Products.Discounts
 {
-    public class DiscountPostForView : DiscountView
+    public class DiscountPostForView : DiscountPostView
     {
         public string Title { get; set; }
         public List<ListOfIds>? ListOfBookItems { get; set; }

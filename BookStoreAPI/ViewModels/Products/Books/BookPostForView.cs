@@ -6,7 +6,7 @@ using BookStoreAPI.ViewModels.Products.Books.Dictionaries;
 
 namespace BookStoreAPI.ViewModels.Products.Books
 {
-    public class BookPostForView : BaseView
+    public class BookPostForView : BasePostView
     {
         [Required(ErrorMessage = "Tytuł jest wymagany.")]
         [MaxLength(255)]

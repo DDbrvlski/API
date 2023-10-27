@@ -2,9 +2,8 @@
 
 namespace BookStoreAPI.ViewModels.Products.Books.Dictionaries
 {
-    public class AuthorsForView : BaseView
+    public class AuthorsForView : BaseDictionaryView
     {
-        public string Name { get; set; }
         public string Surname { get; set; }
     }
 }

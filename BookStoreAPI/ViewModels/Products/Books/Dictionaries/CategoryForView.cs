@@ -2,8 +2,7 @@
 
 namespace BookStoreAPI.ViewModels.Products.Books.Dictionaries
 {
-    public class CategoryForView : BaseView
+    public class CategoryForView : BaseDictionaryView
     {
-        public string Name { get; set; }
     }
 }

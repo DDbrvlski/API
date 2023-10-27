@@ -97,13 +97,13 @@ namespace BookStoreAPI.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte[]>("PasswordHash")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("Salt")
+                    b.Property<string>("Salt")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -426,7 +426,7 @@ namespace BookStoreAPI.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DeliveryDate")
+                    b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
@@ -435,11 +435,7 @@ namespace BookStoreAPI.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("OrderID")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ShippingDate")
+                    b.Property<DateTime?>("ShippingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("ShippingStatusID")
@@ -449,8 +445,6 @@ namespace BookStoreAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressID");
-
-                    b.HasIndex("OrderID");
 
                     b.HasIndex("ShippingStatusID");
 
@@ -585,6 +579,10 @@ namespace BookStoreAPI.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CustomerID")
+                        .IsRequired()
+                        .HasColumnType("int");
+
                     b.Property<int?>("DeliveryMethodID")
                         .IsRequired()
                         .HasColumnType("int");
@@ -602,11 +600,25 @@ namespace BookStoreAPI.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
+                    b.Property<int?>("PaymentID")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShippingID")
+                        .IsRequired()
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerID");
 
                     b.HasIndex("DeliveryMethodID");
 
                     b.HasIndex("OrderStatusID");
+
+                    b.HasIndex("PaymentID");
+
+                    b.HasIndex("ShippingID");
 
                     b.ToTable("Order");
                 });
@@ -622,6 +634,9 @@ namespace BookStoreAPI.Migrations
                     b.Property<int?>("BookItemID")
                         .IsRequired()
                         .HasColumnType("int");
+
+                    b.Property<decimal>("BruttoPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -1888,7 +1903,7 @@ namespace BookStoreAPI.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
@@ -1896,10 +1911,6 @@ namespace BookStoreAPI.Migrations
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("OrderID")
-                        .IsRequired()
-                        .HasColumnType("int");
 
                     b.Property<int?>("PaymentMethodID")
                         .IsRequired()
@@ -1913,8 +1924,6 @@ namespace BookStoreAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderID");
 
                     b.HasIndex("PaymentMethodID");
 
@@ -2043,12 +2052,6 @@ namespace BookStoreAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookStoreAPI.Models.Orders.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BookStoreAPI.Models.Delivery.Dictionaries.ShippingStatus", "ShippingStatus")
                         .WithMany()
                         .HasForeignKey("ShippingStatusID")
@@ -2057,13 +2060,17 @@ namespace BookStoreAPI.Migrations
 
                     b.Navigation("Address");
 
-                    b.Navigation("Order");
-
                     b.Navigation("ShippingStatus");
                 });
 
             modelBuilder.Entity("BookStoreAPI.Models.Orders.Order", b =>
                 {
+                    b.HasOne("BookStoreAPI.Models.Customers.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BookStoreAPI.Models.Orders.Dictionaries.DeliveryMethod", "DeliveryMethod")
                         .WithMany()
                         .HasForeignKey("DeliveryMethodID")
@@ -2076,9 +2083,27 @@ namespace BookStoreAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BookStoreAPI.Models.Transactions.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookStoreAPI.Models.Delivery.Shipping", "Shipping")
+                        .WithMany()
+                        .HasForeignKey("ShippingID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
                     b.Navigation("DeliveryMethod");
 
                     b.Navigation("OrderStatus");
+
+                    b.Navigation("Payment");
+
+                    b.Navigation("Shipping");
                 });
 
             modelBuilder.Entity("BookStoreAPI.Models.Orders.OrderItems", b =>
@@ -2469,19 +2494,11 @@ namespace BookStoreAPI.Migrations
 
             modelBuilder.Entity("BookStoreAPI.Models.Transactions.Payment", b =>
                 {
-                    b.HasOne("BookStoreAPI.Models.Orders.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BookStoreAPI.Models.Transactions.Dictionaries.PaymentMethod", "PaymentMethod")
                         .WithMany()
                         .HasForeignKey("PaymentMethodID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Order");
 
                     b.Navigation("PaymentMethod");
                 });
