@@ -1,21 +1,20 @@
 ﻿using BookStoreAPI.Data;
-using BookStoreAPI.Helpers.BaseController;
-using BookStoreAPI.Models.Customers;
-using BookStoreAPI.Models.Orders;
-using BookStoreAPI.ViewModels.Customers.Address;
-using BookStoreAPI.ViewModels.Customers;
-using BookStoreAPI.ViewModels.Orders;
-using CustomerStoreAPI.Models.BusinessLogic.CustomerLogic;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using BookStoreAPI.Helpers;
+using BookStoreAPI.Helpers.BaseController;
+using BookStoreAPI.Models.BusinessLogic.OrderLogic;
+using BookStoreAPI.Models.Orders;
+using BookStoreAPI.ViewModels.Customers;
+using BookStoreAPI.ViewModels.Customers.Address;
+using BookStoreAPI.ViewModels.Orders;
 using BookStoreAPI.ViewModels.Orders.Dictionaries;
 using BookStoreAPI.ViewModels.Payments;
-using BookStoreAPI.ViewModels.Shippings;
 using BookStoreAPI.ViewModels.Payments.Dictionaries;
+using BookStoreAPI.ViewModels.Products.BookItems;
+using BookStoreAPI.ViewModels.Products.Books.Dictionaries;
+using BookStoreAPI.ViewModels.Shippings;
 using BookStoreAPI.ViewModels.Shippings.Dictionaries;
-using BookStoreAPI.Models.BusinessLogic.OrderLogic;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreAPI.Controllers.Orders
 {
@@ -29,8 +28,15 @@ namespace BookStoreAPI.Controllers.Orders
 
         protected override async Task<OrderDetailsForView?> GetCustomEntityByIdAsync(int id)
         {
-            var element = await _context.Order
+            return await _context.Order
                 .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.BookItem)
+                    .ThenInclude(x => x.Book)
+                    .ThenInclude(x => x.BookAuthors)
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.BookItem)
+                    .ThenInclude(x => x.Book)
+                    .ThenInclude(x => x.BookImages)
                 .Include(x => x.Customer)
                 .Include(x => x.OrderStatus)
                 .Include(x => x.DeliveryMethod)
@@ -42,40 +48,101 @@ namespace BookStoreAPI.Controllers.Orders
                     .ThenInclude(x => x.ShippingStatus)
                 .Include(x => x.Shipping)
                     .ThenInclude(x => x.Address)
-                .FirstOrDefaultAsync(x => x.Id == id && x.IsActive);
-
-            return new OrderDetailsForView
-            {
-                Id = element.Id,
-                DeliveryMethod = new DeliveryMethodForView
+                    .ThenInclude(x => x.City)
+                .Include(x => x.Shipping)
+                    .ThenInclude(x => x.Address)
+                    .ThenInclude(x => x.Country)
+                .Where(x => x.Id == id && x.IsActive == true)
+                .Select(element => new OrderDetailsForView()
                 {
-                }.CopyProperties(element.DeliveryMethod),
-                OrderStatus = new OrderStatusForView
-                {
-                }.CopyProperties(element.OrderStatus),
-                Payment = new PaymentDetailsForView
-                {
-                    PaymentMethod = new PaymentMethodForView
+                    Id = element.Id,
+                    OrderDate = element.OrderDate,
+                    DeliveryMethod = new DeliveryMethodForView
                     {
-                    }.CopyProperties(element.Payment.PaymentMethod),
-                    TransactionStatus = new TransactionStatusForView
+                        Id = (int)element.DeliveryMethodID,
+                        Name = element.DeliveryMethod.Name,
+                        Price = element.DeliveryMethod.Price
+                    },
+                    OrderStatus = new OrderStatusForView
                     {
-                    }.CopyProperties(element.Payment.TransactionStatus)
-                }.CopyProperties(element.Payment),
-                Shipping = new ShippingDetailsForView
-                {
-                    ShippingAddress = new AddressDetailsForView
+                        Id = (int)element.OrderStatusID,
+                        Name = element.OrderStatus.Name
+                    },
+                    Payment = new PaymentDetailsForView
                     {
-                    }.CopyProperties(element.Shipping.Address),
-                    ShippingStatus = new ShippingStatusForView
+                        Id = (int)element.PaymentID,
+                        Amount = element.Payment.Amount,
+                        PaymentDate = element.Payment.Date,
+                        PaymentMethod = new PaymentMethodForView
+                        {
+                            Id = element.Payment.PaymentMethodID,
+                            Name = element.Payment.PaymentMethod.Name
+                        },
+                        TransactionStatus = new TransactionStatusForView
+                        {
+                            Id = element.Payment.TransactionStatusID,
+                            Name = element.Payment.TransactionStatus.Name
+                        }
+                    },
+                    Shipping = new ShippingDetailsForView
                     {
-                    }.CopyProperties(element.Shipping.ShippingStatus)
-                }.CopyProperties(element.Shipping),
-                Customer = new CustomerForOrderForView
-                {
-                }.CopyProperties(element.Customer),
-
-            }.CopyProperties(element);
+                        Id = (int)element.ShippingID,
+                        ShippingDate = element.Shipping.ShippingDate,
+                        DeliveryDate = element.Shipping.DeliveryDate,
+                        ShippingAddress = new AddressDetailsForView
+                        {
+                            Id = (int)element.Shipping.AddressID,
+                            CityName = element.Shipping.Address.City.Name,
+                            CountryName = element.Shipping.Address.Country.Name,
+                            Street = element.Shipping.Address.Street,
+                            StreetNumber = element.Shipping.Address.StreetNumber,
+                            HouseNumber = element.Shipping.Address.HouseNumber,
+                            Postcode = element.Shipping.Address.Postcode,
+                            CityID = element.Shipping.Address.CityID,
+                            CountryID = element.Shipping.Address.CountryID,
+                        },
+                        ShippingStatus = new ShippingStatusForView
+                        {
+                            Id = (int)element.Shipping.ShippingStatusID,
+                            Name = element.Shipping.ShippingStatus.Name
+                        }
+                    },
+                    Customer = new CustomerForOrderForView
+                    {
+                        Id = (int)element.CustomerID,
+                        Name = element.Customer.Name,
+                        Surname = element.Customer.Surname,
+                        PhoneNumber = element.Customer.PhoneNumber
+                    },
+                    ListOfOrderItems = element.OrderItems
+                    .Where(x => x.IsActive == true)
+                    .Select(x => new OrderItemsDetailsForView
+                    {
+                        Id = x.Id,
+                        Quantity = x.Quantity,
+                        BruttoPrice = x.BruttoPrice,
+                        BookItemID = x.BookItemID,
+                        OrderID = x.OrderID,
+                        ItemForOrder = new BookItemsForOrderDetailsForView
+                        {
+                            Id = x.BookItemID,
+                            Title = x.BookItem.Book.Title,
+                            AuthorsName = x.BookItem.Book.BookAuthors
+                                    .Where(y => y.BookID == x.BookItem.BookID == y.IsActive == true)
+                                    .Select(y => new AuthorsForView
+                                    {
+                                        Id = y.Author.Id,
+                                        Name = y.Author.Name,
+                                        Surname = y.Author.Surname
+                                    }).ToList(),
+                            ImageURL = x.BookItem.Book.BookImages
+                                    .Where(y => y.BookID == x.BookItem.BookID && y.IsActive == true)
+                                    .Select(y => y.Image.ImageURL)
+                                    .First(),
+                        }
+                    }).ToList()
+                })
+                .FirstAsync();
         }
         protected override async Task<ActionResult<IEnumerable<OrderForView>>> GetAllEntitiesCustomAsync()
         {
@@ -84,9 +151,11 @@ namespace BookStoreAPI.Controllers.Orders
                 .Where(x => x.IsActive == true)
                 .Select(x => new OrderForView
                 {
-                    OrderStatusName = x.OrderStatus.Name
-
-                }.CopyProperties(x))
+                    Id = x.Id,
+                    OrderStatusName = x.OrderStatus.Name,
+                    CustomerID = x.CustomerID,
+                    OrderDate = x.OrderDate
+                })
                 .ToListAsync();
         }
         protected override async Task<IActionResult> CreateEntityCustomAsync(OrderPostForView entity)

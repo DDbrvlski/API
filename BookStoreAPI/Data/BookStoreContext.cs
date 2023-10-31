@@ -24,11 +24,13 @@ using BookStoreAPI.Models.Transactions;
 using BookStoreAPI.Models.Transactions.Dictionaries;
 using BookStoreAPI.Models.Wishlist;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace BookStoreAPI.Data
 {
     public class BookStoreContext : DbContext
     {
+        private static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
         public BookStoreContext(DbContextOptions<BookStoreContext> options) : base(options) { }
 
 
@@ -116,7 +118,11 @@ namespace BookStoreAPI.Data
         //Wishlist
         public DbSet<WishlistItem> WishlistItem { get; set; }
 
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+            .UseLoggerFactory(MyLoggerFactory); // Dodaj to
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

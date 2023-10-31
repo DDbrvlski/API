@@ -15,6 +15,6 @@ namespace BookStoreAPI.ViewModels.Orders
         public PaymentPostForView Payment { get; set; }
         public ShippingPostForView Shipping { get; set; }
 
-        public List<ListOfIds>? ListOfOrderItems { get; set; }
+        public List<ListOfOrderItemsIds>? ListOfOrderItems { get; set; }
     }
 }

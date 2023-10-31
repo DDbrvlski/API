@@ -20,7 +20,7 @@ namespace BookStoreAPI.Controllers.Products.BookItems
 
         protected override async Task<BookItemsDetailsForView?> GetCustomEntityByIdAsync(int id)
         {
-            var element = await _context.BookItem
+            return await _context.BookItem
                 .Include(x => x.Translator)
                 .Include(x => x.Language)
                 .Include(x => x.Edition)
@@ -30,20 +30,31 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 .Include(x => x.Book)
                 .Include(x => x.BookDiscounts)
                     .ThenInclude(x => x.Discount)
-                .FirstOrDefaultAsync(x => x.Id == id && x.IsActive);
-
-            return new BookItemsDetailsForView
-            {
-                Id = element.Id,
-                TranslatorName = element.Translator.Name + " " + element.Translator.Surname,
-                LanguageName = element.Language.Name,
-                EditionName = element.Edition.Name,
-                FileFormatName = element.FileFormat.Name,
-                FormName = element.Form.Name,
-                AvailabilityName = element.Availability.Name,
-                BookName = element.Book.Title,
-                BruttoPrice = element.NettoPrice * (1 + (decimal)(element.VAT / 100.0f))
-            }.CopyProperties(element);
+                .Select(element => new BookItemsDetailsForView
+                {
+                    Id = element.Id,
+                    TranslatorName = element.Translator.Name + " " + element.Translator.Surname,
+                    LanguageName = element.Language.Name,
+                    EditionName = element.Edition.Name,
+                    FileFormatName = element.FileFormat.Name,
+                    FormName = element.Form.Name,
+                    AvailabilityName = element.Availability.Name,
+                    BookName = element.Book.Title,
+                    BruttoPrice = element.NettoPrice * (1 + (decimal)(element.VAT / 100.0f)),
+                    NettoPrice = element.NettoPrice,
+                    VAT = element.VAT,
+                    ISBN = element.ISBN,
+                    Pages = element.Pages,
+                    PublishingDate = element.PublishingDate,
+                    TranslatorID = element.TranslatorID,
+                    LanguageID = element.TranslatorID,
+                    EditionID = element.EditionID,
+                    BookID = element.BookID,
+                    FileFormatID = element.FileFormatID,
+                    FormID = element.FormID,
+                    AvailabilityID = element.AvailabilityID,
+                })
+                .FirstAsync();
         }
         protected override async Task<ActionResult<IEnumerable<BookItemsForView>>> GetAllEntitiesCustomAsync()
         {
@@ -55,8 +66,11 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 {
                     Id = x.Id,
                     FormName = x.Form.Name,
-                    BookTitle = x.Book.Title
-                }.CopyProperties(x))
+                    BookTitle = x.Book.Title,
+                    ISBN = x.ISBN,
+                    BookID = x.BookID,
+                    NettoPrice = x.NettoPrice
+                })
                 .ToListAsync();
         }
         protected override async Task<IActionResult> CreateEntityCustomAsync(BookItemsPostForView entity)

@@ -1916,9 +1916,6 @@ namespace BookStoreAPI.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("TransactionStatus")
-                        .HasColumnType("int");
-
                     b.Property<int?>("TransactionStatusID")
                         .IsRequired()
                         .HasColumnType("int");
@@ -1926,6 +1923,8 @@ namespace BookStoreAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PaymentMethodID");
+
+                    b.HasIndex("TransactionStatusID");
 
                     b.ToTable("Payment");
                 });
@@ -2115,7 +2114,7 @@ namespace BookStoreAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("BookStoreAPI.Models.Orders.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2500,12 +2499,25 @@ namespace BookStoreAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BookStoreAPI.Models.Transactions.Dictionaries.TransactionsStatus", "TransactionStatus")
+                        .WithMany()
+                        .HasForeignKey("TransactionStatusID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("PaymentMethod");
+
+                    b.Navigation("TransactionStatus");
                 });
 
             modelBuilder.Entity("BookStoreAPI.Models.Customers.Customer", b =>
                 {
                     b.Navigation("CustomerAddresses");
+                });
+
+            modelBuilder.Entity("BookStoreAPI.Models.Orders.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("BookStoreAPI.Models.Products.BookItems.BookItem", b =>
