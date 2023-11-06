@@ -24,6 +24,7 @@ namespace BookStoreAPI.Helpers.BaseBusinessLogic
         {
             return await PerformTransactionAsync(
                 async () => await new TEntityB().AddNewEntityAsync(entityWithData, context),
+                "dodawania",
                 context
             );
         }
@@ -41,6 +42,7 @@ namespace BookStoreAPI.Helpers.BaseBusinessLogic
         {
             return await PerformTransactionAsync(
                 async () => await new TEntityB().UpdateEntityAsync(oldEntity, updatedEntity, context),
+                "aktualizowania",
                 context
             );
         }
@@ -57,6 +59,7 @@ namespace BookStoreAPI.Helpers.BaseBusinessLogic
         {
             return await PerformTransactionAsync(
                 async () => await new TEntityB().DeactivateEntityAsync(entity, context),
+                "usuwania",
                 context
             );
         }
@@ -67,14 +70,17 @@ namespace BookStoreAPI.Helpers.BaseBusinessLogic
         /// <param name="businessLogicAction">Akcja zawierająca operację biznesową do wykonania.</param>
         /// <param name="context">Kontekst bazy danych.</param>
         /// <returns>Wynik operacji, np. <see cref="OkResult"/> lub <see cref="BadRequestObjectResult"/>.</returns>
-        protected static async Task<IActionResult> PerformTransactionAsync(Func<Task> businessLogicAction, BookStoreContext context)
+        protected static async Task<IActionResult> PerformTransactionAsync(Func<Task> businessLogicAction, string operationName, BookStoreContext context)
         {
             using (var transaction = context.Database.BeginTransaction())
             {
                 try
                 {
-                    await businessLogicAction();
-                    var result = await TryToSaveChangesAsync(context);
+                    await DatabaseOperationHandler.HandleDatabaseOperation(
+                        async () => await businessLogicAction(),
+                        operationName
+                    );
+                    var result = await DatabaseOperationHandler.TryToSaveChangesAsync(context);
                     transaction.Commit();
                     return result;
                 }
@@ -82,33 +88,6 @@ namespace BookStoreAPI.Helpers.BaseBusinessLogic
                 {
                     transaction.Rollback();
                     return new BadRequestObjectResult(ex.Message);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Probuje zapisac zmiany w bazie danych i zwraca wynik operacji.
-        /// </summary>
-        /// <param name="context">Kontekst bazy danych.</param>
-        /// <returns>Wynik operacji, np. <see cref="OkResult"/> lub <see cref="BadRequestObjectResult"/>.</returns>
-        private static async Task<IActionResult> TryToSaveChangesAsync(BookStoreContext context)
-        {
-            try
-            {
-                await context.SaveChangesAsync();
-                return new OkResult();
-            }
-            catch (Exception ex)
-            {
-                Exception innerException = ex.InnerException;
-
-                if (innerException is not null)
-                {
-                    return new BadRequestObjectResult($"Wewnętrzny wyjątek: {innerException.Message}");
-                }
-                else
-                {
-                    return new BadRequestObjectResult($"Wystąpił błąd podczas zapisywania zmian w bazie danych: {ex.Message}");
                 }
             }
         }

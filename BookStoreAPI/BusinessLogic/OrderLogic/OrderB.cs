@@ -6,6 +6,7 @@ using BookStoreViewModels.ViewModels.Helpers;
 using BookStoreViewModels.ViewModels.Orders;
 using BookStoreViewModels.ViewModels.Payments;
 using BookStoreViewModels.ViewModels.Shippings;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreAPI.BusinessLogic.OrderLogic
 {
@@ -28,14 +29,14 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
             await OrderItemsManager.DeactivateAllItems(entity, context);
             await OrderPaymentManager.DeactivatePayment(entity, context);
             await OrderShippingManager.DeactivateShipping(entity, context);
-            CalculateTotalPriceForOrder(entity, context);
+            await CalculateTotalPriceForOrder(entity, context);
         }
         private static async Task UpdateAllConnectedEntitiesLists(Order order, PaymentPostForView payment, ShippingPostForView shipping, List<ListOfOrderItemsIds?> orderItemsIds, BookStoreContext context)
         {
             await OrderPaymentManager.UpdatePayment(order, payment, context);
             await OrderShippingManager.UpdateShipping(order, shipping, context);
             context.Order.Add(order);
-            context.SaveChanges();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
             await OrderItemsManager.UpdateItems(order, orderItemsIds, context);
             await CalculateTotalPriceForOrder(order, context);
         }
@@ -47,7 +48,7 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
 
             paymentToEdit.Amount = orderItemsPrice + order.DeliveryMethod.Price;
 
-            context.SaveChanges();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
         }
     }
 }

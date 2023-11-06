@@ -1,4 +1,5 @@
-﻿using BookStoreData.Data;
+﻿using BookStoreAPI.Helpers;
+using BookStoreData.Data;
 using BookStoreData.Models.Media;
 using BookStoreData.Models.Products.Books;
 using BookStoreViewModels.ViewModels.Products.Books.Dictionaries;
@@ -20,8 +21,21 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
             var imagesToDeactivate = existingImageIds.Except(imageIds).ToList();
             var imagesToAdd = images.Where(x => x != null && !existingImageIds.Contains(x.Id)).ToList();
 
-            await DeactivateChosenImages(book, imagesToDeactivate, _context);
-            await AddNewImages(book, imagesToAdd, _context);
+            if (imagesToDeactivate.Count() > 0)
+            {
+                await DatabaseOperationHandler.HandleDatabaseOperation(
+                    async () => await DeactivateChosenImages(book, imagesToDeactivate, _context),
+                    "deaktywacji"
+                );
+            }
+
+            if (imagesToAdd.Count() > 0)
+            {
+                await DatabaseOperationHandler.HandleDatabaseOperation(
+                    async () => await AddNewImages(book, imagesToAdd, _context),
+                    "dodawania"
+                );
+            }
         }
         public static async Task AddNewImages(Book book, List<ImagesForView?> imagesToAdd, BookStoreContext _context)
         {
@@ -36,7 +50,8 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
                     }).ToList();
 
                 _context.Images.AddRange(newImages);
-                await _context.SaveChangesAsync();
+
+                await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
 
                 var bookImages = newImages
                     .Select(image => new BookImages
@@ -46,7 +61,8 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
                     }).ToList();
 
                 _context.BookImages.AddRange(bookImages);
-                await _context.SaveChangesAsync();
+
+                await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
             }
         }
         public static async Task DeactivateAllImages(Book book, BookStoreContext _context)
@@ -60,7 +76,7 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
                 image.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
         public static async Task DeactivateChosenImages(Book book, List<int?> imageIdsToDeactivate, BookStoreContext _context)
         {
@@ -82,7 +98,7 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
                 image.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using BookStoreData.Data;
+﻿using BookStoreAPI.Helpers;
+using BookStoreData.Data;
 using BookStoreData.Models.Products.BookItems;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,8 +17,21 @@ namespace BookStoreAPI.BusinessLogic.DiscountLogic
             var bookItemsToDeactivate = existingBookItemIds.Except(bookItemIds).ToList();
             var bookItemsToAdd = bookItemIds.Except(existingBookItemIds).ToList();
 
-            await DeactivateChosenDiscounts(discount, bookItemsToDeactivate, _context);
-            await AddNewDiscounts(discount, bookItemsToAdd, _context);
+            if (bookItemsToDeactivate.Count() > 0)
+            {
+                await DatabaseOperationHandler.HandleDatabaseOperation(
+                    async () => await DeactivateChosenDiscounts(discount, bookItemsToDeactivate, _context),
+                    "deaktywacji"
+                );
+            }
+
+            if (bookItemsToAdd.Count() > 0)
+            {
+                await DatabaseOperationHandler.HandleDatabaseOperation(
+                    async () => await AddNewDiscounts(discount, bookItemsToAdd, _context),
+                    "dodawania"
+                );
+            }
         }
         public static async Task AddNewDiscounts(Discount discount, List<int?> bookItemIdsToAdd, BookStoreContext _context)
         {
@@ -28,7 +42,8 @@ namespace BookStoreAPI.BusinessLogic.DiscountLogic
             }).ToList();
 
             _context.BookDiscount.AddRange(bookItemsToAdd);
-            await _context.SaveChangesAsync();
+
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
         public static async Task DeactivateAllDiscounts(Discount discount, BookStoreContext _context)
         {
@@ -41,7 +56,7 @@ namespace BookStoreAPI.BusinessLogic.DiscountLogic
                 bookDiscount.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
         public static async Task DeactivateAllDiscounts(BookItem bookItem, BookStoreContext _context)
         {
@@ -54,7 +69,7 @@ namespace BookStoreAPI.BusinessLogic.DiscountLogic
                 bookDiscount.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
         public static async Task DeactivateChosenDiscounts(Discount discount, List<int?> bookItemIdsToDeactivate, BookStoreContext _context)
         {
@@ -67,7 +82,7 @@ namespace BookStoreAPI.BusinessLogic.DiscountLogic
                 discountItem.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
     }
 }

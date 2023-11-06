@@ -25,7 +25,7 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
                     paymentToUpdate.CopyProperties(payment);
                     paymentToUpdate.PaymentMethodID = payment.PaymentMethod.Id;
                     paymentToUpdate.TransactionStatusID = payment.TransactionStatus.Id;
-                    _context.SaveChanges();
+                    await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
                 }
             }
         }
@@ -37,7 +37,7 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
             newPayment.PaymentMethodID = payment.PaymentMethod.Id;
             newPayment.TransactionStatusID = payment.TransactionStatus.Id;
             _context.Payment.Add(newPayment);
-            await TryToSaveChangesAsync(_context);
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
 
             order.PaymentID = newPayment.Id;
         }
@@ -48,29 +48,7 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
 
             paymentToUpdate.IsActive = false;
 
-            _context.SaveChanges();
-        }
-
-        private static async Task<IActionResult> TryToSaveChangesAsync(BookStoreContext context)
-        {
-            try
-            {
-                await context.SaveChangesAsync();
-                return new OkResult();
-            }
-            catch (Exception ex)
-            {
-                Exception innerException = ex.InnerException;
-
-                if (innerException is not null)
-                {
-                    return new BadRequestObjectResult($"Wewnętrzny wyjątek: {innerException.Message}");
-                }
-                else
-                {
-                    return new BadRequestObjectResult($"Wystąpił błąd podczas zapisywania zmian w bazie danych: {ex.Message}");
-                }
-            }
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
     }
 }

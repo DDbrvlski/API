@@ -1,4 +1,6 @@
-﻿using BookStoreData.Data;
+﻿using BookStoreAPI.Helpers;
+using BookStoreData.Data;
+using BookStoreData.Models.Products.BookItems;
 using BookStoreData.Models.Products.Books;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,8 +18,21 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
             var authorsToDeactivate = existingAuthorIds.Except(authorIds).ToList();
             var authorsToAdd = authorIds.Except(existingAuthorIds).ToList();
 
-            await DeactivateChosenAuthors(book, authorsToDeactivate, _context);
-            await AddNewAuthors(book, authorsToAdd, _context);
+            if (authorsToDeactivate.Count() > 0)
+            {
+                await DatabaseOperationHandler.HandleDatabaseOperation(
+                    async () => await DeactivateChosenAuthors(book, authorsToDeactivate, _context),
+                    "deaktywacji"
+                );
+            }
+
+            if (authorsToAdd.Count() > 0)
+            {
+                await DatabaseOperationHandler.HandleDatabaseOperation(
+                    async () => await AddNewAuthors(book, authorsToAdd, _context),
+                    "dodawania"
+                );
+            }
         }
 
         public static async Task AddNewAuthors(Book book, List<int?> authorIdsToAdd, BookStoreContext _context)
@@ -29,7 +44,8 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
             }).ToList();
 
             _context.BookAuthor.AddRange(authorsToAdd);
-            await _context.SaveChangesAsync();
+
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
 
         public static async Task DeactivateAllAuthors(Book book, BookStoreContext _context)
@@ -43,7 +59,7 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
                 author.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
 
         public static async Task DeactivateChosenAuthors(Book book, List<int?> authorIdsToDeactivate, BookStoreContext _context)
@@ -57,7 +73,7 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
                 author.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
     }
 }

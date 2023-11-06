@@ -1,4 +1,5 @@
-﻿using BookStoreData.Data;
+﻿using BookStoreAPI.Helpers;
+using BookStoreData.Data;
 using BookStoreData.Models.Products.Books;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,8 +17,21 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
             var categoriesToDeactivate = existingCategoryIds.Except(categoryIds).ToList();
             var categoriesToAdd = categoryIds.Except(existingCategoryIds).ToList();
 
-            await DeactivateChosenCategories(book, categoriesToDeactivate, _context);
-            await AddNewCategories(book, categoriesToAdd, _context);
+            if (categoriesToDeactivate.Count() > 0)
+            {
+                await DatabaseOperationHandler.HandleDatabaseOperation(
+                    async () => await DeactivateChosenCategories(book, categoriesToDeactivate, _context),
+                    "deaktywacji"
+                );
+            }
+
+            if (categoriesToAdd.Count() > 0)
+            {
+                await DatabaseOperationHandler.HandleDatabaseOperation(
+                    async () => await AddNewCategories(book, categoriesToAdd, _context),
+                    "dodawania"
+                );
+            }
         }
         public static async Task AddNewCategories(Book book, List<int?> categoryIdsToAdd, BookStoreContext _context)
         {
@@ -28,7 +42,8 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
             }).ToList();
 
             _context.BookCategory.AddRange(categoriesToAdd);
-            await _context.SaveChangesAsync();
+
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
         public static async Task DeactivateAllCategories(Book book, BookStoreContext _context)
         {
@@ -41,7 +56,7 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
                 category.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
         public static async Task DeactivateChosenCategories(Book book, List<int?> categoryIdsToDeactivate, BookStoreContext _context)
         {
@@ -54,7 +69,7 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
                 category.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
 
     }

@@ -25,7 +25,7 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
                 shippingToUpdate.CopyProperties(shipping);
                 shippingToUpdate.ShippingStatusID = shipping.ShippingStatus.Id;
 
-                _context.SaveChanges();
+                await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
             }
         }
 
@@ -34,14 +34,14 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
             Address newAddress = new Address();
             newAddress.CopyProperties(shipping.Address);
             _context.Address.Add(newAddress);
-            _context.SaveChanges();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
 
             Shipping newShipping = new Shipping();
             newShipping.CopyProperties(shipping);
             newShipping.AddressID = newAddress.Id;
             newShipping.ShippingStatusID = shipping.ShippingStatus.Id;
             _context.Shipping.Add(newShipping);
-            _context.SaveChanges();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
 
             order.ShippingID = newShipping.Id;
         }
@@ -54,7 +54,7 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
             shippingToDeactivate.IsActive = false;
             addressToDeactivate.IsActive = false;
 
-            _context.SaveChanges();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
     }
 }

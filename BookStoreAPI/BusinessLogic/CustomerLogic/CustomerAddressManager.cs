@@ -1,6 +1,7 @@
 ﻿using BookStoreAPI.Helpers;
 using BookStoreData.Data;
 using BookStoreData.Models.Customers;
+using BookStoreData.Models.Products.Books;
 using BookStoreViewModels.ViewModels.Customers.Address;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,8 +21,21 @@ namespace BookStoreAPI.BusinessLogic.CustomerLogic
             var addressesToDeactivate = existingAddressesIds.Except(addressIds).ToList();
             var addressesToAdd = addresses.Where(x => x != null && !existingAddressesIds.Contains(x.Id)).ToList();
 
-            await DeactivateChosenAddresses(customer, addressesToDeactivate, _context);
-            await AddNewAddresses(customer, addressesToAdd, _context);
+            if (addressesToDeactivate.Count() > 0)
+            {
+                await DatabaseOperationHandler.HandleDatabaseOperation(
+                    async () => await DeactivateChosenAddresses(customer, addressesToDeactivate, _context),
+                    "deaktywacji"
+                );
+            }
+
+            if (addressesToAdd.Count() > 0)
+            {
+                await DatabaseOperationHandler.HandleDatabaseOperation(
+                    async () => await AddNewAddresses(customer, addressesToAdd, _context),
+                    "dodawania"
+                );
+            }
         }
 
         public static async Task AddNewAddresses(Customer customer, List<AddressPostForView?> addressesToAdd, BookStoreContext _context)
@@ -36,7 +50,8 @@ namespace BookStoreAPI.BusinessLogic.CustomerLogic
                     }.CopyProperties(address)).ToList();
 
                 _context.Address.AddRange(newAddresses);
-                await _context.SaveChangesAsync();
+
+                await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
 
                 var customerAddresses = newAddresses
                     .Select(address => new CustomerAddress
@@ -46,7 +61,8 @@ namespace BookStoreAPI.BusinessLogic.CustomerLogic
                     }).ToList();
 
                 _context.CustomerAddress.AddRange(customerAddresses);
-                await _context.SaveChangesAsync();
+
+                await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
             }
         }
         public static async Task DeactivateAllAddresses(Customer customer, BookStoreContext _context)
@@ -60,7 +76,7 @@ namespace BookStoreAPI.BusinessLogic.CustomerLogic
                 address.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
         public static async Task DeactivateChosenAddresses(Customer customer, List<int?> addressIdsToDeactivate, BookStoreContext _context)
         {
@@ -82,7 +98,7 @@ namespace BookStoreAPI.BusinessLogic.CustomerLogic
                 address.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
     }
 }

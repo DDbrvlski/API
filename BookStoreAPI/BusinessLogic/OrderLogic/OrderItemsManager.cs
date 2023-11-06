@@ -1,5 +1,7 @@
-﻿using BookStoreData.Data;
+﻿using BookStoreAPI.Helpers;
+using BookStoreData.Data;
 using BookStoreData.Models.Orders;
+using BookStoreData.Models.Products.Books;
 using BookStoreViewModels.ViewModels.Helpers;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,8 +21,21 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
             var orderItemsToDeactivate = existingOrderItemsIds.Except(orderItemsIds).ToList();
             var orderItemsToAdd = orderItems.Where(x => x != null && !existingOrderItemsIds.Contains(x.Id)).ToList();
 
-            await DeactivateChosenItems(order, orderItemsToDeactivate, _context);
-            await AddNewItems(order, orderItemsToAdd, _context);
+            if (orderItemsToDeactivate.Count() > 0)
+            {
+                await DatabaseOperationHandler.HandleDatabaseOperation(
+                    async () => await DeactivateChosenItems(order, orderItemsToDeactivate, _context),
+                    "deaktywacji"
+                );
+            }
+
+            if (orderItemsToAdd.Count() > 0)
+            {
+                await DatabaseOperationHandler.HandleDatabaseOperation(
+                    async () => await AddNewItems(order, orderItemsToAdd, _context),
+                    "dodawania"
+                );
+            }
         }
 
         public static async Task AddNewItems(Order order, List<ListOfOrderItemsIds?> orderItemsToAdd, BookStoreContext _context)
@@ -34,7 +49,8 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
             }).ToList();
 
             _context.OrderItems.AddRange(itemsToAdd);
-            await _context.SaveChangesAsync();
+
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
 
         public static async Task DeactivateAllItems(Order order, BookStoreContext _context)
@@ -48,7 +64,7 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
                 item.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
 
         public static async Task DeactivateChosenItems(Order order, List<int?> orderItemsToDeactivate, BookStoreContext _context)
@@ -62,7 +78,7 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
                 item.IsActive = false;
             }
 
-            await _context.SaveChangesAsync();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
     }
 }

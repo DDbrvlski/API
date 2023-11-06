@@ -3,6 +3,8 @@ using BookStoreAPI.Helpers.BaseBusinessLogic;
 using BookStoreData.Models.Customers;
 using BookStoreViewModels.ViewModels.Customers;
 using BookStoreViewModels.ViewModels.Customers.Address;
+using BookStoreAPI.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreAPI.BusinessLogic.CustomerLogic
 {
@@ -10,7 +12,7 @@ namespace BookStoreAPI.BusinessLogic.CustomerLogic
     {
         protected override async Task ConvertListsToUpdate(Customer entity, CustomerPostForView entityWithData, BookStoreContext context)
         {
-            context.SaveChanges();
+            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
             List<AddressPostForView> addresses = entityWithData.ListOfCustomerAdresses.ToList();
 
             await UpdateAllConnectedEntitiesLists(entity, addresses, context);
