@@ -1,13 +1,10 @@
-﻿using BookStoreAPI.Data;
+﻿using BookStoreData.Data;
 using BookStoreAPI.Helpers;
 using BookStoreAPI.Helpers.BaseController;
-using BookStoreAPI.Models.BusinessLogic;
-using BookStoreAPI.Models.PageContent;
-using BookStoreAPI.ViewModels.PageContent;
-using Microsoft.AspNetCore.Http;
+using BookStoreData.Models.PageContent;
+using BookStoreViewModels.ViewModels.PageContent;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace BookStoreAPI.Controllers.PageContent
 {

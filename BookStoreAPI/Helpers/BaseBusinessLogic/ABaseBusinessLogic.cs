@@ -1,4 +1,4 @@
-﻿using BookStoreAPI.Data;
+﻿using BookStoreData.Data;
 
 namespace BookStoreAPI.Helpers.BaseBusinessLogic
 {

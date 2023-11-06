@@ -1,7 +1,7 @@
-﻿//using BookStoreAPI.Data;
-//using BookStoreAPI.Models.Accounts;
-//using BookStoreAPI.Models.Accounts.Dictionaries;
-//using BookStoreAPI.ViewModels.Accounts;
+﻿//using BookStoreData.Data;
+//using BookStoreData.Models.Accounts;
+//using BookStoreData.Models.Accounts.Dictionaries;
+//using BookStoreViewModels.ViewModels.Accounts;
 //using Microsoft.AspNetCore.Identity;
 //using Microsoft.AspNetCore.Mvc;
 

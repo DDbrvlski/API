@@ -1,8 +1,6 @@
-﻿using BookStoreAPI.Data;
+﻿using BookStoreData.Data;
 using BookStoreAPI.Helpers.BaseController;
-using BookStoreAPI.Models.Customers.AddressDictionaries;
-using BookStoreAPI.Models.Transactions.Dictionaries;
-using Microsoft.AspNetCore.Http;
+using BookStoreData.Models.Customers.AddressDictionaries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreAPI.Controllers.Customers.Dictionaries.Address

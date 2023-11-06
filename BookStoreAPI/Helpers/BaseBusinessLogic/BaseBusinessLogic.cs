@@ -1,6 +1,6 @@
-﻿using BookStoreAPI.Data;
-using BookStoreAPI.Models.Helpers;
-using BookStoreAPI.ViewModels.Helpers;
+﻿using BookStoreData.Data;
+using BookStoreData.Models.Helpers;
+using BookStoreViewModels.ViewModels.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreAPI.Helpers.BaseBusinessLogic

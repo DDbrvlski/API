@@ -1,4 +1,4 @@
-﻿using BookStoreAPI.ViewModels.Products.Books;
+﻿using BookStoreViewModels.ViewModels.Products.Books;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreAPI.Interfaces

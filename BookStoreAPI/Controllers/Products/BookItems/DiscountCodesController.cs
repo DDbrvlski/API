@@ -1,13 +1,9 @@
-﻿using BookStoreAPI.Data;
-using BookStoreAPI.Helpers;
+﻿using BookStoreAPI.BusinessLogic.DiscountCodeLogic;
+using BookStoreData.Data;
 using BookStoreAPI.Helpers.BaseController;
-using BookStoreAPI.Models.BusinessLogic.DiscountCodeCodeLogic;
-using BookStoreAPI.Models.BusinessLogic.DiscountLogic;
-using BookStoreAPI.Models.Products.BookItems;
-using BookStoreAPI.ViewModels.Products.BookItems;
-using BookStoreAPI.ViewModels.Products.DiscountCodes;
-using BookStoreAPI.ViewModels.Products.Discounts;
-using Microsoft.AspNetCore.Http;
+using BookStoreData.Models.Products.BookItems;
+using BookStoreViewModels.ViewModels.Products.BookItems;
+using BookStoreViewModels.ViewModels.Products.DiscountCodes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

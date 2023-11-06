@@ -1,3 +1,10 @@
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.csproj.AssemblyReference.cache
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\MvcTestingAppManifest.json
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.AssemblyInfoInputs.cache
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.AssemblyInfo.cs
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.csproj.CoreCompileInputs.cache
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\appsettings.json
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\MvcTestingAppManifest.json
@@ -301,6 +308,9 @@ C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\ne
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Azure.Core.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Azure.Identity.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Humanizer.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.Testing.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Razor.Language.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.AspNetCore.TestHost.dll
@@ -328,6 +338,8 @@ C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\ne
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.Extensions.Configuration.Binder.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.Extensions.Hosting.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.Identity.Client.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.Identity.Client.Extensions.Msal.dll
@@ -528,14 +540,10 @@ C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\ne
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.csproj.AssemblyReference.cache
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\MvcTestingAppManifest.json
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.AssemblyInfoInputs.cache
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.AssemblyInfo.cs
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.csproj.CoreCompileInputs.cache
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\BookStoreData.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\BookStoreViewModels.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\BookStoreData.pdb
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\BookStoreViewModels.pdb
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\staticwebassets\msbuild.BookStoreAPI.Microsoft.AspNetCore.StaticWebAssets.props
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\staticwebassets\msbuild.build.BookStoreAPI.props
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.BookStoreAPI.props
@@ -550,8 +558,3 @@ C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\ne
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.pdb
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.genruntimeconfig.cache
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\ref\BookStoreAPI.dll
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll

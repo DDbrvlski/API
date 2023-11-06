@@ -1,6 +1,4 @@
-﻿using System;
-
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+﻿[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 public class TestPriorityAttribute : Attribute
 {
     public int Priority { get; }

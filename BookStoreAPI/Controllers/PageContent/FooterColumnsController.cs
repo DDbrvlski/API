@@ -1,7 +1,6 @@
-﻿using BookStoreAPI.Data;
+﻿using BookStoreData.Data;
 using BookStoreAPI.Helpers.BaseController;
-using BookStoreAPI.Models.PageContent;
-using Microsoft.AspNetCore.Http;
+using BookStoreData.Models.PageContent;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreAPI.Controllers.PageContent

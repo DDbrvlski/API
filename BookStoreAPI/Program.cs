@@ -1,7 +1,4 @@
-using BookStoreAPI.Data;
-using BookStoreAPI.Models.Accounts;
-using BookStoreAPI.Models.Accounts.Dictionaries;
-using Microsoft.AspNetCore.Identity;
+using BookStoreData.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreAPI

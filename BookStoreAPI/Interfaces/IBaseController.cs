@@ -1,4 +1,4 @@
-﻿using BookStoreAPI.Models.Helpers;
+﻿using BookStoreData.Models.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreAPI.Interfaces

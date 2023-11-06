@@ -1,12 +1,8 @@
-﻿using BookStoreAPI.Data;
-using BookStoreAPI.Interfaces;
-using BookStoreAPI.Models.Helpers;
-using BookStoreAPI.Models.Products.Books;
-using BookStoreAPI.ViewModels.Helpers;
-using Microsoft.AspNetCore.Http;
+﻿using BookStoreData.Data;
+using BookStoreData.Models.Helpers;
+using BookStoreViewModels.ViewModels.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace BookStoreAPI.Helpers.BaseController
 {

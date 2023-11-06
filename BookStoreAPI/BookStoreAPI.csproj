@@ -29,4 +29,9 @@
     <Folder Include="Controllers\Notifications\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BookStoreData\BookStoreData.csproj" />
+    <ProjectReference Include="..\BookStoreModels\BookStoreViewModels.csproj" />
+  </ItemGroup>
+
 </Project>

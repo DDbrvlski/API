@@ -1,10 +1,7 @@
-﻿using BookStoreAPI.Data;
+﻿using BookStoreData.Data;
 using BookStoreAPI.Helpers.BaseController;
-using BookStoreAPI.Models.Transactions.Dictionaries;
-using Microsoft.AspNetCore.Http;
+using BookStoreData.Models.Transactions.Dictionaries;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Core.Types;
 
 namespace BookStoreAPI.Controllers.Transactions.Dictionaries
 {

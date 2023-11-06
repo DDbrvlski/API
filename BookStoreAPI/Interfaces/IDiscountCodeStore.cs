@@ -1,5 +1,4 @@
-﻿using BookStoreAPI.ViewModels.Products.DiscountCodes;
-using BookStoreAPI.ViewModels.Products.Discounts;
+﻿using BookStoreViewModels.ViewModels.Products.DiscountCodes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreAPI.Interfaces

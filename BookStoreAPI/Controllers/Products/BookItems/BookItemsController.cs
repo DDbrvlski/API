@@ -1,10 +1,8 @@
-﻿using BookStoreAPI.Data;
-using BookStoreAPI.Helpers;
+﻿using BookStoreAPI.BusinessLogic.BookItemsLogic;
+using BookStoreData.Data;
 using BookStoreAPI.Helpers.BaseController;
-using BookStoreAPI.Models.BusinessLogic.BookItemsLogic;
-using BookStoreAPI.Models.BusinessLogic.BookLogic;
-using BookStoreAPI.Models.Products.BookItems;
-using BookStoreAPI.ViewModels.Products.BookItems;
+using BookStoreData.Models.Products.BookItems;
+using BookStoreViewModels.ViewModels.Products.BookItems;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

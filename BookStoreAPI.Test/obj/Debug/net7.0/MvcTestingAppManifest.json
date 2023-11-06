@@ -1,3 +1,5 @@
 {
-  "BookStoreAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreAPI"
+  "BookStoreAPI": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreAPI",
+  "BookStoreData": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreData",
+  "BookStoreViewModels": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreModels"
 }

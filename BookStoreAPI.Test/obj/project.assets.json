@@ -4804,6 +4804,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
+          "BookStoreData": "1.0.0",
+          "BookStoreViewModels": "1.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "7.0.12",
           "Microsoft.AspNetCore.Mvc.Testing": "7.0.12",
           "Microsoft.EntityFrameworkCore": "7.0.12",
@@ -4820,6 +4822,30 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "BookStoreData/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "7.0.12",
+          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.12"
+        },
+        "compile": {
+          "bin/placeholder/BookStoreData.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BookStoreData.dll": {}
+        }
+      },
+      "BookStoreViewModels/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/BookStoreViewModels.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BookStoreViewModels.dll": {}
+        }
       }
     }
   },
@@ -13813,6 +13839,16 @@
       "type": "project",
       "path": "../BookStoreAPI/BookStoreAPI.csproj",
       "msbuildProject": "../BookStoreAPI/BookStoreAPI.csproj"
+    },
+    "BookStoreData/1.0.0": {
+      "type": "project",
+      "path": "../BookStoreData/BookStoreData.csproj",
+      "msbuildProject": "../BookStoreData/BookStoreData.csproj"
+    },
+    "BookStoreViewModels/1.0.0": {
+      "type": "project",
+      "path": "../BookStoreModels/BookStoreViewModels.csproj",
+      "msbuildProject": "../BookStoreModels/BookStoreViewModels.csproj"
     }
   },
   "projectFileDependencyGroups": {

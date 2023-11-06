@@ -1,9 +1,7 @@
-﻿using BookStoreAPI.Data;
-using BookStoreAPI.Interfaces;
-using BookStoreAPI.Models.Accounts.Dictionaries;
-using BookStoreAPI.Models.Helpers;
-using BookStoreAPI.ViewModels.Helpers;
-using Microsoft.AspNetCore.Http;
+﻿using BookStoreAPI.Interfaces;
+using BookStoreData.Data;
+using BookStoreData.Models.Helpers;
+using BookStoreViewModels.ViewModels.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreAPI.Helpers.BaseController
