@@ -33,6 +33,11 @@ namespace BookStoreAPI.Controllers.Products.BookItems
             {
                 Id = element.Id,
                 IsAvailable = DateTime.Today >= element.StartingDate && DateTime.Today <= element.ExpiryDate.AddDays(1),
+                Code = element.Code,
+                Description = element.Description,
+                ExpiryDate = element.ExpiryDate,
+                PercentOfDiscount = element.PercentOfDiscount,
+                StartingDate = element.StartingDate,
                 ListOfBookItems = element.BookDiscountCodes
                 .Where(x => x.IsActive == true)
                 .Select(x => new BookItemsForDiscountForView
@@ -43,9 +48,9 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                     BookTitle = x.BookItem.Book.Title,
                     ISBN = x.BookItem.ISBN,
                     FormName = x.BookItem.Form.Name,
-                    NettoPrice = x.BookItem.NettoPrice
-                }.CopyProperties(x)).ToList()
-            }.CopyProperties(element);
+                    NettoPrice = x.BookItem.NettoPrice,
+                }).ToList()
+            };
         }
         protected override async Task<ActionResult<IEnumerable<DiscountCodeForView>>> GetAllEntitiesCustomAsync()
         {
@@ -58,7 +63,10 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 {
                     Id = x.Id,
                     IsAvailable = DateTime.Today >= x.StartingDate && DateTime.Today <= x.ExpiryDate.AddDays(1),
-                }.CopyProperties(x))
+                    Code = x.Code,
+                    Description = x.Description,
+                    PercentOfDiscount = x.PercentOfDiscount,
+                })
                 .ToListAsync();
         }
         protected override async Task<IActionResult> CreateEntityCustomAsync(DiscountCodePostForView entity)

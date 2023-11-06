@@ -26,8 +26,10 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 .Select(x => new StockAmountForView
                 {
                     Id = x.Id,
-                    BookTitle = x.BookItem.Book.Title
-                }.CopyProperties(x))
+                    BookTitle = x.BookItem.Book.Title,
+                    Amount = x.Amount,
+                    BookItemID = x.BookItemID
+                })
                 .ToListAsync();
         }
 
@@ -41,8 +43,10 @@ namespace BookStoreAPI.Controllers.Products.BookItems
             return new StockAmountForView
             {
                 Id = element.Id,
-                BookTitle = element.BookItem.Book.Title
-            }.CopyProperties(element);
+                BookTitle = element.BookItem.Book.Title,
+                Amount = element.Amount,
+                BookItemID = element.BookItemID
+            };
         }
     }
 }

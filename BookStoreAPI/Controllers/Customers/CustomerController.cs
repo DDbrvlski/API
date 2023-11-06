@@ -25,7 +25,7 @@ namespace BookStoreAPI.Controllers.Customers
 
         protected override async Task<CustomerDetailsForView?> GetCustomEntityByIdAsync(int id)
         {
-            var element = await _context.Customer
+            return await _context.Customer
                 .Include(x => x.Gender)
                 .Include(x => x.CustomerAddresses)
                     .ThenInclude(x => x.Address)
@@ -33,13 +33,18 @@ namespace BookStoreAPI.Controllers.Customers
                 .Include(x => x.CustomerAddresses)
                     .ThenInclude(x => x.Address)
                     .ThenInclude(x => x.Country)
-                .FirstOrDefaultAsync(x => x.Id == id && x.IsActive);
-
-            return new CustomerDetailsForView
-            {
-                Id = element.Id,
-                GenderName = element.Gender.Name,
-                ListOfCustomerAdresses = element.CustomerAddresses
+                .Where(x => x.Id == id && x.IsActive)
+                .Select(element => new CustomerDetailsForView()
+                {
+                    Id = element.Id,
+                    GenderName = element.Gender.Name,
+                    DateOfBirth = element.DateOfBirth,
+                    GenderID = (int)element.GenderID,
+                    IsSubscribed = element.IsSubscribed,
+                    Name = element.Name,
+                    PhoneNumber = element.PhoneNumber,
+                    Surname = element.Surname,
+                    ListOfCustomerAdresses = element.CustomerAddresses
                             .Where(z => z.IsActive == true)
                             .Select(y => new AddressDetailsForView
                             {
@@ -54,7 +59,7 @@ namespace BookStoreAPI.Controllers.Customers
                                 CountryName = y.Address.Country.Name
                             }).ToList(),
 
-            }.CopyProperties(element);
+                }).FirstAsync();
         }
         protected override async Task<ActionResult<IEnumerable<CustomerForView>>> GetAllEntitiesCustomAsync()
         {
@@ -66,8 +71,10 @@ namespace BookStoreAPI.Controllers.Customers
                 .Select(x => new CustomerForView
                 {
                     Id = x.Id,
-                    
-                }.CopyProperties(x))
+                    Name = x.Name,
+                    PhoneNumber = x.PhoneNumber,
+                    Surname = x.Surname,
+                })
                 .ToListAsync();
         }
         protected override async Task<IActionResult> CreateEntityCustomAsync(CustomerPostForView entity)
