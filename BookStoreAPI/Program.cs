@@ -1,5 +1,8 @@
+using BookStoreAPI.Services.Email;
 using BookStoreData.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Configuration;
 
 namespace BookStoreAPI
 {
@@ -10,8 +13,13 @@ namespace BookStoreAPI
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddDbContext<BookStoreContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("BookStoreContext") ?? throw new InvalidOperationException("Connection string 'BookStoreContext' not found.")));
-            // Add services to the container.
 
+            builder.Configuration.AddJsonFile("appsettings.json");
+
+            var emailConfiguration = builder.Configuration.Get<EmailConfiguration>();
+            builder.Services.AddSingleton(emailConfiguration);
+
+            // Add services to the container.
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

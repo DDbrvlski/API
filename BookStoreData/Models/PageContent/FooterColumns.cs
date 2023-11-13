@@ -6,5 +6,6 @@ namespace BookStoreData.Models.PageContent
     {
         public int Position { get; set; }
         public string HTMLObject { get; set; }
+        public string Direction { get; set; }
     }
 }

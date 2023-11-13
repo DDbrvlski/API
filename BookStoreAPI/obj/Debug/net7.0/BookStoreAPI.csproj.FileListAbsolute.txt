@@ -558,3 +558,4 @@ C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\ne
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.pdb
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.genruntimeconfig.cache
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\ref\BookStoreAPI.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\obj\Debug\net7.0\BookStoreAPI.MvcApplicationPartsAssemblyInfo.cs

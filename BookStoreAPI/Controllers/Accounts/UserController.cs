@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BookStoreAPI.Services.Email;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreAPI.Controllers.Accounts
 {
@@ -6,6 +7,5 @@ namespace BookStoreAPI.Controllers.Accounts
     [ApiController]
     public class UserController : ControllerBase
     {
-        
     }
 }
