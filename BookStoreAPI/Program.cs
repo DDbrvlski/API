@@ -32,7 +32,7 @@ namespace BookStoreAPI
             {
                 options.AddPolicy("AllowSpecificOrigin", builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000", "http://localhost:3001") // Zmieñ to na adres swojej aplikacji frontendowej
+                    builder.WithOrigins("http://localhost:3000", "http://localhost:3001")
                            .AllowAnyHeader()
                            .AllowAnyMethod();
                 });

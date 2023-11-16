@@ -12,3 +12,4 @@ C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreData\obj\Debug\n
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreData\obj\Debug\net7.0\BookStoreData.pdb
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreData\obj\Debug\net7.0\BookStoreData.genruntimeconfig.cache
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreData\obj\Debug\net7.0\ref\BookStoreData.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreData\obj\Debug\net7.0\BookStoreData.sourcelink.json

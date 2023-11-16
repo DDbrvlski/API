@@ -1,4 +1,3 @@
-C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreModels\obj\Debug\net7.0\BookStoreViewModels.csproj.AssemblyReference.cache
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreModels\obj\Debug\net7.0\BookStoreViewModels.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreModels\obj\Debug\net7.0\BookStoreViewModels.AssemblyInfoInputs.cache
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreModels\obj\Debug\net7.0\BookStoreViewModels.AssemblyInfo.cs
@@ -10,3 +9,4 @@ C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreModels\obj\Debug
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreModels\obj\Debug\net7.0\refint\BookStoreViewModels.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreModels\obj\Debug\net7.0\BookStoreViewModels.pdb
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreModels\obj\Debug\net7.0\ref\BookStoreViewModels.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreModels\obj\Debug\net7.0\BookStoreViewModels.sourcelink.json
