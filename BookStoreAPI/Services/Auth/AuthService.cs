@@ -19,7 +19,7 @@ namespace BookStoreAPI.Services.Auth
 
         public async Task<(int, string)> Login(LoginForView model)
         {
-            var user = await userManager.FindByNameAsync(model.Username);
+            var user = await userManager.FindByEmailAsync(model.Email);
             if (user == null)
                 return (0, "Invalid username");
             if (!await userManager.CheckPasswordAsync(user, model.Password))
