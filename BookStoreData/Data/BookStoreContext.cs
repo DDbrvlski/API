@@ -23,11 +23,12 @@ using BookStoreData.Models.Supply;
 using BookStoreData.Models.Transactions;
 using BookStoreData.Models.Transactions.Dictionaries;
 using BookStoreData.Models.Wishlist;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreData.Data
 {
-    public class BookStoreContext : DbContext
+    public class BookStoreContext : IdentityDbContext<User>
     {
         //private static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
         public BookStoreContext(DbContextOptions<BookStoreContext> options) : base(options) { }
@@ -36,7 +37,6 @@ namespace BookStoreData.Data
         //Accounts
         public DbSet<AccountStatus> AccountStatus { get; set; }
         public DbSet<Permission> Permission { get; set; }
-        public DbSet<LoginDetails> LoginDetails { get; set; }
         public DbSet<User> User { get; set; }
 
         //Basket
@@ -137,6 +137,10 @@ namespace BookStoreData.Data
                 .WithMany()
                 .HasForeignKey(b => b.OriginalLanguageID)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.CustomerID)
+                .IsRequired(false);
         }
     }
 }

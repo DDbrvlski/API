@@ -310,6 +310,7 @@ C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\ne
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net8.0\Azure.Identity.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net8.0\Humanizer.dll
+C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.Testing.dll
 C:\Users\Damian\Desktop\Zadania studia\SEMESTR 7\PRACA\BookStoreAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll

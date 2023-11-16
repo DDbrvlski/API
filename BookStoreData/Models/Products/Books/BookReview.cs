@@ -15,7 +15,7 @@ namespace BookStoreData.Models.Products.Books
         //User
         [Required(ErrorMessage = "Użytkownik jest wymagany.")]
         [Display(Name = "Użytkownik")]
-        public int? UserID { get; set; }
+        public string? UserID { get; set; }
 
         [ForeignKey("UserID")]
         [JsonIgnore]

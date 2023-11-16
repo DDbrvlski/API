@@ -1,16 +1,11 @@
 ﻿using System.Net;
 using System.Net.Mail;
+using BookStoreAPI.Interfaces;
 
 namespace BookStoreAPI.Services.Email
 {
-    public class EmailService
+    public class EmailService(EmailConfiguration emailConfiguration) : IEmailService
     {
-        private readonly EmailConfiguration _emailConfiguration;
-
-        public EmailService(EmailConfiguration emailConfiguration)
-        {
-            _emailConfiguration = emailConfiguration;
-        }
         public void SendEmail(string to, string subject, string body)
         {
             // Konfiguracja ustawień SMTP
@@ -25,17 +20,17 @@ namespace BookStoreAPI.Services.Email
 
         private SmtpClient ConfigureGmailSmtpClient()
         {
-            return new SmtpClient("smtp.gmail.com")
+            return new SmtpClient(emailConfiguration.SmtpServer)
             {
-                Port = 587,
-                Credentials = new NetworkCredential(_emailConfiguration.Email, _emailConfiguration.Password),
-                EnableSsl = true,
+                Port = emailConfiguration.Port,
+                Credentials = new NetworkCredential(emailConfiguration.Email, emailConfiguration.Password),
+                EnableSsl = emailConfiguration.EnableSSL,
             };
         }
 
         private MailMessage CreateNewMessage(string to, string subject, string body)
         {
-            return new MailMessage(_emailConfiguration.Email, to)
+            return new MailMessage(emailConfiguration.Email, to)
             {
                 Subject = subject,
                 Body = body,
