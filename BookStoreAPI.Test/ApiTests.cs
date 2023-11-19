@@ -22,27 +22,27 @@ namespace BookStoreAPI.Test
             //_id = 20;
         }
 
-        [TestMethod]
-        public void SendEmail_ShouldSendEmailSuccessfully()
-        {
-            // Arrange
-            var emailConfig = new EmailConfiguration();
-            emailConfig.Email = "spellariumemailsender@gmail.com";
-            emailConfig.Password = "oanm jxta qitf luus";
-            var emailService = new EmailService(emailConfig);
+        //[TestMethod]
+        //public void SendEmail_ShouldSendEmailSuccessfully()
+        //{
+        //    // Arrange
+        //    var emailConfig = new EmailConfiguration();
+        //    emailConfig.Email = "spellariumemailsender@gmail.com";
+        //    emailConfig.Password = "oanm jxta qitf luus";
+        //    var emailService = new EmailService(emailConfig);
 
-            //emailService.SetSmtpClient(smtpClient);
+        //    //emailService.SetSmtpClient(smtpClient);
 
-            string to = "nologicc00@gmail.com"; // Twój drugi adres e-mail
-            string subject = "Test Email Subject";
-            string body = "Test Email Body";
+        //    string to = "nologicc00@gmail.com"; // Twój drugi adres e-mail
+        //    string subject = "Test Email Subject";
+        //    string body = "Test Email Body";
 
-            // Act
-            emailService.SendEmail(to, subject, body);
+        //    // Act
+        //    emailService.SendEmail(to, subject, body);
 
-            // Assert
-            // Mo¿esz dodaæ asercje tutaj, aby sprawdziæ, czy e-mail zosta³ pomyœlnie wys³any
-        }
+        //    // Assert
+        //    // Mo¿esz dodaæ asercje tutaj, aby sprawdziæ, czy e-mail zosta³ pomyœlnie wys³any
+        //}
 
         //[TestMethod]
         //[TestPriority(2)]

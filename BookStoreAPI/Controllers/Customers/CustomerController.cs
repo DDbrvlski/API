@@ -32,9 +32,9 @@ namespace BookStoreAPI.Controllers.Customers
                 {
                     Id = element.Id,
                     GenderName = element.Gender.Name,
-                    DateOfBirth = element.DateOfBirth,
+                    DateOfBirth = (DateTime)element.DateOfBirth,
                     GenderID = (int)element.GenderID,
-                    IsSubscribed = element.IsSubscribed,
+                    IsSubscribed = (bool)element.IsSubscribed,
                     Name = element.Name,
                     PhoneNumber = element.PhoneNumber,
                     Surname = element.Surname,

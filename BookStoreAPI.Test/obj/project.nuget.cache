@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "G8STKt8vDUXl0CgJE1LuSSx9OrQR9TqMrEyj1A4XdmOsm9cFa8PzNoZXXnkL+lle1hogEqpptzLscyzP06jK3A==",
+  "dgSpecHash": "m2RYKEyB7OFfMrcka2aX43Qe0BU9J8hFJmGI0C8k7+6UDFpnpqbi7+KpAUcOHvZEnc/Dv5OOSRdYjHq9mJvofw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreAPI.Test\\BookStoreAPI.Test.csproj",
+  "projectFilePath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreAPI.Test\\BookStoreAPI.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Damian\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Damian\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
@@ -77,7 +77,7 @@
     "C:\\Users\\Damian\\.nuget\\packages\\microsoft.aspnetcore.mvc.testing\\8.0.0\\microsoft.aspnetcore.mvc.testing.8.0.0.nupkg.sha512",
     "C:\\Users\\Damian\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\6.0.24\\microsoft.aspnetcore.razor.language.6.0.24.nupkg.sha512",
     "C:\\Users\\Damian\\.nuget\\packages\\microsoft.aspnetcore.testhost\\8.0.0\\microsoft.aspnetcore.testhost.8.0.0.nupkg.sha512",
-    "C:\\Users\\Damian\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\2.2.0\\microsoft.aspnetcore.webutilities.2.2.0.nupkg.sha512",
+    "C:\\Users\\Damian\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\8.0.0\\microsoft.aspnetcore.webutilities.8.0.0.nupkg.sha512",
     "C:\\Users\\Damian\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "C:\\Users\\Damian\\.nuget\\packages\\microsoft.build\\17.7.2\\microsoft.build.17.7.2.nupkg.sha512",
     "C:\\Users\\Damian\\.nuget\\packages\\microsoft.build.framework\\17.7.2\\microsoft.build.framework.17.7.2.nupkg.sha512",
@@ -145,7 +145,7 @@
     "C:\\Users\\Damian\\.nuget\\packages\\microsoft.identitymodel.protocols\\7.0.3\\microsoft.identitymodel.protocols.7.0.3.nupkg.sha512",
     "C:\\Users\\Damian\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\7.0.3\\microsoft.identitymodel.protocols.openidconnect.7.0.3.nupkg.sha512",
     "C:\\Users\\Damian\\.nuget\\packages\\microsoft.identitymodel.tokens\\7.0.3\\microsoft.identitymodel.tokens.7.0.3.nupkg.sha512",
-    "C:\\Users\\Damian\\.nuget\\packages\\microsoft.net.http.headers\\2.2.0\\microsoft.net.http.headers.2.2.0.nupkg.sha512",
+    "C:\\Users\\Damian\\.nuget\\packages\\microsoft.net.http.headers\\8.0.0\\microsoft.net.http.headers.8.0.0.nupkg.sha512",
     "C:\\Users\\Damian\\.nuget\\packages\\microsoft.net.stringtools\\17.7.2\\microsoft.net.stringtools.17.7.2.nupkg.sha512",
     "C:\\Users\\Damian\\.nuget\\packages\\microsoft.net.test.sdk\\17.8.0\\microsoft.net.test.sdk.17.8.0.nupkg.sha512",
     "C:\\Users\\Damian\\.nuget\\packages\\microsoft.netcore.platforms\\2.0.0\\microsoft.netcore.platforms.2.0.0.nupkg.sha512",

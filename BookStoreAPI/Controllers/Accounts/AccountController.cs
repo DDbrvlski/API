@@ -1,10 +1,17 @@
-﻿using BookStoreAPI.Interfaces;
+﻿using BookStoreAPI.Helpers;
+using BookStoreAPI.Interfaces;
+using BookStoreData.Data;
 using BookStoreData.Models;
 using BookStoreData.Models.Accounts;
+using BookStoreData.Models.Customers;
 using BookStoreViewModels.ViewModels.Accounts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
+using NuGet.Common;
+using System.Text;
 
 namespace BookStoreAPI.Controllers.Accounts
 {
@@ -14,7 +21,8 @@ namespace BookStoreAPI.Controllers.Accounts
         (IAuthService authService, 
         ILogger<AccountController> logger, 
         UserManager<User> userManager,
-        IEmailSenderService emailSenderService) 
+        IEmailSenderService emailSenderService,
+        BookStoreContext context) 
         : ControllerBase
     {
 
@@ -73,9 +81,15 @@ namespace BookStoreAPI.Controllers.Accounts
                 // Nieprawidłowy użytkownik
                 return BadRequest(new { message = "Invalid user." });
             }
+            if (user.EmailConfirmed)
+            {
+                return BadRequest(new { message = "Już potiwerdzony." });
+            }
+            
+            var tokenDecoded = DecodeToken(token);
 
             // Potwierdź email użytkownika
-            var result = await userManager.ConfirmEmailAsync(user, token);
+            var result = await userManager.ConfirmEmailAsync(user, tokenDecoded);
             if (!result.Succeeded)
             {
                 // Obsłuż błąd potwierdzania emaila
@@ -124,6 +138,61 @@ namespace BookStoreAPI.Controllers.Accounts
                 // Obsłuż błąd resetowania hasła
                 return BadRequest(new { message = "Błąd zmiany hasła." });
             }
+        }
+
+        [HttpPost]
+        //[AllowAnonymous]
+        [Route("CreateCustomerData")]
+        public async Task<IActionResult> CreateCustomerData(string userId, [FromBody] CreateCustomerDataForView model)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return BadRequest(new { message = "Invalid user." });
+            }
+
+            var customer = await context.Customer.FirstAsync(x => x.Id == user.CustomerID);
+            customer.CopyProperties(model);
+
+            Address address1 = new Address();
+            Address address2 = new Address();
+
+            address1.CopyProperties(model.Address);
+            address2.CopyProperties(model.MailingAddress);
+
+            context.Address.Add(address1);
+            context.Address.Add(address2);
+
+            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
+
+            CustomerAddress customerAddress1 = new CustomerAddress();
+            CustomerAddress customerAddress2 = new CustomerAddress();
+
+            customerAddress1.AddressID = address1.Id;
+            customerAddress1.CustomerID = customer.Id;
+            customerAddress2.AddressID = address2.Id;
+            customerAddress2.CustomerID = customer.Id;
+
+            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
+
+            return Ok();
+
+            //var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            //if (result.Succeeded)
+            //{
+            //    return Ok(new { message = "Hasło zostało zmienione." });
+            //}
+            //else
+            //{
+            //    // Obsłuż błąd resetowania hasła
+            //    return BadRequest(new { message = "Błąd zmiany hasła." });
+            //}
+        }
+
+        private string DecodeToken(string token)
+        {
+            var tokenDecodedBytes = WebEncoders.Base64UrlDecode(token);
+            return Encoding.UTF8.GetString(tokenDecodedBytes);
         }
     }
 }

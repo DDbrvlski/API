@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreAPI\\BookStoreAPI.csproj": {}
+    "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreAPI\\BookStoreAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreAPI\\BookStoreAPI.csproj": {
+    "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreAPI\\BookStoreAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreAPI\\BookStoreAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreAPI\\BookStoreAPI.csproj",
         "projectName": "BookStoreAPI",
-        "projectPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreAPI\\BookStoreAPI.csproj",
+        "projectPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreAPI\\BookStoreAPI.csproj",
         "packagesPath": "C:\\Users\\Damian\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreAPI\\obj\\",
+        "outputPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,11 +33,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreData\\BookStoreData.csproj": {
-                "projectPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreData\\BookStoreData.csproj"
+              "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreData\\BookStoreData.csproj": {
+                "projectPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreData\\BookStoreData.csproj"
               },
-              "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreModels\\BookStoreViewModels.csproj": {
-                "projectPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreModels\\BookStoreViewModels.csproj"
+              "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreModels\\BookStoreViewModels.csproj": {
+                "projectPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreModels\\BookStoreViewModels.csproj"
               }
             }
           }
@@ -65,6 +65,10 @@
               "version": "[8.0.0, )"
             },
             "Microsoft.AspNetCore.Mvc.Testing": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.AspNetCore.WebUtilities": {
               "target": "Package",
               "version": "[8.0.0, )"
             },
@@ -114,14 +118,14 @@
         }
       }
     },
-    "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreData\\BookStoreData.csproj": {
+    "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreData\\BookStoreData.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreData\\BookStoreData.csproj",
+        "projectUniqueName": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreData\\BookStoreData.csproj",
         "projectName": "BookStoreData",
-        "projectPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreData\\BookStoreData.csproj",
+        "projectPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreData\\BookStoreData.csproj",
         "packagesPath": "C:\\Users\\Damian\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreData\\obj\\",
+        "outputPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreData\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -198,14 +202,14 @@
         }
       }
     },
-    "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreModels\\BookStoreViewModels.csproj": {
+    "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreModels\\BookStoreViewModels.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreModels\\BookStoreViewModels.csproj",
+        "projectUniqueName": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreModels\\BookStoreViewModels.csproj",
         "projectName": "BookStoreViewModels",
-        "projectPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreModels\\BookStoreViewModels.csproj",
+        "projectPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreModels\\BookStoreViewModels.csproj",
         "packagesPath": "C:\\Users\\Damian\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACA\\BookStoreModels\\obj\\",
+        "outputPath": "C:\\Users\\Damian\\Desktop\\Zadania studia\\SEMESTR 7\\PRACApub\\API\\BookStoreModels\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

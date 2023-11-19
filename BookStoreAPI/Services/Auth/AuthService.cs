@@ -1,7 +1,11 @@
-﻿using BookStoreAPI.Interfaces;
+﻿using BookStoreAPI.Helpers;
+using BookStoreAPI.Interfaces;
+using BookStoreData.Data;
 using BookStoreData.Models.Accounts;
+using BookStoreData.Models.Customers;
 using BookStoreViewModels.ViewModels.Accounts;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,7 +17,8 @@ namespace BookStoreAPI.Services.Auth
         (UserManager<User> userManager, 
         RoleManager<IdentityRole> roleManager,
         IConfiguration configuration,
-        IEmailSenderService emailSenderService)
+        IEmailSenderService emailSenderService,
+        BookStoreContext context)
         : IAuthService
     {
 
@@ -45,25 +50,31 @@ namespace BookStoreAPI.Services.Auth
         {
             var userExists = await userManager.FindByNameAsync(model.Username);
             if (userExists != null)
-                return (0, "User already exists");
+                return (0, "User already exists"); //zmienic na wiadomosc
 
             var emailExists = await userManager.FindByEmailAsync(model.Email);
             if (emailExists != null)
                 return (0, "Email already exists");
+
+            Customer customer = new();
+            context.Customer.Add(customer);
+            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
 
             User user = new()
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username,
+                CustomerID = customer.Id
             };
             var createUserResult = await userManager.CreateAsync(user, model.Password);
             if (!createUserResult.Succeeded)
                 return (0, "User creation failed! Please check user details and try again.");
             if (createUserResult.Succeeded)
             {
-                var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                emailSenderService.ConfirmEmailEmail(token, user);
+                var tokenGenerated = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                var token = CodeTokenToURL(tokenGenerated);
+                await emailSenderService.ConfirmEmailEmail(token, user);
             }
             if (!await roleManager.RoleExistsAsync(role))
                 await roleManager.CreateAsync(new IdentityRole(role));
@@ -92,5 +103,10 @@ namespace BookStoreAPI.Services.Auth
             return tokenHandler.WriteToken(token);
         }
 
+        private string CodeTokenToURL(string token)
+        {
+            byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
+            return WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
+        }
     }
 }
