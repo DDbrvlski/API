@@ -69,6 +69,8 @@ namespace BookStoreData.Data
         //PageContent
         public DbSet<FooterLinks> FooterLinks { get; set; }
         public DbSet<News> News { get; set; }
+        public DbSet<CategoryElement> CategoryElement { get; set; }
+        public DbSet<NavBarMenuLinks> NavBarMenuLinks { get; set; }
 
         //Products
         //BookItems

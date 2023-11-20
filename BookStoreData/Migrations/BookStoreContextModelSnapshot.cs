@@ -173,11 +173,9 @@ namespace BookStoreAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CityID")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("CountryID")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
@@ -196,7 +194,6 @@ namespace BookStoreAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StreetNumber")
@@ -639,6 +636,50 @@ namespace BookStoreAPI.Migrations
                     b.ToTable("OrderItems");
                 });
 
+            modelBuilder.Entity("BookStoreData.Models.PageContent.CategoryElement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImgURL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Logo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CategoryElement");
+                });
+
             modelBuilder.Entity("BookStoreData.Models.PageContent.FooterColumns", b =>
                 {
                     b.Property<int>("Id")
@@ -713,6 +754,38 @@ namespace BookStoreAPI.Migrations
                     b.HasIndex("FooterColumnID");
 
                     b.ToTable("FooterLinks");
+                });
+
+            modelBuilder.Entity("BookStoreData.Models.PageContent.NavBarMenuLinks", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NavBarMenuLinks");
                 });
 
             modelBuilder.Entity("BookStoreData.Models.PageContent.News", b =>
@@ -2077,15 +2150,11 @@ namespace BookStoreAPI.Migrations
                 {
                     b.HasOne("BookStoreData.Models.Customers.AddressDictionaries.City", "City")
                         .WithMany()
-                        .HasForeignKey("CityID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CityID");
 
                     b.HasOne("BookStoreData.Models.Customers.AddressDictionaries.Country", "Country")
                         .WithMany()
-                        .HasForeignKey("CountryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CountryID");
 
                     b.Navigation("City");
 

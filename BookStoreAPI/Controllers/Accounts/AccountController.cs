@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NuGet.Common;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace BookStoreAPI.Controllers.Accounts
@@ -192,6 +194,30 @@ namespace BookStoreAPI.Controllers.Accounts
             //    // Obsłuż błąd resetowania hasła
             //    return BadRequest(new { message = "Błąd zmiany hasła." });
             //}
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("CheckTokenValidity")]
+        public async Task<IActionResult> CheckTokenValidity(string token)
+        {
+            try
+            {
+                if(token.IsNullOrEmpty())
+                    return BadRequest(new { message = "Empty" });
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var jwtSecurityToken = tokenHandler.ReadJwtToken(token);
+
+                if (jwtSecurityToken.ValidTo < DateTime.UtcNow.AddSeconds(10))
+                    return BadRequest(new { message = "NotValid" });
+                else
+                    return Ok(new { message = "Valid" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
 
         private string DecodeToken(string token)
