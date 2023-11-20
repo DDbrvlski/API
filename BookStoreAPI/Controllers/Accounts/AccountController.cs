@@ -112,7 +112,7 @@ namespace BookStoreAPI.Controllers.Accounts
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordForView model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
-            if (user == null)
+            if (user != null)
             {
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
