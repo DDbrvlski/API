@@ -102,6 +102,7 @@ namespace BookStoreAPI.Helpers.BaseBusinessLogic
             TEntity newEntity = Activator.CreateInstance<TEntity>();
             newEntity.CopyProperties(entityWithData);
             context.Set<TEntity>().Add(newEntity);
+            await DatabaseOperationHandler.TryToSaveChangesAsync(context); //przetestowac czy poprawnie dziala dla wszystkich kontrolerow
 
             await ConvertListsToUpdate(newEntity, entityWithData, context);
         }

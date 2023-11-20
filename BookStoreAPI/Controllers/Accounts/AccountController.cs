@@ -50,22 +50,27 @@ namespace BookStoreAPI.Controllers.Accounts
         [Route("registration")]
         public async Task<IActionResult> Register(RegisterForView model)
         {
-            try
+            using (var transaction = context.Database.BeginTransaction())
             {
-                if (!ModelState.IsValid)
-                    return BadRequest("Invalid payload");
-                var (status, message) = await authService.Registration(model, UserRoles.User);
-                if (status == 0)
+                try
                 {
-                    return BadRequest(message);
-                }
-                return CreatedAtAction(nameof(Register), model);
+                    if (!ModelState.IsValid)
+                        return BadRequest("Invalid payload");
+                    var (status, message) = await authService.Registration(model, UserRoles.User);
+                    if (status == 0)
+                    {
+                        return BadRequest(message);
+                    }
+                    transaction.Commit();
+                    return CreatedAtAction(nameof(Register), model);
 
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    logger.LogError(ex.Message);
+                    return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                }
             }
         }
 

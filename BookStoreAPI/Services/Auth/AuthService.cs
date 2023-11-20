@@ -26,7 +26,7 @@ namespace BookStoreAPI.Services.Auth
         {
             var user = await userManager.FindByEmailAsync(model.Email);
             if (user == null)
-                return (0, "Invalid username");
+                return (0, "Invalid Email");
             if (!await userManager.CheckPasswordAsync(user, model.Password))
                 return (0, "Invalid password");
 
