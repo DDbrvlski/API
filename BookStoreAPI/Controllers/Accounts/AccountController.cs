@@ -91,8 +91,10 @@ namespace BookStoreAPI.Controllers.Accounts
                 return BadRequest(new { message = "Email został już potwierdzony" });
             }
 
+            var decodedToken = authService.DecodeToken(token);
+
             // Potwierdź email użytkownika
-            var result = await userManager.ConfirmEmailAsync(user, token);
+            var result = await userManager.ConfirmEmailAsync(user, decodedToken);
             if (!result.Succeeded)
             {
                 // Obsłuż błąd potwierdzania emaila

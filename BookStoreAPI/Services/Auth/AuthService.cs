@@ -92,7 +92,7 @@ namespace BookStoreAPI.Services.Auth
                 if (jwtSecurityToken.ValidTo < DateTime.UtcNow.AddSeconds(10))
                     return (0, "NotValid");
                 else
-                    return (0, "Valid");
+                    return (1, "Valid");
             }
             catch (Exception ex)
             {
@@ -137,7 +137,7 @@ namespace BookStoreAPI.Services.Auth
             byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
             return WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
         }
-        private string DecodeToken(string token)
+        public string DecodeToken(string token)
         {
             var tokenDecodedBytes = WebEncoders.Base64UrlDecode(token);
             return Encoding.UTF8.GetString(tokenDecodedBytes);
