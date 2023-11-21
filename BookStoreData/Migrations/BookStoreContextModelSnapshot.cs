@@ -22,56 +22,6 @@ namespace BookStoreAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BookStoreData.Models.Accounts.Dictionaries.AccountStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AccountStatus");
-                });
-
-            modelBuilder.Entity("BookStoreData.Models.Accounts.Dictionaries.Permission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Permission");
-                });
-
             modelBuilder.Entity("BookStoreData.Models.Accounts.User", b =>
                 {
                     b.Property<string>("Id")
@@ -92,6 +42,9 @@ namespace BookStoreAPI.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -172,6 +125,9 @@ namespace BookStoreAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AddressTypeID")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CityID")
                         .HasColumnType("int");
 
@@ -201,11 +157,38 @@ namespace BookStoreAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressTypeID");
+
                     b.HasIndex("CityID");
 
                     b.HasIndex("CountryID");
 
                     b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("BookStoreData.Models.Customers.AddressDictionaries.AddressType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AddressType");
                 });
 
             modelBuilder.Entity("BookStoreData.Models.Customers.AddressDictionaries.City", b =>
@@ -269,12 +252,6 @@ namespace BookStoreAPI.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("GenderID")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -287,15 +264,10 @@ namespace BookStoreAPI.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GenderID");
 
                     b.ToTable("Customer");
                 });
@@ -332,31 +304,6 @@ namespace BookStoreAPI.Migrations
                     b.HasIndex("CustomerID");
 
                     b.ToTable("CustomerAddress");
-                });
-
-            modelBuilder.Entity("BookStoreData.Models.Customers.CustomerDictionaries.Gender", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Gender");
                 });
 
             modelBuilder.Entity("BookStoreData.Models.Delivery.Dictionaries.ShippingStatus", b =>
@@ -2148,6 +2095,10 @@ namespace BookStoreAPI.Migrations
 
             modelBuilder.Entity("BookStoreData.Models.Customers.Address", b =>
                 {
+                    b.HasOne("BookStoreData.Models.Customers.AddressDictionaries.AddressType", "AddressType")
+                        .WithMany()
+                        .HasForeignKey("AddressTypeID");
+
                     b.HasOne("BookStoreData.Models.Customers.AddressDictionaries.City", "City")
                         .WithMany()
                         .HasForeignKey("CityID");
@@ -2156,18 +2107,11 @@ namespace BookStoreAPI.Migrations
                         .WithMany()
                         .HasForeignKey("CountryID");
 
+                    b.Navigation("AddressType");
+
                     b.Navigation("City");
 
                     b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("BookStoreData.Models.Customers.Customer", b =>
-                {
-                    b.HasOne("BookStoreData.Models.Customers.CustomerDictionaries.Gender", "Gender")
-                        .WithMany()
-                        .HasForeignKey("GenderID");
-
-                    b.Navigation("Gender");
                 });
 
             modelBuilder.Entity("BookStoreData.Models.Customers.CustomerAddress", b =>
