@@ -3,7 +3,7 @@ using BookStoreAPI.Interfaces;
 using BookStoreData.Data;
 using BookStoreData.Models.Accounts;
 using BookStoreData.Models.Customers;
-using BookStoreViewModels.ViewModels.Accounts;
+using BookStoreViewModels.ViewModels.Accounts.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
@@ -30,19 +30,7 @@ namespace BookStoreAPI.Services.Auth
             if (!await userManager.CheckPasswordAsync(user, model.Password))
                 return (0, "Invalid password");
 
-            var userRoles = await userManager.GetRolesAsync(user);
-            var authClaims = new List<Claim>
-            {
-               new Claim(ClaimTypes.Name, user.UserName),
-               new Claim(ClaimTypes.NameIdentifier, user.Id),
-               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
-
-            foreach (var userRole in userRoles)
-            {
-                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-            }
-            string token = GenerateToken(authClaims, model.Audience);
+            string token = await GenerateToken(user, model.Audience);
             return (1, token);
         }
 
@@ -50,13 +38,18 @@ namespace BookStoreAPI.Services.Auth
         {
             var userExists = await userManager.FindByNameAsync(model.Username);
             if (userExists != null)
-                return (0, "User already exists"); //zmienic na wiadomosc
+                return (0, "User already exists");
 
             var emailExists = await userManager.FindByEmailAsync(model.Email);
             if (emailExists != null)
                 return (0, "Email already exists");
 
-            Customer customer = new();
+            Customer customer = new()
+            {
+                Name = model.Name,
+                Surname = model.Surname,
+                IsSubscribed = model.IsSubscribed
+            };
             context.Customer.Add(customer);
             await DatabaseOperationHandler.TryToSaveChangesAsync(context);
 
@@ -65,7 +58,8 @@ namespace BookStoreAPI.Services.Auth
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username,
-                CustomerID = customer.Id
+                CustomerID = customer.Id,
+                PhoneNumber = model.PhoneNumber,
             };
             var createUserResult = await userManager.CreateAsync(user, model.Password);
             if (!createUserResult.Succeeded)
@@ -85,8 +79,43 @@ namespace BookStoreAPI.Services.Auth
             return (1, "User created successfully!");
         }
 
-        private string GenerateToken(IEnumerable<Claim> claims, string audience)
+        public async Task<(int, string)> CheckTokenValidity(string token)
         {
+            try
+            {
+                if (token.IsNullOrEmpty())
+                    return (0, "Empty");
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var jwtSecurityToken = tokenHandler.ReadJwtToken(token);
+
+                if (jwtSecurityToken.ValidTo < DateTime.UtcNow.AddSeconds(10))
+                    return (0, "NotValid");
+                else
+                    return (0, "Valid");
+            }
+            catch (Exception ex)
+            {
+                return (0, ex.Message);
+            }
+        }
+
+        private async Task<string> GenerateToken(User user, string audience)
+        {
+            var userRoles = await userManager.GetRolesAsync(user);
+
+            var authClaims = new List<Claim>
+            {
+               new Claim(ClaimTypes.Name, user.UserName),
+               new Claim(ClaimTypes.NameIdentifier, user.Id),
+               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
+
+            foreach (var userRole in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
+
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTKey:Secret"]));
             var _TokenExpiryTimeInHour = Convert.ToInt64(configuration["JWTKey:TokenExpiryTimeInHour"]);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -95,7 +124,7 @@ namespace BookStoreAPI.Services.Auth
                 Audience = configuration["Audiences:" + audience],
                 Expires = DateTime.UtcNow.AddHours(_TokenExpiryTimeInHour),
                 SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256),
-                Subject = new ClaimsIdentity(claims)
+                Subject = new ClaimsIdentity(authClaims)
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -107,6 +136,11 @@ namespace BookStoreAPI.Services.Auth
         {
             byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
             return WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
+        }
+        private string DecodeToken(string token)
+        {
+            var tokenDecodedBytes = WebEncoders.Base64UrlDecode(token);
+            return Encoding.UTF8.GetString(tokenDecodedBytes);
         }
     }
 }

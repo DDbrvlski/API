@@ -30,6 +30,14 @@ namespace BookStoreData.Models.Customers
         [ForeignKey("CountryID")]
         [JsonIgnore]
         public virtual Country? Country { get; set; }
+
+        //Country
+        [Display(Name = "Typ adresu")]
+        public int? AddressTypeID { get; set; }
+
+        [ForeignKey("AddressTypeID")]
+        [JsonIgnore]
+        public virtual AddressType? AddressType { get; set; }
         #endregion
     }
 }

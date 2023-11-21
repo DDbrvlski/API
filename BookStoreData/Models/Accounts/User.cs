@@ -7,6 +7,7 @@ namespace BookStoreData.Models.Accounts
 {
     public class User : IdentityUser
     {
+        public bool IsActive { get; set; } = true;
         #region Foreign Keys
 
         //Customer

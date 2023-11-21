@@ -111,7 +111,6 @@ namespace BookStoreAPI.Controllers.Orders
                         Id = (int)element.CustomerID,
                         Name = element.Customer.Name,
                         Surname = element.Customer.Surname,
-                        PhoneNumber = element.Customer.PhoneNumber
                     },
                     ListOfOrderItems = element.OrderItems
                     .Where(x => x.IsActive == true)

@@ -1,9 +1,7 @@
 ﻿using BookStoreData.Models.Accounts;
-using BookStoreData.Models.Accounts.Dictionaries;
 using BookStoreData.Models.Basket;
 using BookStoreData.Models.Customers;
 using BookStoreData.Models.Customers.AddressDictionaries;
-using BookStoreData.Models.Customers.CustomerDictionaries;
 using BookStoreData.Models.Delivery;
 using BookStoreData.Models.Delivery.Dictionaries;
 using BookStoreData.Models.Media;
@@ -35,8 +33,6 @@ namespace BookStoreData.Data
 
 
         //Accounts
-        public DbSet<AccountStatus> AccountStatus { get; set; }
-        public DbSet<Permission> Permission { get; set; }
         public DbSet<User> User { get; set; }
 
         //Basket
@@ -45,8 +41,8 @@ namespace BookStoreData.Data
         //Customers
         public DbSet<City> City { get; set; }
         public DbSet<Country> Country { get; set; }
-        public DbSet<Gender> Gender { get; set; }
         public DbSet<Address> Address { get; set; }
+        public DbSet<AddressType> AddressType { get; set; }
         public DbSet<Customer> Customer { get; set; }
         public DbSet<CustomerAddress> CustomerAddress { get; set; }
 

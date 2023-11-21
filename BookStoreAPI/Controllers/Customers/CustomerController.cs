@@ -20,7 +20,6 @@ namespace BookStoreAPI.Controllers.Customers
         protected override async Task<CustomerDetailsForView?> GetCustomEntityByIdAsync(int id)
         {
             return await _context.Customer
-                .Include(x => x.Gender)
                 .Include(x => x.CustomerAddresses)
                     .ThenInclude(x => x.Address)
                     .ThenInclude(x => x.City)
@@ -31,12 +30,8 @@ namespace BookStoreAPI.Controllers.Customers
                 .Select(element => new CustomerDetailsForView()
                 {
                     Id = element.Id,
-                    GenderName = element.Gender.Name,
-                    DateOfBirth = (DateTime)element.DateOfBirth,
-                    GenderID = (int)element.GenderID,
                     IsSubscribed = (bool)element.IsSubscribed,
                     Name = element.Name,
-                    PhoneNumber = element.PhoneNumber,
                     Surname = element.Surname,
                     ListOfCustomerAdresses = element.CustomerAddresses
                             .Where(z => z.IsActive == true)
@@ -58,7 +53,6 @@ namespace BookStoreAPI.Controllers.Customers
         protected override async Task<ActionResult<IEnumerable<CustomerForView>>> GetAllEntitiesCustomAsync()
         {
             return await _context.Customer
-                .Include(x => x.Gender)
                 .Include(x => x.CustomerAddresses)
                     .ThenInclude(x => x.Address)
                 .Where(x => x.IsActive == true)
@@ -66,7 +60,6 @@ namespace BookStoreAPI.Controllers.Customers
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    PhoneNumber = x.PhoneNumber,
                     Surname = x.Surname,
                 })
                 .ToListAsync();

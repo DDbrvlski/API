@@ -1,17 +1,15 @@
 ﻿using BookStoreAPI.Helpers;
 using BookStoreAPI.Interfaces;
 using BookStoreData.Data;
-using BookStoreData.Models;
 using BookStoreData.Models.Accounts;
 using BookStoreData.Models.Customers;
-using BookStoreViewModels.ViewModels.Accounts;
+using BookStoreViewModels.ViewModels.Accounts.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NuGet.Common;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
@@ -90,20 +88,18 @@ namespace BookStoreAPI.Controllers.Accounts
             }
             if (user.EmailConfirmed)
             {
-                return BadRequest(new { message = "Już potiwerdzony." });
+                return BadRequest(new { message = "Email został już potwierdzony" });
             }
-            
-            var tokenDecoded = DecodeToken(token);
 
             // Potwierdź email użytkownika
-            var result = await userManager.ConfirmEmailAsync(user, tokenDecoded);
+            var result = await userManager.ConfirmEmailAsync(user, token);
             if (!result.Succeeded)
             {
                 // Obsłuż błąd potwierdzania emaila
-                return BadRequest(new { message = "Email confirmation failed." });
+                return BadRequest(new { message = "Wystąpił błąd" });
             }
 
-            return Ok(new { message = "Email został potwierdzony ;)" });
+            return Ok(new { message = "Email został potwierdzony" });
         }
 
         [HttpPost]
@@ -117,11 +113,9 @@ namespace BookStoreAPI.Controllers.Accounts
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
                 await emailSenderService.ResetPasswordEmail(token, user);
-
-                return Ok(new { message = "token: " + token + " id: " + user.Id });
             }
 
-            return Ok(new { message = "If the email exists in our system, we will send a password reset link." });
+            return Ok(new { message = "Jeżeli istnieje konto z podanym emailem, wyślemy na niego wiadomość" });
         }
 
         [HttpPost]
@@ -138,12 +132,12 @@ namespace BookStoreAPI.Controllers.Accounts
             var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
             if (result.Succeeded)
             {
-                return Ok(new { message = "Hasło zostało zmienione." });
+                return Ok(new { message = "Hasło zostało zmienione" });
             }
             else
             {
                 // Obsłuż błąd resetowania hasła
-                return BadRequest(new { message = "Błąd zmiany hasła." });
+                return BadRequest(new { message = "Błąd zmiany hasła" });
             }
         }
 
@@ -159,7 +153,6 @@ namespace BookStoreAPI.Controllers.Accounts
             }
 
             var customer = await context.Customer.FirstAsync(x => x.Id == user.CustomerID);
-            customer.CopyProperties(model);
 
             Address address1 = new Address();
             Address address2 = new Address();
@@ -201,29 +194,13 @@ namespace BookStoreAPI.Controllers.Accounts
         [Route("CheckTokenValidity")]
         public async Task<IActionResult> CheckTokenValidity(string token)
         {
-            try
+            var (status, message) = await authService.CheckTokenValidity(token);
+            if (status == 0)
             {
-                if(token.IsNullOrEmpty())
-                    return BadRequest(new { message = "Empty" });
-
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var jwtSecurityToken = tokenHandler.ReadJwtToken(token);
-
-                if (jwtSecurityToken.ValidTo < DateTime.UtcNow.AddSeconds(10))
-                    return BadRequest(new { message = "NotValid" });
-                else
-                    return Ok(new { message = "Valid" });
+                return BadRequest(message);
             }
-            catch (Exception ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
+            return Ok(message);
         }
 
-        private string DecodeToken(string token)
-        {
-            var tokenDecodedBytes = WebEncoders.Base64UrlDecode(token);
-            return Encoding.UTF8.GetString(tokenDecodedBytes);
-        }
     }
 }
