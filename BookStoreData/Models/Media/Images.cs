@@ -6,5 +6,6 @@ namespace BookStoreData.Models.Media
     {
         public string? Title { get; set; }
         public string? ImageURL { get; set; }
+        public int? Position { get; set; } = 1;
     }
 }

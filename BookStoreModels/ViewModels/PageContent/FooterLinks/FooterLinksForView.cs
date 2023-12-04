@@ -1,6 +1,6 @@
 ﻿using BookStoreViewModels.ViewModels.Helpers;
 
-namespace BookStoreViewModels.ViewModels.PageContent
+namespace BookStoreViewModels.ViewModels.PageContent.FooterLinks
 {
     public class FooterLinksForView : BaseView
     {

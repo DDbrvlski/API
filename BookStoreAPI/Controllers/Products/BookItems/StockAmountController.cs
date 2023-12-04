@@ -31,7 +31,7 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 .ToListAsync();
         }
 
-        protected override async Task<StockAmountForView?> GetCustomEntityByIdAsync(int id)
+        protected override async Task<ActionResult<StockAmountForView?>> GetCustomEntityByIdAsync(int id)
         {
             var element = await _context.StockAmount
                 .Include(x => x.BookItem)

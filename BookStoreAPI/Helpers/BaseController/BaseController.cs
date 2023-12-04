@@ -44,23 +44,7 @@ namespace BookStoreAPI.Helpers.BaseController
 
             await UpdateEntityCustomAsync(entity, updatedEntity);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EntityExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok(updatedEntity);
+            return await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
         protected override async Task<IActionResult> DeleteEntityAsync(int id)
         {
@@ -86,10 +70,10 @@ namespace BookStoreAPI.Helpers.BaseController
         {
             return await _context.Set<TEntity>().Where(x => x.IsActive == true).ToListAsync();
         }
-        protected override async Task CreateEntityCustomAsync(TEntity entity)
+        protected override async Task<IActionResult> CreateEntityCustomAsync(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
-            await _context.SaveChangesAsync();
+            return await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
         protected override async Task UpdateEntityCustomAsync(TEntity oldEntity, TEntity updatedEntity)
         {
@@ -100,8 +84,7 @@ namespace BookStoreAPI.Helpers.BaseController
             if (entity is BaseEntity deactivatableEntity)
             {
                 deactivatableEntity.IsActive = false;
-                _context.SaveChanges();
-                return Ok();
+                return await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
             }
             else
             {
@@ -146,23 +129,7 @@ namespace BookStoreAPI.Helpers.BaseController
 
             await UpdateEntityCustomAsync(entity, updatedEntity);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EntityExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok(updatedEntity);
+            return await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
         protected override async Task<IActionResult> DeleteEntityAsync(int id)
         {
@@ -191,8 +158,7 @@ namespace BookStoreAPI.Helpers.BaseController
                 TEntity newEntity = Activator.CreateInstance<TEntity>();
                 newEntity.CopyProperties(entity);
                 _context.Set<TEntity>().Add(newEntity);
-                await _context.SaveChangesAsync();
-                return Ok();
+                return await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
             }
             catch (Exception ex)
             {
@@ -208,8 +174,7 @@ namespace BookStoreAPI.Helpers.BaseController
             if (entity is BaseEntity deactivatableEntity)
             {
                 deactivatableEntity.IsActive = false;
-                _context.SaveChanges();
-                return Ok();
+                return await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
             }
             else
             {

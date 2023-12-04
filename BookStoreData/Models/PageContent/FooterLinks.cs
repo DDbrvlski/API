@@ -12,7 +12,6 @@ namespace BookStoreData.Models.PageContent
         public int? Position { get; set; }
 
         //FooterColumn
-        [Required(ErrorMessage = "Kolumna jest wymagana.")]
         [Display(Name = "Kolumna")]
         public int? FooterColumnID { get; set; }
 

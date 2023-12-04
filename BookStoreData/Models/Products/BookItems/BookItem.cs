@@ -12,7 +12,9 @@ namespace BookStoreData.Models.Products.BookItems
     {
         #region Properties
         public float VAT { get; set; }
+        public double Score { get; set; } = 0;
         public decimal NettoPrice { get; set; }
+        public int SoldUnits { get; set; } = 0;
 
         [MaxLength(13)]
         public string ISBN { get; set; }

@@ -116,6 +116,9 @@ namespace BookStoreAPI.Helpers.BaseBusinessLogic
         protected virtual async Task UpdateEntityAsync(TEntity oldEntity, TEntityPost updatedEntity, BookStoreContext context)
         {
             oldEntity.CopyProperties(updatedEntity);
+            oldEntity.ModifiedDate = DateTime.Now;
+            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
+
             await ConvertListsToUpdate(oldEntity, updatedEntity, context);
         }
 
@@ -127,6 +130,7 @@ namespace BookStoreAPI.Helpers.BaseBusinessLogic
         protected virtual async Task DeactivateEntityAsync(TEntity entity, BookStoreContext context)
         {
             entity.IsActive = false;
+            entity.ModifiedDate = DateTime.Now;
             await DeactivateAllConnectedEntities(entity, context);
         }
 
@@ -138,7 +142,7 @@ namespace BookStoreAPI.Helpers.BaseBusinessLogic
         /// <param name="context">Kontekst bazy danych.</param>
         protected virtual async Task ConvertListsToUpdate(TEntity entity, TEntityPost entityWithData, BookStoreContext context)
         {
-            throw new NotImplementedException();
+            
         }
 
         /// <summary>
@@ -148,7 +152,7 @@ namespace BookStoreAPI.Helpers.BaseBusinessLogic
         /// <param name="context">Kontekst bazy danych.</param>
         protected virtual async Task DeactivateAllConnectedEntities(TEntity entity, BookStoreContext context)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

@@ -5,6 +5,7 @@ using BookStoreData.Models.Products.BookItems;
 using BookStoreViewModels.ViewModels.Products.BookItems;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace BookStoreAPI.Controllers.Products.BookItems
 {
@@ -16,60 +17,83 @@ namespace BookStoreAPI.Controllers.Products.BookItems
         {
         }
 
-        protected override async Task<BookItemsDetailsForView?> GetCustomEntityByIdAsync(int id)
+        [HttpGet]
+        [Route("All-Books")]
+        public async Task<ActionResult<IEnumerable<BookItemsWWWStoreForView>>> AllBooks([FromQuery] BookItemsWWWStoreFiltersForView? filters = null)
         {
-            return await _context.BookItem
-                .Include(x => x.Translator)
-                .Include(x => x.Language)
-                .Include(x => x.Edition)
-                .Include(x => x.FileFormat)
-                .Include(x => x.Form)
-                .Include(x => x.Availability)
-                .Include(x => x.Book)
-                .Include(x => x.BookDiscounts)
-                    .ThenInclude(x => x.Discount)
-                .Select(element => new BookItemsDetailsForView
-                {
-                    Id = element.Id,
-                    TranslatorName = element.Translator.Name + " " + element.Translator.Surname,
-                    LanguageName = element.Language.Name,
-                    EditionName = element.Edition.Name,
-                    FileFormatName = element.FileFormat.Name,
-                    FormName = element.Form.Name,
-                    AvailabilityName = element.Availability.Name,
-                    BookName = element.Book.Title,
-                    BruttoPrice = element.NettoPrice * (1 + (decimal)(element.VAT / 100.0f)),
-                    NettoPrice = element.NettoPrice,
-                    VAT = element.VAT,
-                    ISBN = element.ISBN,
-                    Pages = element.Pages,
-                    PublishingDate = element.PublishingDate,
-                    TranslatorID = element.TranslatorID,
-                    LanguageID = element.TranslatorID,
-                    EditionID = element.EditionID,
-                    BookID = element.BookID,
-                    FileFormatID = element.FileFormatID,
-                    FormID = element.FormID,
-                    AvailabilityID = element.AvailabilityID,
-                })
-                .FirstAsync();
+            return await BookItemB.GetBookItemsForStoreDisplay(_context, filters);
+        }
+
+        [HttpGet]
+        [Route("Infinite-Carousel-Books")]
+        public async Task<ActionResult<IEnumerable<BookItemsCarouselForView>>> InfiniteCarouselBooks()
+        {
+            return await BookItemB.GetBookItemsForCarousel(_context, 1);
+        }
+
+        //[HttpGet]
+        //[Route("Most-Popular-Books")]
+        //public async Task<ActionResult<IEnumerable<BookItemsWWWStoreForView>>> MostPopularBooks()
+        //{
+        //    return await BookItemB.GetBookItemsForStoreDisplay(_context, filters);
+        //}
+
+        //[HttpGet]
+        //[Route("Recently-Added-Books")]
+        //public async Task<ActionResult<IEnumerable<BookItemsWWWStoreForView>>> RecentlyAddedBooks()
+        //{
+        //    return await BookItemB.GetBookItemsForStoreDisplay(_context, filters);
+        //}
+
+        //[HttpGet]
+        //[Route("Most-Purchased-Books")]
+        //public async Task<ActionResult<IEnumerable<BookItemsWWWStoreForView>>> MostPurchasedBooks()
+        //{
+        //    return await BookItemB.GetBookItemsForStoreDisplay(_context, filters);
+        //}
+
+        //[HttpGet]
+        //[Route("All-EBooks")]
+        //public async Task<ActionResult<IEnumerable<BookItemsWWWStoreForView>>> AllEBooks()
+        //{
+        //    return await BookItemB.GetBookItemsForStoreDisplay(_context, filters);
+        //}
+
+        [HttpGet]
+        [Route("Infinite-Carousel-EBooks")]
+        public async Task<ActionResult<IEnumerable<BookItemsCarouselForView>>> InfiniteCarouselEBooks()
+        {
+            return await BookItemB.GetBookItemsForCarousel(_context, 2);
+        }
+
+        //[HttpGet]
+        //[Route("Most-Popular-EBooks")]
+        //public async Task<ActionResult<IEnumerable<BookItemsWWWStoreForView>>> MostPopularEBooks()
+        //{
+        //    return await BookItemB.GetBookItemsForStoreDisplay(_context, filters);
+        //}
+
+        //[HttpGet]
+        //[Route("Recently-Added-EBooks")]
+        //public async Task<ActionResult<IEnumerable<BookItemsWWWStoreForView>>> RecentlyAddedEBooks()
+        //{
+        //    return await BookItemB.GetBookItemsForStoreDisplay(_context, filters);
+        //}
+
+        //[HttpGet]
+        //[Route("Most-Purchased-EBooks")]
+        //public async Task<ActionResult<IEnumerable<BookItemsWWWStoreForView>>> MostPurchasedEBooks()
+        //{
+        //    return await BookItemB.GetBookItemsForStoreDisplay(_context, filters);
+        //}
+
+        protected override async Task<ActionResult<BookItemsDetailsForView?>> GetCustomEntityByIdAsync(int id)
+        {
+            return await BookItemB.GetBookItemById(_context, id);
         }
         protected override async Task<ActionResult<IEnumerable<BookItemsForView>>> GetAllEntitiesCustomAsync()
         {
-            return await _context.BookItem
-                .Include(x => x.Book)
-                .Include(x => x.Form)
-                .Where(x => x.IsActive == true)
-                .Select(x => new BookItemsForView
-                {
-                    Id = x.Id,
-                    FormName = x.Form.Name,
-                    BookTitle = x.Book.Title,
-                    ISBN = x.ISBN,
-                    BookID = x.BookID,
-                    NettoPrice = x.NettoPrice
-                })
-                .ToListAsync();
+            return await BookItemB.GetBookItems(_context);
         }
         protected override async Task<IActionResult> CreateEntityCustomAsync(BookItemsPostForView entity)
         {

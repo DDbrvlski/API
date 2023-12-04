@@ -45,8 +45,8 @@ namespace BookStoreAPI.Helpers.BaseController
     }
 
     public class CRUDController<TEntity, TEntityPost, TEntityForView, TEntityDetailsForView> : 
-        BaseController<TEntity, TEntityPost, TEntityForView, TEntityDetailsForView>,
-        IDataStore<TEntityPost, TEntityForView, TEntityDetailsForView>
+        BaseController<TEntity, TEntityPost, TEntityForView, TEntityDetailsForView>
+        //IDataStore<TEntityPost, TEntityForView, TEntityDetailsForView>
         where TEntity : BaseEntity
         where TEntityPost : BaseView
     {
@@ -73,7 +73,7 @@ namespace BookStoreAPI.Helpers.BaseController
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostEntity(TEntityPost entity)
+        public virtual async Task<IActionResult> PostEntity(TEntityPost entity)
         {
             return await CreateEntityAsync(entity);
         }

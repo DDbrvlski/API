@@ -67,6 +67,8 @@ namespace BookStoreData.Data
         public DbSet<News> News { get; set; }
         public DbSet<CategoryElement> CategoryElement { get; set; }
         public DbSet<NavBarMenuLinks> NavBarMenuLinks { get; set; }
+        public DbSet<Banner> Banner { get; set; }
+        //public DbSet<NavBarMenuLinks> NavBarMenuLinks { get; set; }
 
         //Products
         //BookItems

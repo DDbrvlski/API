@@ -17,7 +17,7 @@ namespace BookStoreAPI.Controllers.Customers
         {
         }
 
-        protected override async Task<CustomerDetailsForView?> GetCustomEntityByIdAsync(int id)
+        protected override async Task<ActionResult<CustomerDetailsForView?>> GetCustomEntityByIdAsync(int id)
         {
             return await _context.Customer
                 .Include(x => x.CustomerAddresses)

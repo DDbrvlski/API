@@ -12,7 +12,7 @@ namespace BookStoreAPI.Helpers.BaseController
 
         protected virtual async Task<TEntity?> GetEntityByIdAsync(int id) { return default; }
         protected virtual async Task<ActionResult<IEnumerable<TEntity>>> GetAllEntitiesCustomAsync() { return null; }
-        protected virtual async Task CreateEntityCustomAsync(TEntity entity) { }
+        protected virtual async Task<IActionResult> CreateEntityCustomAsync(TEntity entity) { return null; }
         protected virtual async Task UpdateEntityCustomAsync(TEntity oldEntity, TEntity updatedEntity) { }
         protected virtual async Task<IActionResult> DeleteEntityCustomAsync(TEntity entity) { return null; }
 
@@ -27,7 +27,7 @@ namespace BookStoreAPI.Helpers.BaseController
         protected abstract bool EntityExists(int id);
 
         protected virtual async Task<TEntity?> GetEntityByIdAsync(int id) { return default; }
-        protected virtual async Task<TEntityDetailsForView?> GetCustomEntityByIdAsync(int id) { return default; }
+        protected virtual async Task<ActionResult<TEntityDetailsForView?>> GetCustomEntityByIdAsync(int id) { return default; }
         protected virtual async Task<ActionResult<IEnumerable<TEntityForView>>> GetAllEntitiesCustomAsync() { return null; }
         protected virtual async Task<IActionResult> CreateEntityCustomAsync(TEntityPost entity) { return null; }
         protected virtual async Task UpdateEntityCustomAsync(TEntity oldEntity, TEntityPost updatedEntity) { }

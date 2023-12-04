@@ -12,7 +12,7 @@ namespace BookStoreAPI.BusinessLogic.CustomerLogic
     {
         protected override async Task ConvertListsToUpdate(Customer entity, CustomerPostForView entityWithData, BookStoreContext context)
         {
-            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
+            //await DatabaseOperationHandler.TryToSaveChangesAsync(context);
             List<AddressPostForView> addresses = entityWithData.ListOfCustomerAdresses.ToList();
 
             await UpdateAllConnectedEntitiesLists(entity, addresses, context);

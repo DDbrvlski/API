@@ -10,7 +10,6 @@ namespace BookStoreData.Models.Products.Books
     public class BookReview : BaseEntity
     {
         public string? Content { get; set; }
-        public DateTime Date { get; set; } = DateTime.Now;
 
         //User
         [Required(ErrorMessage = "Użytkownik jest wymagany.")]

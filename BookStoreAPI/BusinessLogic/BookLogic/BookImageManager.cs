@@ -41,12 +41,14 @@ namespace BookStoreAPI.BusinessLogic.BookLogic
         {
             if (imagesToAdd?.Count > 0)
             {
+                int positionCounter = 1;
                 var newImages = imagesToAdd
                     .Where(image => image != null)
                     .Select(image => new Images
                     {
                         Title = image.Title,
-                        ImageURL = image.ImageURL
+                        ImageURL = image.ImageURL,
+                        Position = positionCounter++
                     }).ToList();
 
                 _context.Images.AddRange(newImages);

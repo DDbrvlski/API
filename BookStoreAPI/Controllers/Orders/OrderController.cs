@@ -14,18 +14,21 @@ using BookStoreViewModels.ViewModels.Shippings;
 using BookStoreViewModels.ViewModels.Shippings.Dictionaries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using BookStoreData.Models.Accounts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookStoreAPI.Controllers.Orders
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize(Roles = $"{UserRoles.Employee}, {UserRoles.Admin}")]
     public class OrderController : CRUDController<Order, OrderPostForView, OrderForView, OrderDetailsForView>
     {
         public OrderController(BookStoreContext context) : base(context)
         {
         }
 
-        protected override async Task<OrderDetailsForView?> GetCustomEntityByIdAsync(int id)
+        protected override async Task<ActionResult<OrderDetailsForView?>> GetCustomEntityByIdAsync(int id)
         {
             return await _context.Order
                 .Include(x => x.OrderItems)

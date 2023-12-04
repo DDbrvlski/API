@@ -1,12 +1,9 @@
-﻿using BookStoreData.Data;
-using BookStoreAPI.Helpers;
-using BookStoreAPI.Helpers.BaseController;
+﻿using BookStoreAPI.Helpers.BaseController;
+using BookStoreData.Data;
 using BookStoreData.Models.PageContent;
-using BookStoreViewModels.ViewModels.PageContent;
+using BookStoreViewModels.ViewModels.PageContent.FooterLinks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
-using BookStoreAPI.BusinessLogic.FooterLinksLogic;
 
 namespace BookStoreAPI.Controllers.PageContent
 {

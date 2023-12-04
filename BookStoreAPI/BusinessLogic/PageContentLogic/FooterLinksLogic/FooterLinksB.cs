@@ -1,9 +1,9 @@
 ﻿using BookStoreData.Data;
 using BookStoreAPI.Helpers;
 using BookStoreData.Models.PageContent;
-using BookStoreViewModels.ViewModels.PageContent;
+using BookStoreViewModels.ViewModels.PageContent.FooterLinks;
 
-namespace BookStoreAPI.BusinessLogic.FooterLinksLogic
+namespace BookStoreAPI.BusinessLogic.PageContentLogic.FooterLinksLogic
 {
     public class FooterLinksB
     {

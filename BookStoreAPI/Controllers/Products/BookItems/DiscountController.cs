@@ -17,7 +17,7 @@ namespace BookStoreAPI.Controllers.Products.BookItems
         {
         }
 
-        protected override async Task<DiscountDetailsForView?> GetCustomEntityByIdAsync(int id)
+        protected override async Task<ActionResult<DiscountDetailsForView?>> GetCustomEntityByIdAsync(int id)
         {
             var element = await _context.Discount
                 .Include(x => x.BookDiscounts)
