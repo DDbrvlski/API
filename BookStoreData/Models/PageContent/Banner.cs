@@ -6,8 +6,9 @@ using System.Text.Json.Serialization;
 
 namespace BookStoreData.Models.PageContent
 {
-    public class Banner : DictionaryTable
+    public class Banner : BaseEntity
     {
+        public string? Title { get; set; }
         public string? Path { get; set; }
         #region Foreign Keys
         //Image

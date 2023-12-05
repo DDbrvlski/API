@@ -1,6 +1,9 @@
-using BookStoreAPI.Interfaces;
+using BookStoreAPI.Interfaces.Services;
 using BookStoreAPI.Services.Auth;
+using BookStoreAPI.Services.Customers;
 using BookStoreAPI.Services.Email;
+using BookStoreAPI.Services.Notifications;
+using BookStoreAPI.Services.Users;
 using BookStoreData.Data;
 using BookStoreData.Models.Accounts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,6 +36,9 @@ namespace BookStoreAPI
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ICustomerService, CustomerService>();
+            builder.Services.AddScoped<INewsletterService, NewsletterService>();
             builder.Services.AddScoped<IUrlHelper>(factory =>
             {
                 var actionContext = factory.GetRequiredService<IActionContextAccessor>().ActionContext;

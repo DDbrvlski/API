@@ -13,6 +13,7 @@ namespace BookStoreData.Models.Customers
         public string? StreetNumber { get; set; }
         public string? HouseNumber { get; set; }
         public string? Postcode { get; set; }
+        public int? Position { get; set; } // 1 = address, 2 = mailing address
         #endregion
         #region Foreign Keys
         //City
@@ -30,14 +31,6 @@ namespace BookStoreData.Models.Customers
         [ForeignKey("CountryID")]
         [JsonIgnore]
         public virtual Country? Country { get; set; }
-
-        //Country
-        [Display(Name = "Typ adresu")]
-        public int? AddressTypeID { get; set; }
-
-        [ForeignKey("AddressTypeID")]
-        [JsonIgnore]
-        public virtual AddressType? AddressType { get; set; }
         #endregion
     }
 }

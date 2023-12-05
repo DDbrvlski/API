@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using BookStoreAPI.Interfaces;
+using BookStoreAPI.Interfaces.Services;
 
 namespace BookStoreAPI.Services.Email
 {

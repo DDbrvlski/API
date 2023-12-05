@@ -10,5 +10,8 @@ namespace BookStoreViewModels.ViewModels.PageContent.CategoryElements
         public int? Position { get; set; }
         public string? ImageTitle { get; set; }
         public string? ImageURL { get; set; }
+        public int? CategoryID { get; set; }
+        public string? CategoryName { get; set; }   
+
     }
 }

@@ -17,7 +17,7 @@ namespace BookStoreAPI.Controllers.PageContent
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NewsController : CRUDController<News, NewsDetailsForView, NewsForView, NewsDetailsForView>
+    public class NewsController : CRUDController<News, NewsPostForView, NewsForView, NewsDetailsForView>
     {
         private readonly UserManager<User> _userManager;
         public NewsController(BookStoreContext context, UserManager<User> userManager) : base(context)
@@ -26,15 +26,15 @@ namespace BookStoreAPI.Controllers.PageContent
         }
 
         [HttpGet]
-        [Route("Main-News")]
-        public async Task<ActionResult<NewsForView>> GetMainNews()
+        [Route("Get-Number-Of-News")]
+        public async Task<ActionResult<IEnumerable<NewsForView>>> GetMainNews([FromQuery] int numberOfElements = 1)
         {
-            return await NewsB.GetMainNews(_context);
+            return await NewsB.GetNumberOfNews(_context, numberOfElements);
         }
 
         [HttpPost]
         //[Authorize(Roles = UserRoles.Employee)]
-        public override async Task<IActionResult> PostEntity(NewsDetailsForView entity)
+        public override async Task<IActionResult> PostEntity(NewsPostForView entity)
         {
             //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -71,12 +71,12 @@ namespace BookStoreAPI.Controllers.PageContent
             return await NewsB.GetAllNews(_context);
         }
 
-        protected override async Task<IActionResult> CreateEntityCustomAsync(NewsDetailsForView entity)
+        protected override async Task<IActionResult> CreateEntityCustomAsync(NewsPostForView entity)
         {
             return await NewsB.ConvertEntityPostForViewAndSave<NewsB>(entity, _context);
         }
 
-        protected override async Task UpdateEntityCustomAsync(News oldEntity, NewsDetailsForView updatedEntity)
+        protected override async Task UpdateEntityCustomAsync(News oldEntity, NewsPostForView updatedEntity)
         {
             await NewsB.ConvertEntityPostForViewAndUpdate<NewsB>(oldEntity, updatedEntity, _context);
         }

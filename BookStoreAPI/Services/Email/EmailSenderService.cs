@@ -1,4 +1,4 @@
-﻿using BookStoreAPI.Interfaces;
+﻿using BookStoreAPI.Interfaces.Services;
 using BookStoreData.Models.Accounts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -29,6 +29,12 @@ namespace BookStoreAPI.Services.Email
             //var confirmationLink = urlHelper.Action("ConfirmEmail", "Account", new { userId = user.Id, token }, "https", "localhost:7247");
             var emailBody = $"Aby potwierdzić adres email, klinij <a href='{confirmationLink}'>tutaj</a>.";
             emailService.SendEmail(user.Email, "Potwierdź email", emailBody);
+        }
+
+        public async Task ConfirmationOfContact(string userName, string userEmail)
+        {
+            var emailBody = $"Witaj {userName}, otrzymaliśmy twoją wiadomość :). /nPostaramy się odpowiedzieć na nią jak najszybciej.";
+            emailService.SendEmail(userName, userEmail, emailBody);
         }
 
         private IUrlHelper GetUrlHelper()

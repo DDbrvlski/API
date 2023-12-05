@@ -25,13 +25,17 @@ namespace BookStoreAPI.BusinessLogic.PageContentLogic.CategoryElementLogic
         }
         protected override async Task DeactivateAllConnectedEntities(CategoryElement entity, BookStoreContext context)
         {
-            await ImageManager.DeactivateImage(context, entity.ImageID);
+            if (entity.ImageID != null)
+            {
+                await ImageManager.DeactivateImage(context, entity.ImageID);
+            }
         }
 
         public static async Task<ActionResult<IEnumerable<CategoryElementsForView>>> GetAllCategoryElements(BookStoreContext context)
         {
             return await context.CategoryElement
                 .Include(x => x.Image)
+                .Include(x => x.Category)
                 .Where(x => x.IsActive == true)
                 .Select(x => new CategoryElementsForView
                 {
@@ -41,7 +45,9 @@ namespace BookStoreAPI.BusinessLogic.PageContentLogic.CategoryElementLogic
                     Logo = x.Logo,
                     Position = x.Position,
                     ImageTitle = x.Image.Title,
-                    ImageURL = x.Image.ImageURL
+                    ImageURL = x.Image.ImageURL,
+                    CategoryID = x.CategoryID,
+                    CategoryName = x.Category.Name
                 }).ToListAsync();
         }
 
@@ -49,6 +55,7 @@ namespace BookStoreAPI.BusinessLogic.PageContentLogic.CategoryElementLogic
         {
             return await context.CategoryElement
                 .Include(x => x.Image)
+                .Include(x => x.Category)
                 .Where(x => x.IsActive == true && x.Id == id)
                 .Select(x => new CategoryElementsForView
                 {
@@ -58,7 +65,9 @@ namespace BookStoreAPI.BusinessLogic.PageContentLogic.CategoryElementLogic
                     Logo = x.Logo,
                     Position = x.Position,
                     ImageTitle = x.Image.Title,
-                    ImageURL = x.Image.ImageURL
+                    ImageURL = x.Image.ImageURL,
+                    CategoryID = x.CategoryID,
+                    CategoryName = x.Category.Name
                 }).FirstAsync();
         }
     }

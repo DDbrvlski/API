@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreAPI.BusinessLogic.PageContentLogic.NewsLogic
 {
-    public class NewsB : BaseBusinessLogic<News, NewsDetailsForView>
+    public class NewsB : BaseBusinessLogic<News, NewsPostForView>
     {
-        protected override async Task ConvertListsToUpdate(News entity, NewsDetailsForView entityWithData, BookStoreContext context)
+        protected override async Task ConvertListsToUpdate(News entity, NewsPostForView entityWithData, BookStoreContext context)
         {
             if (entity.ImageID != null)
             {
@@ -25,7 +25,10 @@ namespace BookStoreAPI.BusinessLogic.PageContentLogic.NewsLogic
         }
         protected override async Task DeactivateAllConnectedEntities(News entity, BookStoreContext context)
         {
-            await ImageManager.DeactivateImage(context, entity.ImageID);
+            if (entity.ImageID != null)
+            {
+                await ImageManager.DeactivateImage(context, entity.ImageID);
+            }
         }
 
         public static async Task<ActionResult<IEnumerable<NewsForView>>> GetAllNews(BookStoreContext context)
@@ -53,25 +56,25 @@ namespace BookStoreAPI.BusinessLogic.PageContentLogic.NewsLogic
                     Id = x.Id,
                     Content = x.Content,
                     Topic = x.Topic,
+                    CreationDate = x.CreationDate,
                     ImageTitle = x.Image.Title,
                     ImageURL = x.Image.ImageURL
                 }).FirstAsync();
         }
 
-        public static async Task<ActionResult<NewsForView>> GetMainNews(BookStoreContext context)
+        public static async Task<ActionResult<IEnumerable<NewsForView>>> GetNumberOfNews(BookStoreContext context, int numberOfElements)
         {
             return await context.News
                 .Include(x => x.Image)
                 .Where(x => x.IsActive == true)
                 .OrderByDescending(x => x.Id)
-                .Select(x => new NewsDetailsForView
+                .Select(x => new NewsForView
                 {
                     Id = x.Id,
-                    Content = x.Content,
                     Topic = x.Topic,
                     ImageTitle = x.Image.Title,
                     ImageURL = x.Image.ImageURL
-                }).FirstAsync();
+                }).Take(numberOfElements).ToListAsync();
         }
     }
 }

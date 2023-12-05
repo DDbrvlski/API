@@ -24,7 +24,10 @@ namespace BookStoreAPI.BusinessLogic.PageContentLogic.BannerLogic
         }
         protected override async Task DeactivateAllConnectedEntities(Banner entity, BookStoreContext context)
         {
-            await ImageManager.DeactivateImage(context, entity.ImageID);
+            if (entity.ImageID != null)
+            {
+                await ImageManager.DeactivateImage(context, entity.ImageID);
+            }
         }
 
         public static async Task<ActionResult<IEnumerable<BannerForView>>> GetAllBanners(BookStoreContext context)
@@ -36,7 +39,7 @@ namespace BookStoreAPI.BusinessLogic.PageContentLogic.BannerLogic
                 {
                     Id = x.Id,
                     Path = x.Path,
-                    Title = x.Name,
+                    Title = x.Title,
                     ImageTitle = x.Image.Title,
                     ImageURL = x.Image.ImageURL
                 }).ToListAsync();
@@ -51,7 +54,7 @@ namespace BookStoreAPI.BusinessLogic.PageContentLogic.BannerLogic
                 {
                     Id = x.Id,
                     Path = x.Path,
-                    Title = x.Name,
+                    Title = x.Title,
                     ImageTitle = x.Image.Title,
                     ImageURL = x.Image.ImageURL
                 }).FirstAsync();

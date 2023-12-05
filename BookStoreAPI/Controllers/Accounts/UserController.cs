@@ -2,6 +2,8 @@
 using BookStoreData.Data;
 using BookStoreData.Models.Accounts;
 using BookStoreViewModels.ViewModels.Accounts.User;
+using BookStoreViewModels.ViewModels.Customers.Address;
+using BookStoreViewModels.ViewModels.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +52,48 @@ namespace BookStoreAPI.Controllers.Accounts
             };
 
             return Ok(userData);
+        }
+
+        [HttpGet("Data-Address")]
+        public async Task<ActionResult<IEnumerable<AddressDetailsForView>>> GetUserDataAddress()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return BadRequest("Nie można znaleźć identyfikatora użytkownika.");
+            }
+
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("Nie można znaleźć użytkownika o podanym identyfikatorze.");
+            }
+
+            var customerAddresses = await context.CustomerAddress
+                .Include(x => x.Address)
+                    .ThenInclude(x => x.City)
+                .Include(x => x.Address)
+                    .ThenInclude(x => x.Country)
+                .Where(x => x.CustomerID == user.CustomerID && x.IsActive)
+                .OrderBy(x => x.Address.Position)
+                .Select(x => new AddressDetailsForView()
+                {
+                    Id = (int)x.AddressID,
+                    Position = x.Address.Position,
+                    CityID = x.Address.CityID,
+                    CityName = x.Address.City.Name,
+                    CountryID = x.Address.CountryID,
+                    CountryName = x.Address.Country.Name,
+                    HouseNumber = x.Address.HouseNumber,
+                    Postcode = x.Address.Postcode,
+                    Street = x.Address.Street,
+                    StreetNumber = x.Address.StreetNumber,
+                })
+                .ToListAsync();
+
+            return Ok(customerAddresses);
         }
 
         [HttpDelete("Deactivate")]
@@ -109,13 +153,26 @@ namespace BookStoreAPI.Controllers.Accounts
                 return NotFound("Nie znaleziono danych klienta.");
             }
 
+            var isEmailExists = await userManager.FindByEmailAsync(userData.Email);
+
+            if (isEmailExists != null && user.Email != userData.Email)
+            {
+                return BadRequest("Podany email jest już zajęty.");
+            }
+
+            var isUserNameExists = await userManager.FindByNameAsync(userData.Username);
+
+            if (isEmailExists != null && user.UserName != userData.Username)
+            {
+                return BadRequest("Podana nazwa użytkownika jest już zajęta.");
+            }
+
             user.Email = userData.Email;
             user.UserName = userData.Username;
             user.PhoneNumber = userData.PhoneNumber;
             customer.Name = userData.Name;
             customer.Surname = userData.Surname;
 
-            //Sprawdzic czy username, phonenumber i email nie sa juz w bazie
 
             return await DatabaseOperationHandler.TryToSaveChangesAsync(context);
         }
@@ -176,15 +233,31 @@ namespace BookStoreAPI.Controllers.Accounts
                 return NotFound("Nie można znaleźć użytkownika o podanym identyfikatorze.");
             }
 
-            var customer = await context.Customer.FirstOrDefaultAsync(x => x.IsActive && x.Id == user.CustomerID);
+            var customerAddresses = await context.CustomerAddress
+                .Include(x => x.Address)
+                    .ThenInclude(x => x.City)
+                .Include(x => x.Address)
+                    .ThenInclude(x => x.Country)
+                .Where(x => x.CustomerID == user.CustomerID && x.IsActive)
+                .OrderBy(x => x.Address.Position)
+                .Select(x => new BaseAddressView()
+                {
+                    Id = (int)x.AddressID,
+                    Position = x.Address.Position,
+                    CityID = x.Address.CityID,
+                    CountryID = x.Address.CountryID,
+                    HouseNumber = x.Address.HouseNumber,
+                    Postcode = x.Address.Postcode,
+                    Street = x.Address.Street,
+                    StreetNumber = x.Address.StreetNumber,
+                })
+                .ToListAsync();
 
-            if (customer == null)
-            {
-                return NotFound("Nie znaleziono danych klienta.");
-            }
+            var address = customerAddresses.Find(x => x.Position == 1);
+            var mailingAddress = customerAddresses.Find(x => x.Position == 2);
 
-            //edytowac adresy email
-
+            address.CopyProperties(userData.address);
+            mailingAddress.CopyProperties(userData.mailingAddress);
 
             return await DatabaseOperationHandler.TryToSaveChangesAsync(context);
         }

@@ -4,6 +4,7 @@ namespace BookStoreViewModels.ViewModels.Products.BookItems
 {
     public class BookItemsWWWStoreFiltersForView
     {
+        public string? searchPhrase { get; set; }
         public List<int?>? authorIds { get; set; }
         public List<int?>? categoryIds { get; set; }
         public List<int?>? formIds { get; set; }

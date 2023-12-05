@@ -10,7 +10,7 @@ namespace BookStoreViewModels.ViewModels.Accounts.User
 {
     public class UserAddressForView
     {
-        public List<AddressDetailsForView>? address {  get; set; }
-        public List<AddressDetailsForView>? mailingAddress {  get; set; }
+        public BaseAddressView? address {  get; set; }
+        public BaseAddressView? mailingAddress {  get; set; }
     }
 }

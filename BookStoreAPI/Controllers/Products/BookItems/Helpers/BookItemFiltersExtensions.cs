@@ -10,6 +10,9 @@ namespace BookStoreAPI.Controllers.Products.BookItems.Helpers
             if (filters == null)
                 return query;
 
+            if (!string.IsNullOrEmpty(filters.searchPhrase))
+                query = query.SearchBy(filters.searchPhrase);
+
             if (filters.authorIds != null && filters.authorIds.Any())
                 query = query.WhereHasAuthors(filters.authorIds);
 
@@ -111,6 +114,14 @@ namespace BookStoreAPI.Controllers.Products.BookItems.Helpers
                 "recentlyAdded" => sortOrder.ToLower() == "asc" ? query.OrderBy(x => x.Id) : query.OrderByDescending(x => x.Id),
                 _ => query
             };
+        }
+
+        public static IQueryable<BookItem> SearchBy(this IQueryable<BookItem> query, string searchPhrase)
+        {
+            return query.Where(x =>
+                x.Book.Title.Contains(searchPhrase) ||
+                x.Book.BookAuthors.Any(a => a.Author.Name.Contains(searchPhrase) || a.Author.Surname.Contains(searchPhrase)) || 
+                x.Book.BookCategories.Any(c => c.Category.Name.Contains(searchPhrase)));
         }
 
         public static IQueryable<BookItem> WhereNumberOfElements(this IQueryable<BookItem> query, int? numberOfElements)

@@ -1,5 +1,5 @@
 ﻿using BookStoreAPI.Helpers;
-using BookStoreAPI.Interfaces;
+using BookStoreAPI.Interfaces.Services;
 using BookStoreData.Data;
 using BookStoreData.Models.Accounts;
 using BookStoreData.Models.Customers;

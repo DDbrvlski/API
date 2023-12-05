@@ -28,7 +28,6 @@ namespace BookStoreData.Models.Products.BookItems
         #endregion
         #region Foreign Keys
         //Translator
-        [Required(ErrorMessage = "Tłumacz jest wymagany.")]
         [Display(Name = "Tłumacz")]
         public int? TranslatorID { get; set; }
 
@@ -55,7 +54,6 @@ namespace BookStoreData.Models.Products.BookItems
         public virtual Book Book { get; set; }
 
         //Edition
-        [Required(ErrorMessage = "Edycja jest wymagana.")]
         [Display(Name = "Edycja")]
         public int? EditionID { get; set; }
 
@@ -64,7 +62,6 @@ namespace BookStoreData.Models.Products.BookItems
         public virtual Edition Edition { get; set; }
 
         //FileFormat
-        [Required(ErrorMessage = "Format pliku jest wymagany.")]
         [Display(Name = "Format pliku")]
         public int? FileFormatID { get; set; }
 

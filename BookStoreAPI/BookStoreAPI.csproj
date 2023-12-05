@@ -28,8 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Basket\" />
-    <Folder Include="Controllers\WIshlist\" />
-    <Folder Include="Controllers\Notifications\" />
+    <Folder Include="Controllers\WishList\" />
   </ItemGroup>
 
   <ItemGroup>

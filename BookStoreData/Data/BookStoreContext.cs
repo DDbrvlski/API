@@ -42,7 +42,6 @@ namespace BookStoreData.Data
         public DbSet<City> City { get; set; }
         public DbSet<Country> Country { get; set; }
         public DbSet<Address> Address { get; set; }
-        public DbSet<AddressType> AddressType { get; set; }
         public DbSet<Customer> Customer { get; set; }
         public DbSet<CustomerAddress> CustomerAddress { get; set; }
 
@@ -55,6 +54,8 @@ namespace BookStoreData.Data
 
         //Notifications
         public DbSet<Newsletter> Newsletter { get; set; }
+        public DbSet<NewsletterSubscribers> NewsletterSubscribers { get; set; }
+        public DbSet<Contact> Contact { get; set; }
 
         //Orders
         public DbSet<DeliveryMethod> DeliveryMethod { get; set; }
@@ -63,12 +64,13 @@ namespace BookStoreData.Data
         public DbSet<Order> Order { get; set; }
 
         //PageContent
-        public DbSet<FooterLinks> FooterLinks { get; set; }
-        public DbSet<News> News { get; set; }
-        public DbSet<CategoryElement> CategoryElement { get; set; }
-        public DbSet<NavBarMenuLinks> NavBarMenuLinks { get; set; }
         public DbSet<Banner> Banner { get; set; }
-        //public DbSet<NavBarMenuLinks> NavBarMenuLinks { get; set; }
+        public DbSet<CategoryElement> CategoryElement { get; set; }
+        public DbSet<DiscountsBanner> DiscountsBanner { get; set; }
+        public DbSet<FooterLinks> FooterLinks { get; set; }
+        public DbSet<FooterColumns> footerColumns { get; set; }
+        public DbSet<News> News { get; set; }
+        public DbSet<NavBarMenuLinks> NavBarMenuLinks { get; set; }
 
         //Products
         //BookItems
@@ -140,6 +142,19 @@ namespace BookStoreData.Data
 
             modelBuilder.Entity<User>()
                 .Property(u => u.CustomerID)
+                .IsRequired(false);
+
+            modelBuilder.Entity<BookItem>()
+                .Property(u => u.TranslatorID)
+                .IsRequired(false);
+            modelBuilder.Entity<BookItem>()
+                .Property(u => u.EditionID)
+                .IsRequired(false);
+            modelBuilder.Entity<BookItem>()
+                .Property(u => u.LanguageID)
+                .IsRequired(false);
+            modelBuilder.Entity<BookItem>()
+                .Property(u => u.FileFormatID)
                 .IsRequired(false);
         }
     }

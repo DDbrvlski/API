@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookStoreData.Models.Customers.AddressDictionaries
+namespace BookStoreData.Models.Notifications
 {
-    public class AddressType : DictionaryTable
+    public class NewsletterSubscribers : BaseEntity
     {
+        public string? Email { get; set; }        
     }
 }

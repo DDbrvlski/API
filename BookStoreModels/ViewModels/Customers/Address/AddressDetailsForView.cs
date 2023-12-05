@@ -6,6 +6,5 @@ namespace BookStoreViewModels.ViewModels.Customers.Address
     {
         public string? CityName { get; set; }
         public string? CountryName { get; set; }
-        public string? AddressTypeName { get; set; }
     }
 }

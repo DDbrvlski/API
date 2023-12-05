@@ -10,7 +10,7 @@ namespace BookStoreData.Models.Customers
         #region Properties
         public string? Name { get; set; }
         public string? Surname { get; set; }
-        public bool? IsSubscribed { get; set; }
+        public bool IsSubscribed { get; set; }
         #endregion
         [JsonIgnore]
         public List<CustomerAddress>? CustomerAddresses { get; set; }

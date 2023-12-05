@@ -1,4 +1,4 @@
-﻿namespace BookStoreAPI.Interfaces
+﻿namespace BookStoreAPI.Interfaces.Services
 {
     public interface IEmailService
     {

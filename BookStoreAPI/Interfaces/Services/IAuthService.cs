@@ -2,7 +2,7 @@
 using BookStoreViewModels.ViewModels.Accounts.Account;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookStoreAPI.Interfaces
+namespace BookStoreAPI.Interfaces.Services
 {
     public interface IAuthService
     {
