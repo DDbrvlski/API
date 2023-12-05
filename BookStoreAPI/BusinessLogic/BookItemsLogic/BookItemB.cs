@@ -1,18 +1,13 @@
 ﻿using BookStoreAPI.BusinessLogic.DiscountCodeLogic;
 using BookStoreAPI.BusinessLogic.DiscountLogic;
 using BookStoreAPI.Controllers.Products.BookItems.Helpers;
-using BookStoreAPI.Helpers;
 using BookStoreAPI.Helpers.BaseBusinessLogic;
 using BookStoreData.Data;
 using BookStoreData.Models.Products.BookItems;
-using BookStoreData.Models.Products.Books;
 using BookStoreViewModels.ViewModels.Products.BookItems;
 using BookStoreViewModels.ViewModels.Products.Books.Dictionaries;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using System.Globalization;
 
 namespace BookStoreAPI.BusinessLogic.BookItemsLogic
 {
@@ -92,7 +87,7 @@ namespace BookStoreAPI.BusinessLogic.BookItemsLogic
                 {
                     Id = x.Id,
                     Title = x.Book.Title,
-                    ImgURL = x.Book.BookImages.First().Image.ImageURL,
+                    ImgURL = x.Book.BookImages.OrderBy(x => x.Image.Position).First().Image.ImageURL,
                     FormId = x.FormID,
                     FormName = x.Form.Name
                 }).Take(25)
@@ -154,6 +149,7 @@ namespace BookStoreAPI.BusinessLogic.BookItemsLogic
             return await items.Select(x => new BookItemsWWWStoreForView
             {
                 Id = x.Id,
+                ImageURL = x.Book.BookImages.OrderBy(x => x.Image.Position).First().Image.ImageURL,
                 Title = x.Book.Title,
                 FormId = x.FormID,
                 FormName = x.Form.Name,

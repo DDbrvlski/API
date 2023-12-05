@@ -10,6 +10,7 @@ namespace BookStoreViewModels.ViewModels.Products.BookItems
 {
     public class BookItemsWWWStoreForView : BaseView
     {
+        public string? ImageURL { get; set; }
         public string? Title { get; set; }
         public decimal? Price { get; set; }
         public double Score { get; set; }
