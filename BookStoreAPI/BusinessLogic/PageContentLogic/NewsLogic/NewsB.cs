@@ -56,6 +56,7 @@ namespace BookStoreAPI.BusinessLogic.PageContentLogic.NewsLogic
                     Id = x.Id,
                     Content = x.Content,
                     Topic = x.Topic,
+                    AuthorName = x.AuthorName,
                     CreationDate = x.CreationDate,
                     ImageTitle = x.Image.Title,
                     ImageURL = x.Image.ImageURL

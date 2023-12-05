@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookStoreData.Models.Accounts;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace BookStoreAPI.Controllers.Orders
 {
@@ -24,8 +26,39 @@ namespace BookStoreAPI.Controllers.Orders
     //[Authorize(Roles = $"{UserRoles.Employee}, {UserRoles.Admin}")]
     public class OrderController : CRUDController<Order, OrderPostForView, OrderForView, OrderDetailsForView>
     {
-        public OrderController(BookStoreContext context) : base(context)
+        private readonly UserManager<User> _userManager;
+        public OrderController(BookStoreContext context, UserManager<User> userManager) : base(context)
         {
+            _userManager = userManager;
+        }
+
+        [HttpGet]
+        [Route("Get-User-Orders")]
+        [Authorize(Roles = UserRoles.User)]
+        public async Task<ActionResult<IEnumerable<OrderDetailsWWWForView>>> GetUserOrders()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return BadRequest("Nie można znaleźć identyfikatora użytkownika.");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("Nie można znaleźć użytkownika o podanym identyfikatorze.");
+            }
+
+            var customer = await _context.Customer.FirstOrDefaultAsync(x => x.IsActive && x.Id == user.CustomerID);
+
+            if (customer == null)
+            {
+                return NotFound("Nie znaleziono danych klienta.");
+            }
+
+            return await OrderB.GetUserOrders(customer, _context);
         }
 
         protected override async Task<ActionResult<OrderDetailsForView?>> GetCustomEntityByIdAsync(int id)
@@ -161,6 +194,28 @@ namespace BookStoreAPI.Controllers.Orders
         }
         protected override async Task<IActionResult> CreateEntityCustomAsync(OrderPostForView entity)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return BadRequest("Nie można znaleźć identyfikatora użytkownika.");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("Nie można znaleźć użytkownika o podanym identyfikatorze.");
+            }
+
+            var customer = await _context.Customer.FirstOrDefaultAsync(x => x.IsActive && x.Id == user.CustomerID);
+
+            if (customer == null)
+            {
+                return NotFound("Nie znaleziono danych klienta.");
+            }
+
+            entity.CustomerID = customer.Id;
             return await OrderB.ConvertEntityPostForViewAndSave<OrderB>(entity, _context);
         }
         protected override async Task UpdateEntityCustomAsync(Order oldEntity, OrderPostForView updatedEntity)

@@ -87,7 +87,7 @@ namespace BookStoreAPI.BusinessLogic.BookItemsLogic
                 {
                     Id = x.Id,
                     Title = x.Book.Title,
-                    ImgURL = x.Book.BookImages.OrderBy(x => x.Image.Position).First().Image.ImageURL,
+                    ImageURL = x.Book.BookImages.OrderBy(x => x.Image.Position).FirstOrDefault(y => y.BookID == x.BookID).Image.ImageURL,
                     FormId = x.FormID,
                     FormName = x.Form.Name
                 }).Take(25)
@@ -149,7 +149,7 @@ namespace BookStoreAPI.BusinessLogic.BookItemsLogic
             return await items.Select(x => new BookItemsWWWStoreForView
             {
                 Id = x.Id,
-                ImageURL = x.Book.BookImages.OrderBy(x => x.Image.Position).First().Image.ImageURL,
+                ImageURL = x.Book.BookImages.OrderBy(x => x.Image.Position).FirstOrDefault(y => y.BookID == x.BookID).Image.ImageURL,
                 Title = x.Book.Title,
                 FormId = x.FormID,
                 FormName = x.Form.Name,

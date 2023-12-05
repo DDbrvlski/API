@@ -90,5 +90,7 @@ namespace BookStoreData.Models.Products.BookItems
 
         [JsonIgnore]
         public List<BookDiscount>? BookDiscounts { get; set; }
+        [JsonIgnore]
+        public List<BookItemReview>? BookItemReviews { get; set; }
     }
 }

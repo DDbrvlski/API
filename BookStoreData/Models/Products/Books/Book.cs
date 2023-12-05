@@ -47,8 +47,6 @@ namespace BookStoreData.Models.Products.Books
         public List<BookDiscount>? BookDiscounts { get; set; }
         [JsonIgnore]
         public List<BookImages>? BookImages { get; set; }
-        [JsonIgnore]
-        public List<BookReview>? BookReviews { get; set; }
         #endregion
     }
 }

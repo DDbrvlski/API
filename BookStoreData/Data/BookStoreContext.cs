@@ -87,6 +87,7 @@ namespace BookStoreData.Data
         public DbSet<Reservations> Reservations { get; set; }
         public DbSet<StockAmount> StockAmount { get; set; }
         public DbSet<UserRecommendedBooks> UserRecommendedBooks { get; set; }
+        public DbSet<BookItemReview> BookItemReview { get; set; }
         //Books
         public DbSet<Author> Author { get; set; }
         public DbSet<Category> Category { get; set; }
@@ -98,7 +99,6 @@ namespace BookStoreData.Data
         public DbSet<BookAuthor> BookAuthor { get; set; }
         public DbSet<BookCategory> BookCategory { get; set; }
         public DbSet<BookImages> BookImages { get; set; }
-        public DbSet<BookReview> BookReview { get; set; }
 
         //Rentals
         public DbSet<RentalStatus> RentalStatus { get; set; }

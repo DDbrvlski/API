@@ -4,30 +4,31 @@ using System.ComponentModel.DataAnnotations;
 using BookStoreData.Models.Accounts;
 using BookStoreData.Models.Products.Books.BookDictionaries;
 using System.Text.Json.Serialization;
+using BookStoreData.Models.Customers;
 
-namespace BookStoreData.Models.Products.Books
+namespace BookStoreData.Models.Products.BookItems
 {
-    public class BookReview : BaseEntity
+    public class BookItemReview : BaseEntity
     {
         public string? Content { get; set; }
 
         //User
         [Required(ErrorMessage = "Użytkownik jest wymagany.")]
         [Display(Name = "Użytkownik")]
-        public string? UserID { get; set; }
+        public int? CustomerID { get; set; }
 
-        [ForeignKey("UserID")]
+        [ForeignKey("CustomerID")]
         [JsonIgnore]
-        public virtual User User { get; set; }
+        public virtual Customer Customer { get; set; }
 
         //Book
         [Required(ErrorMessage = "Książka jest wymagana.")]
         [Display(Name = "Książka")]
-        public int? BookID { get; set; }
+        public int? BookItemID { get; set; }
 
-        [ForeignKey("BookID")]
+        [ForeignKey("BookItemID")]
         [JsonIgnore]
-        public virtual Book Book { get; set; }
+        public virtual BookItem BookItem { get; set; }
 
         //Score
         [Required(ErrorMessage = "Ocena jest wymagana.")]

@@ -9,5 +9,6 @@ namespace BookStoreViewModels.ViewModels.PageContent.News
     public class NewsDetailsForView : NewsPostForView
     {
         public DateTime CreationDate { get; set; }
+        public string? AuthorName { get; set; }
     }
 }
