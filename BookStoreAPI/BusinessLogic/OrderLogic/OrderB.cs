@@ -34,7 +34,7 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
             await OrderShippingManager.DeactivateShipping(entity, context);
             await CalculateTotalPriceForOrder(entity, context);
         }
-        public static async Task<ActionResult<IEnumerable<OrderDetailsWWWForView>>> GetUserOrders(Customer customer, BookStoreContext context)
+        public static async Task<ActionResult<IEnumerable<OrderDetailsWWWForView>>> GetUserOrders(Customer customer, OrderFiltersForView orderFilters, BookStoreContext context)
         {
             return await context.Order
                 .Include(x => x.OrderItems)
@@ -53,6 +53,7 @@ namespace BookStoreAPI.BusinessLogic.OrderLogic
                     .ThenInclude(x => x.Image)
                 .Include(x => x.DeliveryMethod)
                 .Where(x => x.CustomerID == customer.Id)
+                .ApplyOrderFilters(orderFilters)
                 .OrderByDescending(x => x.Id)
                 .Select(x => new OrderDetailsWWWForView()
                 {

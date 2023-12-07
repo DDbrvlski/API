@@ -22,6 +22,7 @@ namespace BookStoreViewModels.ViewModels.Products.BookItems
         public string? TranslatorName { get; set; }
         public string? ISBN { get; set; }
         public string? Description { get; set; }
+        public bool IsWishlisted { get; set; } = false;
         public DateTime ReleaseDate { get; set; }
         public List<AuthorsForView>? Authors { get; set; }
         public List<CategoryForView>? Categories { get; set; }

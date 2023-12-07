@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static NuGet.Packaging.PackagingConstants;
 using BookStoreViewModels.ViewModels.Products.Books.Dictionaries;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace BookStoreAPI.Controllers.Products.BookItems
 {
@@ -36,6 +38,18 @@ namespace BookStoreAPI.Controllers.Products.BookItems
         [Route("Book-Details")]
         public async Task<ActionResult<BookItemWWWDetailsForView>> BookDetails(int bookItemId)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            bool isWishlisted = false;
+
+            if (userId != null)
+            {
+                var user = await _context.User.FirstAsync(x => x.IsActive && x.Id == userId);
+                var wishlist = await _context.Wishlist.FirstAsync(x => x.IsActive && x.CustomerID == user.CustomerID);
+                isWishlisted = await _context.WishlistItems
+                    .AnyAsync(x => x.IsActive && x.WishlistID == wishlist.Id && x.BookItemID == bookItemId);
+            }
+
             var scoreOccurrences = _context.BookItemReview
                 .GroupBy(review => review.Score.Value)
                 .ToDictionary(group => group.Key, group => group.Count());
@@ -84,6 +98,7 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                     OriginalLanguage = x.Book.OriginalLanguage.Name,
                     TranslatorName = x.Translator.Name,
                     ISBN = x.ISBN,
+                    IsWishlisted = isWishlisted,
                     Description = x.Book.Description,
                     ReleaseDate = x.PublishingDate,
                     Authors = x.Book.BookAuthors.Select(y => new AuthorsForView

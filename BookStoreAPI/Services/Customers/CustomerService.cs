@@ -14,8 +14,8 @@ namespace BookStoreAPI.Services.Customers
     {
         public async Task<Customer> GetCustomerByEmail(string email)
         {
-            var customerId = context.User.Where(x => x.Email == email && x.IsActive).FirstOrDefaultAsync().Result.CustomerID;
-            return await context.Customer.FirstOrDefaultAsync(x => x.Id == customerId);
+            var customer = await context.User.Where(x => x.Email == email && x.IsActive).FirstOrDefaultAsync();
+            return await context.Customer.FirstOrDefaultAsync(x => x.Id == customer.CustomerID);
         }
 
         public async Task<IActionResult> SetCustomerNewsletterSubscription(Customer customer)

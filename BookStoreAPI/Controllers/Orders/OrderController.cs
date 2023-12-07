@@ -35,7 +35,7 @@ namespace BookStoreAPI.Controllers.Orders
         [HttpGet]
         [Route("Get-User-Orders")]
         [Authorize(Roles = UserRoles.User)]
-        public async Task<ActionResult<IEnumerable<OrderDetailsWWWForView>>> GetUserOrders()
+        public async Task<ActionResult<IEnumerable<OrderDetailsWWWForView>>> GetUserOrders([FromQuery] OrderFiltersForView orderFilters)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -58,7 +58,7 @@ namespace BookStoreAPI.Controllers.Orders
                 return NotFound("Nie znaleziono danych klienta.");
             }
 
-            return await OrderB.GetUserOrders(customer, _context);
+            return await OrderB.GetUserOrders(customer, orderFilters, _context);
         }
 
         protected override async Task<ActionResult<OrderDetailsForView?>> GetCustomEntityByIdAsync(int id)
