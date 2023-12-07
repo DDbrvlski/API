@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreAPI.BusinessLogic.PageContentLogic.CategoryElementLogic
 {
-    public class CategoryElementB : BaseBusinessLogic<CategoryElement, CategoryElementsForView>
+    public class CategoryElementB : BaseBusinessLogic<CategoryElement, CategoryElementsPostForView>
     {
-        protected override async Task ConvertListsToUpdate(CategoryElement entity, CategoryElementsForView entityWithData, BookStoreContext context)
+        protected override async Task ConvertListsToUpdate(CategoryElement entity, CategoryElementsPostForView entityWithData, BookStoreContext context)
         {
             if (entity.ImageID != null)
             {

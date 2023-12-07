@@ -1,6 +1,6 @@
 ﻿using BookStoreAPI.BusinessLogic.DiscountCodeLogic;
 using BookStoreAPI.BusinessLogic.DiscountLogic;
-using BookStoreAPI.Controllers.Products.BookItems.Helpers;
+using BookStoreAPI.Helpers;
 using BookStoreAPI.Helpers.BaseBusinessLogic;
 using BookStoreData.Data;
 using BookStoreData.Models.Products.BookItems;
@@ -144,7 +144,7 @@ namespace BookStoreAPI.BusinessLogic.BookItemsLogic
                         .Include(x => x.Book)
                             .ThenInclude(x => x.BookImages)
                         .Where(x => x.IsActive == true)
-                        .ApplyFilters(filters);
+                        .ApplyBookFilters(filters);
 
             return await items.Select(x => new BookItemsWWWStoreForView
             {

@@ -9,7 +9,7 @@ namespace BookStoreAPI.Controllers.PageContent
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryElementsController : CRUDController<CategoryElement, CategoryElementsForView, CategoryElementsForView, CategoryElementsForView>
+    public class CategoryElementsController : CRUDController<CategoryElement, CategoryElementsPostForView, CategoryElementsForView, CategoryElementsForView>
     {
         public CategoryElementsController(BookStoreContext context) : base(context)
         {
@@ -25,12 +25,12 @@ namespace BookStoreAPI.Controllers.PageContent
             return await CategoryElementB.GetAllCategoryElements(_context);
         }
 
-        protected override async Task<IActionResult> CreateEntityCustomAsync(CategoryElementsForView entity)
+        protected override async Task<IActionResult> CreateEntityCustomAsync(CategoryElementsPostForView entity)
         {
             return await CategoryElementB.ConvertEntityPostForViewAndSave<CategoryElementB>(entity, _context);
         }
 
-        protected override async Task UpdateEntityCustomAsync(CategoryElement oldEntity, CategoryElementsForView updatedEntity)
+        protected override async Task UpdateEntityCustomAsync(CategoryElement oldEntity, CategoryElementsPostForView updatedEntity)
         {
             await CategoryElementB.ConvertEntityPostForViewAndUpdate<CategoryElementB>(oldEntity, updatedEntity, _context);
         }
