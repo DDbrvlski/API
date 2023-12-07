@@ -76,7 +76,7 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                     BookTitle = x.Book.Title,
                     FormName = x.Form.Name,
                     Score = x.Score,
-                    Price = x.NettoPrice * (1 + (decimal)x.VAT / 100),
+                    Price = x.NettoPrice * (1 + ((decimal)x.VAT / 100)),
                     FileFormatName = x.FileFormat.Name,
                     EditionName = x.Edition.Name,
                     PublisherName = x.Book.Publisher.Name,

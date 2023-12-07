@@ -1,6 +1,7 @@
 ﻿using BookStoreAPI.Helpers;
 using BookStoreData.Data;
 using BookStoreData.Models.Accounts;
+using BookStoreData.Models.Customers;
 using BookStoreViewModels.ViewModels.Accounts.User;
 using BookStoreViewModels.ViewModels.Customers.Address;
 using BookStoreViewModels.ViewModels.Helpers;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 
 namespace BookStoreAPI.Controllers.Accounts
@@ -216,7 +218,8 @@ namespace BookStoreAPI.Controllers.Accounts
             return Ok(new { message = "Pomyślnie zmieniono hasło" });
         }
 
-        [HttpPut("Edit-Address-Data")]
+        [HttpPost]
+        [Route("Edit-Address-Data")]
         public async Task<IActionResult> EditUserAddressData([FromBody] UserAddressForView userData)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -253,11 +256,52 @@ namespace BookStoreAPI.Controllers.Accounts
                 })
                 .ToListAsync();
 
-            var address = customerAddresses.Find(x => x.Position == 1);
-            var mailingAddress = customerAddresses.Find(x => x.Position == 2);
+            if (userData.mailingAddress == null)
+            {
+                userData.mailingAddress.CopyProperties(userData.address);
+            }
 
-            address.CopyProperties(userData.address);
-            mailingAddress.CopyProperties(userData.mailingAddress);
+            if (!customerAddresses.IsNullOrEmpty())
+            {
+                var address = customerAddresses.Find(x => x.Position == 1);
+                var mailingAddress = customerAddresses.Find(x => x.Position == 2);
+
+                address.CopyProperties(userData.address);
+                mailingAddress.CopyProperties(userData.mailingAddress);
+            }
+            else
+            {
+                Address address = new Address();
+                Address mailingAddress = new Address();
+
+                if (userData.address.Position == 0)
+                {
+                    userData.address.Position = 1;
+                }
+                if (userData.mailingAddress.Position == 0)
+                {
+                    userData.mailingAddress.Position = 2;
+                }
+
+                address.CopyProperties(userData.address);
+                mailingAddress.CopyProperties(userData.mailingAddress);
+
+                context.Address.Add(address);
+                context.Address.Add(mailingAddress);
+
+                await DatabaseOperationHandler.TryToSaveChangesAsync(context);
+
+                CustomerAddress customerAddress1 = new CustomerAddress();
+                CustomerAddress customerAddress2 = new CustomerAddress();
+
+                customerAddress1.AddressID = address.Id;
+                customerAddress1.CustomerID = user.CustomerID;
+                customerAddress2.AddressID = mailingAddress.Id;
+                customerAddress2.CustomerID = user.CustomerID;
+
+                context.CustomerAddress.Add(customerAddress1);
+                context.CustomerAddress.Add(customerAddress2);
+            }
 
             return await DatabaseOperationHandler.TryToSaveChangesAsync(context);
         }

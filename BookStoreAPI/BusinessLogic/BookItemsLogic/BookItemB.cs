@@ -153,7 +153,7 @@ namespace BookStoreAPI.BusinessLogic.BookItemsLogic
                 Title = x.Book.Title,
                 FormId = x.FormID,
                 FormName = x.Form.Name,
-                Price = x.NettoPrice * (decimal)1.23,
+                Price = x.NettoPrice * (1 + ((decimal)x.VAT / 100)),
                 Score = x.Score,
                 authors = x.Book.BookAuthors.Select(y => new AuthorsForView
                 {

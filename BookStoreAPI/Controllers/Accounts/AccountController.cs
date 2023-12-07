@@ -144,54 +144,6 @@ namespace BookStoreAPI.Controllers.Accounts
         }
 
         [HttpPost]
-        //[AllowAnonymous]
-        [Route("CreateCustomerData")]
-        public async Task<IActionResult> CreateCustomerData(string userId, [FromBody] CreateCustomerDataForView model)
-        {
-            var user = await userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return BadRequest(new { message = "Invalid user." });
-            }
-
-            var customer = await context.Customer.FirstAsync(x => x.Id == user.CustomerID);
-
-            Address address1 = new Address();
-            Address address2 = new Address();
-
-            address1.CopyProperties(model.Address);
-            address2.CopyProperties(model.MailingAddress);
-
-            context.Address.Add(address1);
-            context.Address.Add(address2);
-
-            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
-
-            CustomerAddress customerAddress1 = new CustomerAddress();
-            CustomerAddress customerAddress2 = new CustomerAddress();
-
-            customerAddress1.AddressID = address1.Id;
-            customerAddress1.CustomerID = customer.Id;
-            customerAddress2.AddressID = address2.Id;
-            customerAddress2.CustomerID = customer.Id;
-
-            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
-
-            return Ok();
-
-            //var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
-            //if (result.Succeeded)
-            //{
-            //    return Ok(new { message = "Hasło zostało zmienione." });
-            //}
-            //else
-            //{
-            //    // Obsłuż błąd resetowania hasła
-            //    return BadRequest(new { message = "Błąd zmiany hasła." });
-            //}
-        }
-
-        [HttpPost]
         [AllowAnonymous]
         [Route("CheckTokenValidity")]
         public async Task<IActionResult> CheckTokenValidity(string token)
