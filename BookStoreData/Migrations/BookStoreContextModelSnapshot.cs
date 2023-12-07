@@ -2026,7 +2026,7 @@ namespace BookStoreAPI.Migrations
                     b.ToTable("Payment");
                 });
 
-            modelBuilder.Entity("BookStoreData.Models.Wishlist.WishlistItem", b =>
+            modelBuilder.Entity("BookStoreData.Models.Wishlist.Wishlist", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2037,15 +2037,55 @@ namespace BookStoreAPI.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CustomerID")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("PublicIdentifier")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.ToTable("WishlistItem");
+                    b.HasIndex("CustomerID");
+
+                    b.ToTable("Wishlist");
+                });
+
+            modelBuilder.Entity("BookStoreData.Models.Wishlist.WishlistItems", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BookItemID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("WishlistID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookItemID");
+
+                    b.HasIndex("WishlistID");
+
+                    b.ToTable("WishlistItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -2713,6 +2753,30 @@ namespace BookStoreAPI.Migrations
                     b.Navigation("TransactionStatus");
                 });
 
+            modelBuilder.Entity("BookStoreData.Models.Wishlist.Wishlist", b =>
+                {
+                    b.HasOne("BookStoreData.Models.Customers.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerID");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("BookStoreData.Models.Wishlist.WishlistItems", b =>
+                {
+                    b.HasOne("BookStoreData.Models.Products.BookItems.BookItem", "BookItem")
+                        .WithMany()
+                        .HasForeignKey("BookItemID");
+
+                    b.HasOne("BookStoreData.Models.Wishlist.Wishlist", "Wishlist")
+                        .WithMany("WishlistItems")
+                        .HasForeignKey("WishlistID");
+
+                    b.Navigation("BookItem");
+
+                    b.Navigation("Wishlist");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -2806,6 +2870,11 @@ namespace BookStoreAPI.Migrations
                     b.Navigation("BookImages");
 
                     b.Navigation("BookItems");
+                });
+
+            modelBuilder.Entity("BookStoreData.Models.Wishlist.Wishlist", b =>
+                {
+                    b.Navigation("WishlistItems");
                 });
 #pragma warning restore 612, 618
         }

@@ -122,6 +122,8 @@ namespace BookStoreAPI.Controllers.Accounts
                 return NotFound("Nie znaleziono danych klienta.");
             }
 
+            //Dodac deaktywacje wishlisty
+
             customer.IsSubscribed = false;
             customer.IsActive = false;
             user.IsActive = false;
@@ -209,6 +211,9 @@ namespace BookStoreAPI.Controllers.Accounts
             }
 
             var changePasswordResult = await userManager.ChangePasswordAsync(user, userData.OldPassword, userData.NewPassword);
+            user.SecurityStamp = Guid.NewGuid().ToString();
+
+            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
 
             if (!changePasswordResult.Succeeded)
             {

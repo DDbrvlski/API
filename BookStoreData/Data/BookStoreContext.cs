@@ -117,7 +117,8 @@ namespace BookStoreData.Data
         public DbSet<Payment> Payment { get; set; }
 
         //Wishlist
-        public DbSet<WishlistItem> WishlistItem { get; set; }
+        public DbSet<Wishlist> Wishlist { get; set; }
+        public DbSet<WishlistItems> WishlistItems { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

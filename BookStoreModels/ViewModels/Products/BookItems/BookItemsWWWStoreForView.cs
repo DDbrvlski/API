@@ -1,10 +1,5 @@
 ﻿using BookStoreViewModels.ViewModels.Helpers;
 using BookStoreViewModels.ViewModels.Products.Books.Dictionaries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookStoreViewModels.ViewModels.Products.BookItems
 {

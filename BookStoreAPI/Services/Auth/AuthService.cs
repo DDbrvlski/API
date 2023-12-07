@@ -3,9 +3,11 @@ using BookStoreAPI.Interfaces.Services;
 using BookStoreData.Data;
 using BookStoreData.Models.Accounts;
 using BookStoreData.Models.Customers;
+using BookStoreData.Models.Wishlist;
 using BookStoreViewModels.ViewModels.Accounts.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -24,7 +26,7 @@ namespace BookStoreAPI.Services.Auth
 
         public async Task<(int, string)> Login(LoginForView model)
         {
-            var user = await userManager.FindByEmailAsync(model.Email);
+            var user = await context.User.FirstOrDefaultAsync(x => x.Email == model.Email && x.IsActive);
             if (user == null)
                 return (0, "Invalid Email");
             if (!await userManager.CheckPasswordAsync(user, model.Password))
@@ -36,11 +38,11 @@ namespace BookStoreAPI.Services.Auth
 
         public async Task<(int, string)> Registration(RegisterForView model, string role)
         {
-            var userExists = await userManager.FindByNameAsync(model.Username);
+            var userExists = await context.User.FirstOrDefaultAsync(x => x.UserName == model.Username && x.IsActive);
             if (userExists != null)
                 return (0, "User already exists");
 
-            var emailExists = await userManager.FindByEmailAsync(model.Email);
+            var emailExists = await context.User.FirstOrDefaultAsync(x => x.Email == model.Email && x.IsActive);
             if (emailExists != null)
                 return (0, "Email already exists");
 
@@ -51,6 +53,14 @@ namespace BookStoreAPI.Services.Auth
                 IsSubscribed = model.IsSubscribed
             };
             context.Customer.Add(customer);
+            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
+
+            Wishlist wishlist = new()
+            {
+                CustomerID = customer.Id,
+                PublicIdentifier = Guid.NewGuid()
+            };
+            context.Wishlist.Add(wishlist);
             await DatabaseOperationHandler.TryToSaveChangesAsync(context);
 
             User user = new()
