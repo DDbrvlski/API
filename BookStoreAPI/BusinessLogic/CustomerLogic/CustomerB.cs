@@ -3,6 +3,7 @@ using BookStoreData.Data;
 using BookStoreData.Models.Customers;
 using BookStoreViewModels.ViewModels.Customers;
 using BookStoreViewModels.ViewModels.Customers.Address;
+using BookStoreViewModels.ViewModels.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +14,7 @@ namespace BookStoreAPI.BusinessLogic.CustomerLogic
         protected override async Task ConvertListsToUpdate(Customer entity, CustomerPostForView entityWithData, BookStoreContext context)
         {
             //await DatabaseOperationHandler.TryToSaveChangesAsync(context);
-            List<AddressPostForView> addresses = entityWithData.ListOfCustomerAdresses.ToList();
+            List<BaseAddressView> addresses = entityWithData.ListOfCustomerAdresses.ToList();
 
             await UpdateAllConnectedEntitiesLists(entity, addresses, context);
         }
@@ -23,7 +24,7 @@ namespace BookStoreAPI.BusinessLogic.CustomerLogic
             await CustomerAddressManager.DeactivateAllAddresses(entity, context);
         }
 
-        private static async Task UpdateAllConnectedEntitiesLists(Customer customer, List<AddressPostForView?> addresses, BookStoreContext _context)
+        private static async Task UpdateAllConnectedEntitiesLists(Customer customer, List<BaseAddressView?> addresses, BookStoreContext _context)
         {
             await CustomerAddressManager.UpdateAddresses(customer, addresses, _context);
         }
