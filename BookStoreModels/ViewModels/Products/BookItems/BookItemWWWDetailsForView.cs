@@ -11,6 +11,9 @@ namespace BookStoreViewModels.ViewModels.Products.BookItems
     public class BookItemWWWDetailsForView : BaseView
     {
         public string? BookTitle { get; set; }
+        public int? BookId { get; set; }
+        public int? FormId { get; set; }
+        public int? Pages { get; set; }
         public string? FormName { get; set; }
         public double? Score { get; set; }
         public decimal? Price { get; set; }

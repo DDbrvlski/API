@@ -1,4 +1,5 @@
-﻿using BookStoreData.Models.Customers;
+﻿using BookStoreData.Models.Accounts;
+using BookStoreData.Models.Customers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreAPI.Interfaces.Services
@@ -7,5 +8,7 @@ namespace BookStoreAPI.Interfaces.Services
     {
         Task<Customer> GetCustomerByEmail(string email);
         Task<IActionResult> SetCustomerNewsletterSubscription(Customer customer);
+        Task<Customer> GetCustomerByUserToken();
+        Task<Customer> GetCustomerByUser(User user);
     }
 }

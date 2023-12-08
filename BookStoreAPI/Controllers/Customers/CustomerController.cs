@@ -19,50 +19,11 @@ namespace BookStoreAPI.Controllers.Customers
 
         protected override async Task<ActionResult<CustomerDetailsForView?>> GetCustomEntityByIdAsync(int id)
         {
-            return await _context.Customer
-                .Include(x => x.CustomerAddresses)
-                    .ThenInclude(x => x.Address)
-                    .ThenInclude(x => x.City)
-                .Include(x => x.CustomerAddresses)
-                    .ThenInclude(x => x.Address)
-                    .ThenInclude(x => x.Country)
-                .Where(x => x.Id == id && x.IsActive)
-                .Select(element => new CustomerDetailsForView()
-                {
-                    Id = element.Id,
-                    IsSubscribed = (bool)element.IsSubscribed,
-                    Name = element.Name,
-                    Surname = element.Surname,
-                    ListOfCustomerAdresses = element.CustomerAddresses
-                            .Where(z => z.IsActive == true)
-                            .Select(y => new AddressDetailsForView
-                            {
-                                Id = y.Address.Id,
-                                Street = y.Address.Street,
-                                StreetNumber = y.Address.StreetNumber,
-                                HouseNumber = y.Address.HouseNumber,
-                                Postcode = y.Address.Postcode,
-                                CityID = y.Address.CityID,
-                                CityName = y.Address.City.Name,
-                                CountryID = y.Address.CountryID,
-                                CountryName = y.Address.Country.Name
-                            }).ToList(),
-
-                }).FirstAsync();
+            return await CustomerB.GetCustomerByIdAsync(id, _context);
         }
         protected override async Task<ActionResult<IEnumerable<CustomerForView>>> GetAllEntitiesCustomAsync()
         {
-            return await _context.Customer
-                .Include(x => x.CustomerAddresses)
-                    .ThenInclude(x => x.Address)
-                .Where(x => x.IsActive == true)
-                .Select(x => new CustomerForView
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Surname = x.Surname,
-                })
-                .ToListAsync();
+            return await CustomerB.GetAllCustomersAsync(_context);
         }
         protected override async Task<IActionResult> CreateEntityCustomAsync(CustomerPostForView entity)
         {

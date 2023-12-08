@@ -34,7 +34,7 @@ namespace BookStoreAPI.Services.Email
         public async Task ConfirmationOfContact(string userName, string userEmail)
         {
             var emailBody = $"Witaj {userName}, otrzymaliśmy twoją wiadomość :). /nPostaramy się odpowiedzieć na nią jak najszybciej.";
-            emailService.SendEmail(userName, userEmail, emailBody);
+            emailService.SendEmail(userEmail, "Kontakt", emailBody);
         }
 
         private IUrlHelper GetUrlHelper()

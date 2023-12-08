@@ -1,3 +1,5 @@
+using BookStoreAPI.BusinessLogic.AccountLogic;
+using BookStoreAPI.Interfaces.BusinessLogic;
 using BookStoreAPI.Interfaces.Services;
 using BookStoreAPI.Services.Auth;
 using BookStoreAPI.Services.Customers;
@@ -33,6 +35,7 @@ namespace BookStoreAPI
             var audiences = builder.Configuration.GetSection("Audiences").Get<Dictionary<string, string>>();
             var emailConfiguration = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
             builder.Services.AddSingleton(emailConfiguration);
+            builder.Services.AddScoped<IUserB, UserB>();
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
             builder.Services.AddScoped<IAuthService, AuthService>();

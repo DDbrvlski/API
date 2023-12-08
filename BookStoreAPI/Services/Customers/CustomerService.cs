@@ -10,7 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreAPI.Services.Customers
 {
-    public class CustomerService(UserManager<User> userManager, IUserService userService, BookStoreContext context) : ICustomerService
+    public class CustomerService
+        (UserManager<User> userManager, 
+        IUserService userService, 
+        BookStoreContext context)
+        : ICustomerService
     {
         public async Task<Customer> GetCustomerByEmail(string email)
         {
@@ -30,6 +34,23 @@ namespace BookStoreAPI.Services.Customers
                 await DatabaseOperationHandler.TryToSaveChangesAsync(context);
                 return new OkObjectResult(new { Message = "E-mail został pomyślnie zasubskrybowany do newslettera." });
             }
+        }
+
+        public async Task<Customer> GetCustomerByUserToken()
+        {
+            var user = await userService.GetUserByToken();
+
+            return await GetCustomerByUser(user);
+        }
+
+        public async Task<Customer> GetCustomerByUser(User user)
+        {
+            if (user == null)
+            {
+                return null;
+            }
+
+            return await context.Customer.FirstOrDefaultAsync(x => x.IsActive && x.Id == user.CustomerID);
         }
     }
 }

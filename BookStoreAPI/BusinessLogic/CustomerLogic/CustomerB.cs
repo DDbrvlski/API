@@ -1,9 +1,9 @@
-﻿using BookStoreData.Data;
-using BookStoreAPI.Helpers.BaseBusinessLogic;
+﻿using BookStoreAPI.Helpers.BaseBusinessLogic;
+using BookStoreData.Data;
 using BookStoreData.Models.Customers;
 using BookStoreViewModels.ViewModels.Customers;
 using BookStoreViewModels.ViewModels.Customers.Address;
-using BookStoreAPI.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreAPI.BusinessLogic.CustomerLogic
@@ -28,5 +28,53 @@ namespace BookStoreAPI.BusinessLogic.CustomerLogic
             await CustomerAddressManager.UpdateAddresses(customer, addresses, _context);
         }
 
+        public static async Task<ActionResult<CustomerDetailsForView?>> GetCustomerByIdAsync(int id, BookStoreContext context)
+        {
+            return await context.Customer
+                .Include(x => x.CustomerAddresses)
+                    .ThenInclude(x => x.Address)
+                    .ThenInclude(x => x.City)
+                .Include(x => x.CustomerAddresses)
+                    .ThenInclude(x => x.Address)
+                    .ThenInclude(x => x.Country)
+                .Where(x => x.Id == id && x.IsActive)
+                .Select(element => new CustomerDetailsForView()
+                {
+                    Id = element.Id,
+                    IsSubscribed = (bool)element.IsSubscribed,
+                    Name = element.Name,
+                    Surname = element.Surname,
+                    ListOfCustomerAdresses = element.CustomerAddresses
+                            .Where(z => z.IsActive == true)
+                            .Select(y => new AddressDetailsForView
+                            {
+                                Id = y.Address.Id,
+                                Street = y.Address.Street,
+                                StreetNumber = y.Address.StreetNumber,
+                                HouseNumber = y.Address.HouseNumber,
+                                Postcode = y.Address.Postcode,
+                                CityID = y.Address.CityID,
+                                CityName = y.Address.City.Name,
+                                CountryID = y.Address.CountryID,
+                                CountryName = y.Address.Country.Name
+                            }).ToList(),
+
+                }).FirstAsync();
+        }
+
+        public static async Task<ActionResult<IEnumerable<CustomerForView>>> GetAllCustomersAsync(BookStoreContext context)
+        {
+            return await context.Customer
+                .Include(x => x.CustomerAddresses)
+                    .ThenInclude(x => x.Address)
+                .Where(x => x.IsActive == true)
+                .Select(x => new CustomerForView
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Surname = x.Surname,
+                })
+                .ToListAsync();
+        }
     }
 }

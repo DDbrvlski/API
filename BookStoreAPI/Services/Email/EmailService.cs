@@ -8,13 +8,10 @@ namespace BookStoreAPI.Services.Email
     {
         public void SendEmail(string to, string subject, string body)
         {
-            // Konfiguracja ustawień SMTP
             var smtpClient = ConfigureGmailSmtpClient();
 
-            // Tworzenie wiadomości e-mail
             var message = CreateNewMessage(to, subject, body);
 
-            // Wysłanie wiadomości
             smtpClient.Send(message);
         }
 

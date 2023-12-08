@@ -3,13 +3,14 @@ using BookStoreData.Data;
 using BookStoreData.Models.Customers;
 using BookStoreData.Models.Products.Books;
 using BookStoreViewModels.ViewModels.Customers.Address;
+using BookStoreViewModels.ViewModels.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreAPI.BusinessLogic.CustomerLogic
 {
     public class CustomerAddressManager
     {
-        public static async Task UpdateAddresses(Customer customer, List<AddressPostForView?> addresses, BookStoreContext _context)
+        public static async Task UpdateAddresses(Customer customer, List<BaseAddressView?> addresses, BookStoreContext _context)
         {
             var existingAddressesIds = await _context.CustomerAddress
                 .Where(x => x.CustomerID == customer.Id && x.IsActive == true)
@@ -38,7 +39,7 @@ namespace BookStoreAPI.BusinessLogic.CustomerLogic
             }
         }
 
-        public static async Task AddNewAddresses(Customer customer, List<AddressPostForView?> addressesToAdd, BookStoreContext _context)
+        public static async Task AddNewAddresses(Customer customer, List<BaseAddressView?> addressesToAdd, BookStoreContext _context)
         {
             if (addressesToAdd?.Count > 0)
             {
