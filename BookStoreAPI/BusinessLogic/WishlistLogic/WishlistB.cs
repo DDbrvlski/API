@@ -5,6 +5,7 @@ using BookStoreData.Data;
 using BookStoreData.Models.Accounts;
 using BookStoreData.Models.Customers;
 using BookStoreData.Models.Wishlist;
+using BookStoreViewModels.ViewModels.Products.Books.Dictionaries;
 using BookStoreViewModels.ViewModels.Wishlists;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -44,13 +45,21 @@ namespace BookStoreAPI.BusinessLogic.WishlistLogic
                             BookTitle = y.BookItem.Book.Title,
                             EditionName = y.BookItem.Edition.Name,
                             FormName = y.BookItem.Form.Name,
+                            FormId = y.BookItem.FormID,
+                            FileFormatName = y.BookItem.FileFormat.Name,
                             ImageURL = y.BookItem.Book.BookImages.Where(z => z.Image.Position == 1).FirstOrDefault().Image.ImageURL,
-                            PriceBrutto = y.BookItem.NettoPrice * (1 + ((decimal)y.BookItem.VAT / 100))
+                            PriceBrutto = y.BookItem.NettoPrice * (1 + ((decimal)y.BookItem.VAT / 100)),
+                            authors = y.BookItem.Book.BookAuthors.Select(y => new AuthorsForView
+                            {
+                                Id = (int)y.AuthorID,
+                                Name = y.Author.Name,
+                                Surname = y.Author.Surname,
+                            }).ToList(),
                         }).ToList(),
                     FullPrice = x.WishlistItems
                         .Where(y => y.WishlistID == x.Id && y.IsActive)
                         .Sum(y => y.BookItem.NettoPrice * (1 + ((decimal)y.BookItem.VAT / 100)))
-                }).FirstOrDefaultAsync();
+                }).FirstAsync();
         }
         public static async Task<ActionResult<Guid>> GetUserWishlistAsync(BookStoreContext context, IUserService userService)
         {

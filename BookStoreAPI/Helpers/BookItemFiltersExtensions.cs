@@ -87,6 +87,11 @@ namespace BookStoreAPI.Helpers
             return query.Where(x => availabilitiesIds.Contains(x.AvailabilityID));
         }
 
+        public static IQueryable<BookItem> WhereHasBook(this IQueryable<BookItem> query, int? bookId)
+        {
+            return query.Where(x => x.BookID == bookId);
+        }
+
         public static IQueryable<BookItem> WherePriceFrom(this IQueryable<BookItem> query, decimal? priceFrom)
         {
             return query.Where(x => (x.NettoPrice * (1 + (decimal)x.VAT / 100)) >= priceFrom);

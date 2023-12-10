@@ -245,11 +245,12 @@ namespace BookStoreAPI.BusinessLogic.AccountLogic
                     return new NotFoundObjectResult("Nie znaleziono danych klienta.");
                 }
 
-                if (userData.address.Position == 0)
+                if (userData.address.Position == null || userData.address.Position == 0)
                 {
                     userData.address.Position = 1;
                 }
-                if (userData.mailingAddress.Position == 0)
+
+                if (userData.mailingAddress.Position == null || userData.mailingAddress.Position == 0)
                 {
                     userData.mailingAddress.Position = 2;
                 }
