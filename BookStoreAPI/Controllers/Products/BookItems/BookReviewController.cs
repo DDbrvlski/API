@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 
 namespace BookStoreAPI.Controllers.Products.BookItems
@@ -92,18 +93,32 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 return NotFound("Nie znaleziono danych klienta.");
             }
 
-            var review = new BookItemReview()
-            {
-                Content = bookReview.Content,
-                BookItemID = bookReview.BookItemId,
-                ScoreID = bookReview.ScoreId,
-                CustomerID = customer.Id
-            };
+            var existingReview = await _context.BookItemReview.FirstOrDefaultAsync(x => x.IsActive && x.CustomerID == customer.Id);
 
-            _context.BookItemReview.Add(review);
+            if (existingReview != null)
+            {
+                existingReview.Content = bookReview.Content;
+                existingReview.ScoreID = bookReview.ScoreId;
+            }
+            else
+            {
+                var review = new BookItemReview()
+                {
+                    Content = bookReview.Content,
+                    BookItemID = bookReview.BookItemId,
+                    ScoreID = bookReview.ScoreId,
+                    CustomerID = customer.Id
+                };
+
+                _context.BookItemReview.Add(review);                
+            }
             var listOfScores = await _context.BookItemReview.Where(x => x.IsActive && x.BookItemID == bookReview.BookItemId).Select(x => x.Score.Value).ToListAsync();
-            var scoreToUpdate = await _context.BookItem.FirstAsync(x => x.Id == bookReview.BookItemId);
-            scoreToUpdate.Score = listOfScores.Average();
+            if (!listOfScores.IsNullOrEmpty())
+            {
+                var scoreToUpdate = await _context.BookItem.FirstAsync(x => x.Id == bookReview.BookItemId);
+                scoreToUpdate.Score = listOfScores.Average();
+            }
+
             return await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
         }
 

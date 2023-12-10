@@ -41,7 +41,7 @@ namespace BookStoreAPI.BusinessLogic.WishlistLogic
                         .Where(y => y.WishlistID == x.Id && y.IsActive)
                         .Select(y => new WishlistItemForView()
                         {
-                            Id = y.Id,
+                            Id = (int)y.BookItemID,
                             BookTitle = y.BookItem.Book.Title,
                             EditionName = y.BookItem.Edition.Name,
                             FormName = y.BookItem.Form.Name,
@@ -59,7 +59,7 @@ namespace BookStoreAPI.BusinessLogic.WishlistLogic
                     FullPrice = x.WishlistItems
                         .Where(y => y.WishlistID == x.Id && y.IsActive)
                         .Sum(y => y.BookItem.NettoPrice * (1 + ((decimal)y.BookItem.VAT / 100)))
-                }).FirstAsync();
+                }).FirstOrDefaultAsync();
         }
         public static async Task<ActionResult<Guid>> GetUserWishlistAsync(BookStoreContext context, IUserService userService)
         {

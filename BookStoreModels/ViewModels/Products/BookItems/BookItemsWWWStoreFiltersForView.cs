@@ -18,5 +18,6 @@ namespace BookStoreViewModels.ViewModels.Products.BookItems
         public string? sortBy { get; set; }
         public string? sortOrder { get; set;}
         public int? numberOfElements { get; set; }
+        public int? bookId { get; set; }
     }
 }

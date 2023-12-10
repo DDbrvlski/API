@@ -34,6 +34,9 @@ namespace BookStoreAPI.Helpers
             if (filters.availabilitiesIds != null && filters.availabilitiesIds.Any())
                 query = query.WhereHasAvailabilities(filters.availabilitiesIds);
 
+            if (filters.bookId != null)
+                query = query.WhereHasBook(filters.bookId);
+
             if (filters.priceFrom != null)
                 query = query.WherePriceFrom(filters.priceFrom);
 
