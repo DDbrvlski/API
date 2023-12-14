@@ -10,10 +10,5 @@ namespace BookStoreData.Models.Products.BookItems
         public DateTime ExpiryDate { get; set; }
         public DateTime StartingDate { get; set; }
         public string Description { get; set; }
-
-        [JsonIgnore]
-        public List<BookItem>? BookItems { get; set; }
-        [JsonIgnore]
-        public List<BookDiscountCode>? BookDiscountCodes { get; set; }
     }
 }

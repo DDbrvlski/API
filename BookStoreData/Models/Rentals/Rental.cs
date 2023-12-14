@@ -5,6 +5,8 @@ using BookStoreData.Models.Products.BookItems;
 using BookStoreData.Models.Accounts;
 using BookStoreData.Models.Rentals.Dictionaries;
 using System.Text.Json.Serialization;
+using BookStoreData.Models.Customers;
+using BookStoreData.Models.Transactions.Dictionaries;
 
 namespace BookStoreData.Models.Rental
 {
@@ -24,14 +26,23 @@ namespace BookStoreData.Models.Rental
         [JsonIgnore]
         public virtual BookItem BookItem { get; set; }
 
-        //User
-        [Required(ErrorMessage = "Użytkownik jest wymagany.")]
-        [Display(Name = "Użytkownik")]
-        public string? UserID { get; set; }
+        //Customer
+        [Required(ErrorMessage = "Klient jest wymagany.")]
+        [Display(Name = "Klient")]
+        public int? CustomerID { get; set; }
 
-        [ForeignKey("UserID")]
+        [ForeignKey("CustomerID")]
         [JsonIgnore]
-        public virtual User User { get; set; }
+        public virtual Customer? Customer { get; set; }
+
+        //PaymentMethod
+        [Required(ErrorMessage = "Typ płatności jest wymagany.")]
+        [Display(Name = "Typ płatności")]
+        public int? PaymentMethodID { get; set; }
+
+        [ForeignKey("PaymentMethodID")]
+        [JsonIgnore]
+        public virtual PaymentMethod PaymentMethod { get; set; }
 
         //RentalType
         [Required(ErrorMessage = "Typ wynajmu jest wymagany.")]

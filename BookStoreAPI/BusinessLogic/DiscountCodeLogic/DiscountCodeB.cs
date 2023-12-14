@@ -2,6 +2,7 @@
 using BookStoreAPI.Helpers.BaseBusinessLogic;
 using BookStoreData.Models.Products.BookItems;
 using BookStoreViewModels.ViewModels.Products.DiscountCodes;
+using BookStoreAPI.Helpers;
 
 namespace BookStoreAPI.BusinessLogic.DiscountCodeLogic
 {
@@ -11,17 +12,18 @@ namespace BookStoreAPI.BusinessLogic.DiscountCodeLogic
         {
             entity.StartingDate = entity.StartingDate.Date;
             entity.ExpiryDate = entity.ExpiryDate.Date;
-            List<int?> bookItemsIds = entityWithData.ListOfBookItems.Select(x => x.Id).ToList();
-            await UpdateAllConnectedEntitiesLists(entity, bookItemsIds, context);
+            await DatabaseOperationHandler.TryToSaveChangesAsync(context);
+            //List<int?> bookItemsIds = entityWithData.ListOfBookItems.Select(x => x.Id).ToList();
+            //await UpdateAllConnectedEntitiesLists(entity, bookItemsIds, context);
         }
-        protected override async Task DeactivateAllConnectedEntities(DiscountCode entity, BookStoreContext context)
-        {
-            await BookDiscountCodeManager.DeactivateAllDiscountCodes(entity, context);
-        }
-        private static async Task UpdateAllConnectedEntitiesLists(DiscountCode discountCode, List<int?> bookItemsIds, BookStoreContext _context)
-        {
-            await BookDiscountCodeManager.UpdateDiscountCodes(discountCode, bookItemsIds, _context);
-        }
+        //protected override async Task DeactivateAllConnectedEntities(DiscountCode entity, BookStoreContext context)
+        //{
+        //    await BookDiscountCodeManager.DeactivateAllDiscountCodes(entity, context);
+        //}
+        //private static async Task UpdateAllConnectedEntitiesLists(DiscountCode discountCode, List<int?> bookItemsIds, BookStoreContext _context)
+        //{
+        //    await BookDiscountCodeManager.UpdateDiscountCodes(discountCode, bookItemsIds, _context);
+        //}
 
     }
 }

@@ -225,6 +225,9 @@ namespace BookStoreAPI.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -537,6 +540,9 @@ namespace BookStoreAPI.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
+                    b.Property<int?>("DiscountCodeID")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -563,6 +569,8 @@ namespace BookStoreAPI.Migrations
                     b.HasIndex("CustomerID");
 
                     b.HasIndex("DeliveryMethodID");
+
+                    b.HasIndex("DiscountCodeID");
 
                     b.HasIndex("OrderStatusID");
 
@@ -908,40 +916,6 @@ namespace BookStoreAPI.Migrations
                     b.ToTable("BookDiscount");
                 });
 
-            modelBuilder.Entity("BookStoreData.Models.Products.BookItems.BookDiscountCode", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BookItemID")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("DiscountCodeID")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookItemID");
-
-                    b.HasIndex("DiscountCodeID");
-
-                    b.ToTable("BookDiscountCode");
-                });
-
             modelBuilder.Entity("BookStoreData.Models.Products.BookItems.BookItem", b =>
                 {
                     b.Property<int>("Id")
@@ -960,9 +934,6 @@ namespace BookStoreAPI.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("DiscountCodeId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("DiscountId")
                         .HasColumnType("int");
@@ -1017,8 +988,6 @@ namespace BookStoreAPI.Migrations
                     b.HasIndex("AvailabilityID");
 
                     b.HasIndex("BookID");
-
-                    b.HasIndex("DiscountCodeId");
 
                     b.HasIndex("DiscountId");
 
@@ -1717,6 +1686,10 @@ namespace BookStoreAPI.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CustomerID")
+                        .IsRequired()
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -1725,6 +1698,10 @@ namespace BookStoreAPI.Migrations
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("PaymentMethodID")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<int?>("RentalStatusID")
                         .IsRequired()
@@ -1737,19 +1714,17 @@ namespace BookStoreAPI.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BookItemID");
 
+                    b.HasIndex("CustomerID");
+
+                    b.HasIndex("PaymentMethodID");
+
                     b.HasIndex("RentalStatusID");
 
                     b.HasIndex("RentalTypeID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("Rental");
                 });
@@ -2297,6 +2272,10 @@ namespace BookStoreAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BookStoreData.Models.Products.BookItems.DiscountCode", "DiscountCode")
+                        .WithMany()
+                        .HasForeignKey("DiscountCodeID");
+
                     b.HasOne("BookStoreData.Models.Orders.Dictionaries.OrderStatus", "OrderStatus")
                         .WithMany()
                         .HasForeignKey("OrderStatusID")
@@ -2318,6 +2297,8 @@ namespace BookStoreAPI.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("DeliveryMethod");
+
+                    b.Navigation("DiscountCode");
 
                     b.Navigation("OrderStatus");
 
@@ -2419,25 +2400,6 @@ namespace BookStoreAPI.Migrations
                     b.Navigation("Discount");
                 });
 
-            modelBuilder.Entity("BookStoreData.Models.Products.BookItems.BookDiscountCode", b =>
-                {
-                    b.HasOne("BookStoreData.Models.Products.BookItems.BookItem", "BookItem")
-                        .WithMany()
-                        .HasForeignKey("BookItemID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookStoreData.Models.Products.BookItems.DiscountCode", "DiscountCode")
-                        .WithMany("BookDiscountCodes")
-                        .HasForeignKey("DiscountCodeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BookItem");
-
-                    b.Navigation("DiscountCode");
-                });
-
             modelBuilder.Entity("BookStoreData.Models.Products.BookItems.BookItem", b =>
                 {
                     b.HasOne("BookStoreData.Models.Products.BookItems.BookItemDictionaries.Availability", "Availability")
@@ -2451,10 +2413,6 @@ namespace BookStoreAPI.Migrations
                         .HasForeignKey("BookID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("BookStoreData.Models.Products.BookItems.DiscountCode", null)
-                        .WithMany("BookItems")
-                        .HasForeignKey("DiscountCodeId");
 
                     b.HasOne("BookStoreData.Models.Products.BookItems.Discount", null)
                         .WithMany("BookItems")
@@ -2669,6 +2627,18 @@ namespace BookStoreAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BookStoreData.Models.Customers.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookStoreData.Models.Transactions.Dictionaries.PaymentMethod", "PaymentMethod")
+                        .WithMany()
+                        .HasForeignKey("PaymentMethodID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BookStoreData.Models.Rentals.Dictionaries.RentalStatus", "RentalStatus")
                         .WithMany()
                         .HasForeignKey("RentalStatusID")
@@ -2681,19 +2651,15 @@ namespace BookStoreAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookStoreData.Models.Accounts.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("BookItem");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("PaymentMethod");
 
                     b.Navigation("RentalStatus");
 
                     b.Navigation("RentalType");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BookStoreData.Models.Supplies.Dictionaries.Supplier", b =>
@@ -2848,13 +2814,6 @@ namespace BookStoreAPI.Migrations
             modelBuilder.Entity("BookStoreData.Models.Products.BookItems.Discount", b =>
                 {
                     b.Navigation("BookDiscounts");
-
-                    b.Navigation("BookItems");
-                });
-
-            modelBuilder.Entity("BookStoreData.Models.Products.BookItems.DiscountCode", b =>
-                {
-                    b.Navigation("BookDiscountCodes");
 
                     b.Navigation("BookItems");
                 });

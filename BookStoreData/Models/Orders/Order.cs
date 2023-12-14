@@ -2,6 +2,7 @@
 using BookStoreData.Models.Delivery;
 using BookStoreData.Models.Helpers;
 using BookStoreData.Models.Orders.Dictionaries;
+using BookStoreData.Models.Products.BookItems;
 using BookStoreData.Models.Transactions;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -58,6 +59,12 @@ namespace BookStoreData.Models.Orders
         [JsonIgnore]
         public virtual Customer Customer { get; set; }
 
+        [Display(Name = "Kod zniżkowy")]
+        public int? DiscountCodeID { get; set; }
+
+        [ForeignKey("DiscountCodeID")]
+        [JsonIgnore]
+        public virtual DiscountCode DiscountCode { get; set; }
 
         [JsonIgnore]
         public List<OrderItems>? OrderItems { get; set; }

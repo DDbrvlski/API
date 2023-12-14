@@ -79,7 +79,6 @@ namespace BookStoreData.Data
         public DbSet<FileFormat> FileFormat { get; set; }
         public DbSet<Form> Form { get; set; }
         public DbSet<BookDiscount> BookDiscount { get; set; }
-        public DbSet<BookDiscountCode> BookDiscountCode { get; set; }
         public DbSet<BookItem> BookItem { get; set; }
         public DbSet<Discount> Discount { get; set; }
         public DbSet<DiscountCode> DiscountCode { get; set; }

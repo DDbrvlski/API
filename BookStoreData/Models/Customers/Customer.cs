@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using BookStoreData.Models.Orders;
 
 namespace BookStoreData.Models.Customers
 {
@@ -10,6 +11,7 @@ namespace BookStoreData.Models.Customers
         #region Properties
         public string? Name { get; set; }
         public string? Surname { get; set; }
+        public string? Email { get; set; }
         public bool IsSubscribed { get; set; }
         #endregion
         [JsonIgnore]

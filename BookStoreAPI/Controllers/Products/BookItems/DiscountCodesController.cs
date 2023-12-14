@@ -20,9 +20,6 @@ namespace BookStoreAPI.Controllers.Products.BookItems
         protected override async Task<ActionResult<DiscountCodeDetailsForView?>> GetCustomEntityByIdAsync(int id)
         {
             var element = await _context.DiscountCode
-                .Include(x => x.BookDiscountCodes)
-                    .ThenInclude(x => x.BookItem)
-                    .ThenInclude(x => x.Book)
                 .FirstOrDefaultAsync(x => x.Id == id && x.IsActive);
 
             return new DiscountCodeDetailsForView
@@ -33,27 +30,12 @@ namespace BookStoreAPI.Controllers.Products.BookItems
                 Description = element.Description,
                 ExpiryDate = element.ExpiryDate,
                 PercentOfDiscount = element.PercentOfDiscount,
-                StartingDate = element.StartingDate,
-                ListOfBookItems = element.BookDiscountCodes
-                .Where(x => x.IsActive == true)
-                .Select(x => new BookItemsForDiscountForView
-                {
-                    Id = x.Id,
-                    BookItemID = x.BookItemID,
-                    BookID = x.BookItem.BookID,
-                    BookTitle = x.BookItem.Book.Title,
-                    ISBN = x.BookItem.ISBN,
-                    FormName = x.BookItem.Form.Name,
-                    NettoPrice = x.BookItem.NettoPrice,
-                }).ToList()
+                StartingDate = element.StartingDate
             };
         }
         protected override async Task<ActionResult<IEnumerable<DiscountCodeForView>>> GetAllEntitiesCustomAsync()
         {
             return await _context.DiscountCode
-                .Include(x => x.BookDiscountCodes)
-                    .ThenInclude(x => x.BookItem)
-                    .ThenInclude(x => x.Book)
                 .Where(x => x.IsActive == true)
                 .Select(x => new DiscountCodeForView
                 {

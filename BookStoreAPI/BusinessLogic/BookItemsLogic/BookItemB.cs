@@ -19,7 +19,7 @@ namespace BookStoreAPI.BusinessLogic.BookItemsLogic
         protected override async Task DeactivateAllConnectedEntities(BookItem entity, BookStoreContext context)
         {
             await BookDiscountManager.DeactivateAllDiscounts(entity, context);
-            await BookDiscountCodeManager.DeactivateAllDiscountCodes(entity, context);
+            //await BookDiscountCodeManager.DeactivateAllDiscountCodes(entity, context);
         }
 
         public static async Task<ActionResult<BookItemsDetailsForView?>> GetBookItemById(BookStoreContext context, int id)
@@ -144,6 +144,8 @@ namespace BookStoreAPI.BusinessLogic.BookItemsLogic
                             .ThenInclude(x => x.BookAuthors)
                             .ThenInclude(x => x.Author)
                         .Include(x => x.Form)
+                        .Include(x => x.FileFormat)
+                        .Include(x => x.Edition)
                         .Include(x => x.Book)
                             .ThenInclude(x => x.BookImages)
                         .Where(x => x.IsActive == true)
@@ -156,6 +158,10 @@ namespace BookStoreAPI.BusinessLogic.BookItemsLogic
                 Title = x.Book.Title,
                 FormId = x.FormID,
                 FormName = x.Form.Name,
+                FileFormatId = x.FileFormatID,
+                FileFormatName = x.FileFormat.Name,
+                EditionId = x.EditionID,
+                EditionName = x.Edition.Name,
                 Price = x.NettoPrice * (1 + ((decimal)x.VAT / 100)),
                 Score = x.Score,
                 authors = x.Book.BookAuthors.Select(y => new AuthorsForView

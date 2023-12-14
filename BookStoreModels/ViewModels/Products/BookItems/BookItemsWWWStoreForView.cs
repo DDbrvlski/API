@@ -11,6 +11,10 @@ namespace BookStoreViewModels.ViewModels.Products.BookItems
         public double Score { get; set; }
         public int? FormId { get; set; }
         public string? FormName { get; set; }
+        public int? FileFormatId { get; set; }
+        public string? FileFormatName { get; set; }
+        public int? EditionId { get; set; }
+        public string? EditionName { get; set; }
         public List<AuthorsForView> authors { get; set; } = new List<AuthorsForView>();
 
     }
