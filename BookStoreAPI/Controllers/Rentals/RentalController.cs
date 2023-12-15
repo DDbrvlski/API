@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace BookStoreAPI.Controllers.Rentals
 {
@@ -37,16 +38,20 @@ namespace BookStoreAPI.Controllers.Rentals
                 return new NotFoundObjectResult("Nie znaleziono danych klienta.");
             }
 
+            var days = await context.RentalType.Where(x => x.IsActive && x.Id == newRental.RentalTypeID).Select(x => x.Days).FirstOrDefaultAsync();
+
             Rental rental = new Rental();
             rental.CopyProperties(newRental);
             rental.CustomerID = customer.Id;
+            rental.RentalStatusID = 1;
+            rental.EndDate = rental.StartDate.AddDays(days);
 
             context.Rental.Add(rental);
 
             return await DatabaseOperationHandler.TryToSaveChangesAsync(context);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = UserRoles.User)]
         [Route("Rented-Ebooks")]
         public async Task<ActionResult<IEnumerable<RentalForView>>> GetRentedEbooks()
@@ -93,7 +98,7 @@ namespace BookStoreAPI.Controllers.Rentals
             return rentedEbooks;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = UserRoles.User)]
         [Route("Purchased-Ebooks")]
         public async Task<ActionResult<IEnumerable<RentalForView>>> GetPurchasedEbooks()
