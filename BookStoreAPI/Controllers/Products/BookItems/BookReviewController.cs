@@ -112,11 +112,14 @@ namespace BookStoreAPI.Controllers.Products.BookItems
 
                 _context.BookItemReview.Add(review);                
             }
+            await DatabaseOperationHandler.TryToSaveChangesAsync(_context);
+
             var listOfScores = await _context.BookItemReview.Where(x => x.IsActive && x.BookItemID == bookReview.BookItemId).Select(x => x.Score.Value).ToListAsync();
             if (!listOfScores.IsNullOrEmpty())
             {
                 var scoreToUpdate = await _context.BookItem.FirstAsync(x => x.Id == bookReview.BookItemId);
                 scoreToUpdate.Score = listOfScores.Average();
+                await Console.Out.WriteLineAsync();
             }
 
             return await DatabaseOperationHandler.TryToSaveChangesAsync(_context);

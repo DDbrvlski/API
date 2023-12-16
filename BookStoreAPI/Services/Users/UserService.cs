@@ -30,8 +30,8 @@ namespace BookStoreAPI.Services.Users
             {
                 return null;
             }
-
-            return await context.User.FirstOrDefaultAsync(x => x.IsActive && x.Id == userId);
+            var aa = await context.User.FirstOrDefaultAsync(x => x.IsActive && x.Id == userId);
+            return aa;
         }
 
         public async Task<User> GetUserByEmail(string email)

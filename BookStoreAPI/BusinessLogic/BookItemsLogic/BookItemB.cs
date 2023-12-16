@@ -187,9 +187,9 @@ namespace BookStoreAPI.BusinessLogic.BookItemsLogic
                     .AnyAsync(x => x.IsActive && x.WishlistID == wishlist.Id && x.BookItemID == bookItemId);
             }
 
-            var scoreOccurrences = _context.BookItemReview
+            var scoreOccurrences = await _context.BookItemReview
                 .GroupBy(review => review.Score.Value)
-                .ToDictionary(group => group.Key, group => group.Count());
+                .ToDictionaryAsync(group => group.Key, group => group.Count());
 
             var allScores = Enumerable.Range(1, 5).ToDictionary(score => score, score => 0);
 
@@ -201,7 +201,7 @@ namespace BookStoreAPI.BusinessLogic.BookItemsLogic
                     group => group.Sum(pair => pair.Value)
                 );
 
-            return await _context.BookItem
+            var aaa = await _context.BookItem
                 .Include(x => x.Book)
                     .ThenInclude(x => x.BookAuthors)
                     .ThenInclude(x => x.Author)
@@ -260,6 +260,8 @@ namespace BookStoreAPI.BusinessLogic.BookItemsLogic
                     }).ToList(),
                     ScoreValues = scoreValues
                 }).FirstAsync();
+
+            return aaa;
         }
     }
 }

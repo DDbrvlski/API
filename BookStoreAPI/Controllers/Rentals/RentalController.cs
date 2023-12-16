@@ -17,7 +17,7 @@ namespace BookStoreAPI.Controllers.Rentals
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RentalController(BookStoreContext context, IUserService userService, CustomerService customerService) : ControllerBase
+    public class RentalController(BookStoreContext context, IUserService userService, ICustomerService customerService) : ControllerBase
     {
         [HttpPost]
         [Authorize(Roles = UserRoles.User)]
